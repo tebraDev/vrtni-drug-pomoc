@@ -10,12 +10,17 @@ export interface Dict {
     ctaPrimary: string;
     ctaSecondary: string;
     trust: { reliable: string; onTime: string; allSerbia: string };
+    rating: string;
+    happyClients: string;
+    sinceYear: string;
   };
   config: {
     sectionTitle: string;
     sectionDesc: string;
     areaLabel: string;
     areaHelp: string;
+    presetsTitle: string;
+    presets: { small: string; medium: string; large: string; estate: string };
   };
   services: {
     pricePerM2: (price: number, min: string) => string;
@@ -25,6 +30,10 @@ export interface Dict {
     frequency: string;
     items: Record<string, { name: string; desc: string }>;
     units: { m2: string; kom: string };
+    selected: string;
+    add: string;
+    remove: string;
+    monthlyMini: string;
   };
   freq: Record<
     "1x_nedeljno" | "2x_nedeljno" | "1x_mesecno" | "2x_mesecno" | "po_potrebi",
@@ -38,6 +47,7 @@ export interface Dict {
     address: string;
     notes: string;
     notesPlaceholder: string;
+    submitting: string;
   };
   summary: {
     title: string;
@@ -48,6 +58,9 @@ export interface Dict {
     estimateNote: string;
     orderBtn: string;
     noObligation: string;
+    itemsCount: (n: number) => string;
+    continueToContact: string;
+    backToServices: string;
   };
   toasts: {
     missingTitle: string;
@@ -57,9 +70,25 @@ export interface Dict {
     successTitle: string;
     successDesc: (phone: string) => string;
   };
-  footer: { tagline: string };
+  footer: { tagline: string; contact: string; whatsapp: string; call: string };
   langSwitcher: { language: string; script: string; latin: string; cyrillic: string };
   meta: { title: string; description: string };
+  steps: {
+    title: string;
+    subtitle: string;
+    s1: { title: string; desc: string };
+    s2: { title: string; desc: string };
+    s3: { title: string; desc: string };
+  };
+  testimonials: {
+    title: string;
+    subtitle: string;
+    items: { quote: string; author: string; location: string }[];
+  };
+  faq: {
+    title: string;
+    items: { q: string; a: string }[];
+  };
 }
 
 const fmtRSD = (n: number, locale: string) =>
