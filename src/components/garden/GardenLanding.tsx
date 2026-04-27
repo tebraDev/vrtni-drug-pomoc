@@ -9,6 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import heroImg from "@/assets/garden-hero.jpg";
+import { useI18n } from "@/i18n/I18nContext";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 type Frequency = "1x_nedeljno" | "2x_nedeljno" | "1x_mesecno" | "2x_mesecno" | "po_potrebi";
 
@@ -35,12 +37,12 @@ const SERVICES: ServiceDef[] = [
   { id: "djubrenje", name: "Đubrenje i prihrana", desc: "Prihrana travnjaka i biljaka", icon: Leaf, pricePerM2: 15, minPrice: 1800, unit: "m²" },
 ];
 
-const FREQUENCIES: { value: Frequency; label: string; multiplier: number }[] = [
-  { value: "2x_nedeljno", label: "2x nedeljno", multiplier: 8 },
-  { value: "1x_nedeljno", label: "1x nedeljno", multiplier: 4 },
-  { value: "2x_mesecno", label: "2x mesečno", multiplier: 2 },
-  { value: "1x_mesecno", label: "1x mesečno", multiplier: 1 },
-  { value: "po_potrebi", label: "Po potrebi (jednokratno)", multiplier: 1 },
+const FREQUENCIES: { value: Frequency; multiplier: number }[] = [
+  { value: "2x_nedeljno", multiplier: 8 },
+  { value: "1x_nedeljno", multiplier: 4 },
+  { value: "2x_mesecno", multiplier: 2 },
+  { value: "1x_mesecno", multiplier: 1 },
+  { value: "po_potrebi", multiplier: 1 },
 ];
 
 interface SelectedService {
@@ -49,9 +51,8 @@ interface SelectedService {
   frequency: Frequency;
 }
 
-const formatRSD = (n: number) => new Intl.NumberFormat("sr-RS").format(Math.round(n)) + " RSD";
-
 const GardenLanding = () => {
+  const { t, formatPrice: formatRSD } = useI18n();
   const [selected, setSelected] = useState<Record<string, SelectedService>>({});
   const [area, setArea] = useState<string>("100");
   const [contact, setContact] = useState({ name: "", phone: "", city: "", address: "", notes: "" });
@@ -85,16 +86,16 @@ const GardenLanding = () => {
 
   const submit = () => {
     if (!contact.name || !contact.phone) {
-      toast({ title: "Podaci nedostaju", description: "Molimo unesite ime i broj telefona.", variant: "destructive" });
+      toast({ title: t.toasts.missingTitle, description: t.toasts.missingDesc, variant: "destructive" });
       return;
     }
     if (calc.items.length === 0) {
-      toast({ title: "Izaberite uslugu", description: "Označite barem jednu uslugu za narudžbinu.", variant: "destructive" });
+      toast({ title: t.toasts.selectTitle, description: t.toasts.selectDesc, variant: "destructive" });
       return;
     }
     toast({
-      title: "Hvala! Narudžbina poslata ✓",
-      description: `Kontaktiraćemo Vas na ${contact.phone} u najkraćem roku. Narudžbina je potpuno neobavezujuća.`,
+      title: t.toasts.successTitle,
+      description: t.toasts.successDesc(contact.phone),
     });
   };
 
@@ -111,34 +112,37 @@ const GardenLanding = () => {
             <Leaf className="h-7 w-7" />
             <span className="text-xl font-bold tracking-tight">Zelena Oaza</span>
           </div>
-          <a href="#porucivanje" className="text-primary-foreground/90 hover:text-primary-foreground text-sm font-medium">
-            Poruči uslugu
-          </a>
+          <div className="flex items-center gap-3">
+            <a href="#porucivanje" className="hidden sm:inline text-primary-foreground/90 hover:text-primary-foreground text-sm font-medium">
+              {t.nav.order}
+            </a>
+            <LanguageSwitcher />
+          </div>
         </nav>
         <div className="relative z-10 container py-20 md:py-32">
           <div className="max-w-2xl">
             <span className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/15 px-4 py-1.5 text-sm font-medium text-primary-foreground backdrop-blur">
-              <Sparkles className="h-4 w-4" /> Za dijasporu i starije sugrađane
+              <Sparkles className="h-4 w-4" /> {t.hero.badge}
             </span>
             <h1 className="mt-6 text-4xl md:text-6xl font-bold leading-tight text-primary-foreground">
-              Vaša bašta u najboljim rukama — dok ste odsutni
+              {t.hero.title}
             </h1>
             <p className="mt-6 text-lg md:text-xl text-primary-foreground/90 leading-relaxed">
-              Profesionalno održavanje dvorišta i bašte u Srbiji. Zalivamo, kosimo, plevimo i čuvamo Vaš zeleni kutak — Vi se vraćate u savršeno uređen dom.
+              {t.hero.subtitle}
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-glow">
-                <a href="#porucivanje">Izračunaj cenu odmah</a>
+                <a href="#porucivanje">{t.hero.ctaPrimary}</a>
               </Button>
               <Button asChild size="lg" variant="outline" className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/20 backdrop-blur">
-                <a href="#usluge">Pogledaj usluge</a>
+                <a href="#usluge">{t.hero.ctaSecondary}</a>
               </Button>
             </div>
             <div className="mt-10 grid grid-cols-3 gap-6 max-w-lg">
               {[
-                { icon: ShieldCheck, label: "Pouzdano" },
-                { icon: Clock, label: "Tačno na vreme" },
-                { icon: MapPin, label: "Cela Srbija" },
+                { icon: ShieldCheck, label: t.hero.trust.reliable },
+                { icon: Clock, label: t.hero.trust.onTime },
+                { icon: MapPin, label: t.hero.trust.allSerbia },
               ].map(({ icon: Icon, label }) => (
                 <div key={label} className="flex flex-col items-center gap-2 text-primary-foreground/90">
                   <Icon className="h-6 w-6" />
@@ -153,9 +157,9 @@ const GardenLanding = () => {
       {/* SERVICES + CALCULATOR */}
       <section id="porucivanje" className="container py-16 md:py-24">
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">Sastavite svoj paket usluga</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground">{t.config.sectionTitle}</h2>
           <p className="mt-4 text-muted-foreground text-lg">
-            Izaberite šta Vam treba, unesite površinu i učestalost — cena se računa odmah u RSD.
+            {t.config.sectionDesc}
           </p>
         </div>
 
@@ -163,9 +167,9 @@ const GardenLanding = () => {
           {/* LEFT: services */}
           <div className="lg:col-span-2 space-y-6">
             <Card className="p-6 shadow-soft">
-              <Label htmlFor="area" className="text-base font-semibold">Ukupna površina dvorišta / bašte (m²)</Label>
+              <Label htmlFor="area" className="text-base font-semibold">{t.config.areaLabel}</Label>
               <p className="text-sm text-muted-foreground mt-1 mb-3">
-                Okvirna procena — koristi se kao podrazumevana vrednost za usluge po površini.
+                {t.config.areaHelp}
               </p>
               <Input
                 id="area"
@@ -182,6 +186,7 @@ const GardenLanding = () => {
                 const isSelected = !!selected[svc.id];
                 const Icon = svc.icon;
                 const current = selected[svc.id];
+                const item = t.services.items[svc.id];
                 return (
                   <Card
                     key={svc.id}
@@ -202,20 +207,20 @@ const GardenLanding = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-baseline justify-between gap-2 flex-wrap">
-                          <h3 className="font-semibold text-foreground">{svc.name}</h3>
+                          <h3 className="font-semibold text-foreground">{item?.name ?? svc.name}</h3>
                           <span className="text-sm text-muted-foreground">
                             {svc.perVisit
-                              ? `${formatRSD(svc.perVisit)} / kom`
-                              : `${svc.pricePerM2} RSD / m² (min ${formatRSD(svc.minPrice)})`}
+                              ? t.services.pricePerUnit(formatRSD(svc.perVisit))
+                              : t.services.pricePerM2(svc.pricePerM2 ?? 0, formatRSD(svc.minPrice))}
                           </span>
                         </div>
-                        <p className="text-sm text-muted-foreground mt-1">{svc.desc}</p>
+                        <p className="text-sm text-muted-foreground mt-1">{item?.desc ?? svc.desc}</p>
 
                         {isSelected && (
                           <div className="mt-4 grid sm:grid-cols-2 gap-3" onClick={(e) => e.stopPropagation()}>
                             <div>
                               <Label className="text-xs text-muted-foreground">
-                                {svc.unit === "m²" ? "Površina (m²)" : "Broj komada"}
+                                {svc.unit === "m²" ? t.services.quantityM2 : t.services.quantityKom}
                               </Label>
                               <Input
                                 type="number"
@@ -225,7 +230,7 @@ const GardenLanding = () => {
                               />
                             </div>
                             <div>
-                              <Label className="text-xs text-muted-foreground">Učestalost</Label>
+                              <Label className="text-xs text-muted-foreground">{t.services.frequency}</Label>
                               <Select
                                 value={current.frequency}
                                 onValueChange={(v) => updateService(svc.id, { frequency: v as Frequency })}
@@ -233,7 +238,7 @@ const GardenLanding = () => {
                                 <SelectTrigger><SelectValue /></SelectTrigger>
                                 <SelectContent>
                                   {FREQUENCIES.map((f) => (
-                                    <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>
+                                    <SelectItem key={f.value} value={f.value}>{t.freq[f.value]}</SelectItem>
                                   ))}
                                 </SelectContent>
                               </Select>
@@ -250,33 +255,33 @@ const GardenLanding = () => {
             {/* Contact */}
             <Card className="p-6 shadow-soft">
               <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                <Phone className="h-5 w-5 text-primary" /> Vaši podaci
+                <Phone className="h-5 w-5 text-primary" /> {t.contact.title}
               </h3>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="name">Ime i prezime *</Label>
+                  <Label htmlFor="name">{t.contact.name}</Label>
                   <Input id="name" value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} maxLength={100} />
                 </div>
                 <div>
-                  <Label htmlFor="phone">Telefon *</Label>
+                  <Label htmlFor="phone">{t.contact.phone}</Label>
                   <Input id="phone" value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} maxLength={30} placeholder="+381 ..." />
                 </div>
                 <div>
-                  <Label htmlFor="city">Grad / mesto</Label>
+                  <Label htmlFor="city">{t.contact.city}</Label>
                   <Input id="city" value={contact.city} onChange={(e) => setContact({ ...contact, city: e.target.value })} maxLength={80} />
                 </div>
                 <div>
-                  <Label htmlFor="address">Adresa</Label>
+                  <Label htmlFor="address">{t.contact.address}</Label>
                   <Input id="address" value={contact.address} onChange={(e) => setContact({ ...contact, address: e.target.value })} maxLength={150} />
                 </div>
                 <div className="sm:col-span-2">
-                  <Label htmlFor="notes">Dodatne napomene</Label>
+                  <Label htmlFor="notes">{t.contact.notes}</Label>
                   <Textarea
                     id="notes"
                     value={contact.notes}
                     onChange={(e) => setContact({ ...contact, notes: e.target.value })}
                     maxLength={1000}
-                    placeholder="Npr. period odsustva, posebni zahtevi, pristup dvorištu..."
+                    placeholder={t.contact.notesPlaceholder}
                     rows={4}
                   />
                 </div>
@@ -287,21 +292,21 @@ const GardenLanding = () => {
           {/* RIGHT: summary */}
           <div className="lg:col-span-1">
             <Card className="p-6 shadow-glow lg:sticky lg:top-6 bg-card">
-              <h3 className="text-xl font-bold text-foreground">Vaš paket</h3>
-              <p className="text-sm text-muted-foreground mt-1">Mesečna procena</p>
+              <h3 className="text-xl font-bold text-foreground">{t.summary.title}</h3>
+              <p className="text-sm text-muted-foreground mt-1">{t.summary.monthlyEstimate}</p>
 
               <div className="mt-6 space-y-3 max-h-80 overflow-y-auto pr-1">
                 {calc.items.length === 0 && (
-                  <p className="text-sm text-muted-foreground italic">Još niste izabrali nijednu uslugu.</p>
+                  <p className="text-sm text-muted-foreground italic">{t.summary.empty}</p>
                 )}
                 {calc.items.map(({ def, s, freq, monthly, perVisit }) => (
                   <div key={def.id} className="border-b border-border pb-3 last:border-0">
                     <div className="flex justify-between gap-2">
-                      <span className="font-medium text-sm text-foreground">{def.name}</span>
+                      <span className="font-medium text-sm text-foreground">{t.services.items[def.id]?.name ?? def.name}</span>
                       <span className="font-semibold text-sm text-primary">{formatRSD(monthly)}</span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      {s.quantity} {def.unit} · {freq.label} · {formatRSD(perVisit)} po dolasku
+                      {s.quantity} {def.unit === "m²" ? t.services.units.m2 : t.services.units.kom} · {t.freq[freq.value]} · {formatRSD(perVisit)} {t.summary.perVisitSuffix}
                     </p>
                   </div>
                 ))}
@@ -309,11 +314,11 @@ const GardenLanding = () => {
 
               <div className="mt-6 pt-6 border-t border-border">
                 <div className="flex items-baseline justify-between">
-                  <span className="font-semibold text-foreground">Ukupno mesečno</span>
+                  <span className="font-semibold text-foreground">{t.summary.totalMonthly}</span>
                   <span className="text-3xl font-bold text-primary">{formatRSD(calc.total)}</span>
                 </div>
                 <p className="text-xs text-muted-foreground mt-2">
-                  Procena na osnovu unetih podataka. Konačna cena se potvrđuje nakon dogovora.
+                  {t.summary.estimateNote}
                 </p>
               </div>
 
@@ -322,11 +327,11 @@ const GardenLanding = () => {
                 onClick={submit}
                 className="w-full mt-6 bg-gradient-primary text-primary-foreground hover:opacity-90 shadow-glow text-base font-semibold"
               >
-                Poruči — neobavezujuće
+                {t.summary.orderBtn}
               </Button>
               <p className="text-center text-xs text-muted-foreground mt-3 flex items-center justify-center gap-1">
                 <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
-                Bez obaveze · Kontakt u roku od 24h
+                {t.summary.noObligation}
               </p>
             </Card>
           </div>
@@ -339,7 +344,7 @@ const GardenLanding = () => {
             <Leaf className="h-5 w-5 text-primary" />
             Zelena Oaza
           </div>
-          <p>© {new Date().getFullYear()} Zelena Oaza · Održavanje bašte i dvorišta širom Srbije</p>
+          <p>© {new Date().getFullYear()} Zelena Oaza · {t.footer.tagline}</p>
         </div>
       </footer>
     </div>
