@@ -197,7 +197,7 @@ export const translations: Record<Locale, Dict> = {
       title: "Zelena Oaza — Održavanje bašte za dijasporu i starije",
       description:
         "Profesionalno održavanje bašte i dvorišta u Srbiji: zalivanje, košenje, plevljenje. Izračunajte cenu u RSD i poručite neobavezujuće.",
-    },,
+    },
     steps: {
       title: "Kako funkcioniše",
       subtitle: "Tri jednostavna koraka do uređene bašte",
@@ -314,7 +314,7 @@ export const translations: Record<Locale, Dict> = {
       title: "Зелена Оаза — Одржавање баште за дијаспору и старије",
       description:
         "Професионално одржавање баште и дворишта у Србији: заливање, кошење, плевљење. Израчунајте цену у РСД и поручите необавезујуће.",
-    },,
+    },
     steps: {
       title: "Како функционише",
       subtitle: "Три једноставна корака до уређене баште",
@@ -432,7 +432,7 @@ export const translations: Record<Locale, Dict> = {
       title: "Zelena Oaza — Gartenpflege für die Diaspora und Senioren",
       description:
         "Professionelle Garten- und Hofpflege in Serbien: Gießen, Mähen, Jäten. Preis in RSD berechnen und unverbindlich bestellen.",
-    },,
+    },
     steps: {
       title: "So funktioniert's",
       subtitle: "In drei einfachen Schritten zum gepflegten Garten",
@@ -550,7 +550,7 @@ export const translations: Record<Locale, Dict> = {
       title: "Zelena Oaza — Garden care for the diaspora and seniors",
       description:
         "Professional garden and yard care in Serbia: watering, mowing, weeding. Calculate price in RSD and order with no obligation.",
-    },,
+    },
     steps: {
       title: "How it works",
       subtitle: "Three simple steps to a perfectly tended garden",
