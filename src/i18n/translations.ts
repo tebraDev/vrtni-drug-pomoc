@@ -118,6 +118,9 @@ export const translations: Record<Locale, Dict> = {
       ctaPrimary: "Izračunaj cenu odmah",
       ctaSecondary: "Pogledaj usluge",
       trust: { reliable: "Pouzdano", onTime: "Tačno na vreme", allSerbia: "Cela Srbija" },
+      rating: "4.9 / 5 (120+ ocena)",
+      happyClients: "300+ zadovoljnih klijenata",
+      sinceYear: "Od 2019.",
     },
     config: {
       sectionTitle: "Sastavite svoj paket usluga",
@@ -144,6 +147,10 @@ export const translations: Record<Locale, Dict> = {
         cvece: { name: "Sadnja cveća i sezonsko uređenje", desc: "Sadnja, prihrana i nega cveća" },
         djubrenje: { name: "Đubrenje i prihrana", desc: "Prihrana travnjaka i biljaka" },
       },
+      selected: "Izabrano",
+      add: "Dodaj",
+      remove: "Ukloni",
+      monthlyMini: "/ mesec",
     },
     freq: {
       "2x_nedeljno": "2x nedeljno",
@@ -160,6 +167,7 @@ export const translations: Record<Locale, Dict> = {
       address: "Adresa",
       notes: "Dodatne napomene",
       notesPlaceholder: "Npr. period odsustva, posebni zahtevi, pristup dvorištu...",
+      submitting: "Šalje se...",
     },
     summary: {
       title: "Vaš paket",
@@ -170,6 +178,9 @@ export const translations: Record<Locale, Dict> = {
       estimateNote: "Procena na osnovu unetih podataka. Konačna cena se potvrđuje nakon dogovora.",
       orderBtn: "Poruči — neobavezujuće",
       noObligation: "Bez obaveze · Kontakt u roku od 24h",
+      itemsCount: (n) => n === 1 ? "1 usluga" : (n >= 2 && n <= 4) ? n + " usluge" : n + " usluga",
+      continueToContact: "Nastavi na kontakt",
+      backToServices: "Nazad na usluge",
     },
     toasts: {
       missingTitle: "Podaci nedostaju",
@@ -180,13 +191,38 @@ export const translations: Record<Locale, Dict> = {
       successDesc: (phone) =>
         `Kontaktiraćemo Vas na ${phone} u najkraćem roku. Narudžbina je potpuno neobavezujuća.`,
     },
-    footer: { tagline: "Održavanje bašte i dvorišta širom Srbije" },
+    footer: { tagline: "Održavanje bašte i dvorišta širom Srbije", contact: "Kontakt", whatsapp: "WhatsApp", call: "Pozovi" },
     langSwitcher: { language: "Jezik", script: "Pismo", latin: "Latinica", cyrillic: "Ćirilica" },
     meta: {
       title: "Zelena Oaza — Održavanje bašte za dijasporu i starije",
       description:
         "Profesionalno održavanje bašte i dvorišta u Srbiji: zalivanje, košenje, plevljenje. Izračunajte cenu u RSD i poručite neobavezujuće.",
+    },,
+    steps: {
+      title: "Kako funkcioniše",
+      subtitle: "Tri jednostavna koraka do uređene bašte",
+      s1: { title: "1. Sastavite paket", desc: "Označite usluge i unesite površinu — cena se računa odmah." },
+      s2: { title: "2. Pošaljite neobavezujuću narudžbinu", desc: "Javljamo Vam se u roku od 24h radi potvrde termina." },
+      s3: { title: "3. Mi se brinemo o svemu", desc: "Šaljemo Vam slike pre i posle svake posete." },
     },
+    testimonials: {
+      title: "Šta kažu naši klijenti",
+      subtitle: "Porodice iz dijaspore i stariji sugrađani veruju nam svoje bašte",
+      items: [
+        { quote: "Vraćamo se iz Beča svako leto u savršeno uređenu baštu. Vredi svake pare!", author: "Marija J.", location: "Beč → Novi Sad" },
+        { quote: "Otkad mi pomažu, dvorište mojih roditelja izgleda kao nikad ranije.", author: "Stefan M.", location: "Frankfurt → Kragujevac" },
+        { quote: "Profesionalno, tačno i pristupačno. Najtoplije preporuke.", author: "Ana P.", location: "Cirih → Niš" },
+      ],
+    },
+    faq: {
+      title: "Često postavljana pitanja",
+      items: [
+        { q: "Da li je narudžbina obavezujuća?", a: "Ne. Vaša narudžbina je potpuno neobavezujuća — kontaktiramo Vas radi potvrde i konačnog dogovora." },
+        { q: "Kako plaćam ako sam u inostranstvu?", a: "Plaćanje je moguće preko bankarskog transfera, IPS-a ili gotovinom prilikom Vaše posete Srbiji." },
+        { q: "Šaljete li izveštaje i slike?", a: "Da, posle svake posete dobijate fotografije i kratak izveštaj putem Vibera, WhatsAppa ili e-maila." },
+        { q: "Koje gradove pokrivate?", a: "Pokrivamo veliki deo Srbije. Kontaktirajte nas za potvrdu Vašeg mesta." },
+      ],
+    }
   },
   "sr-Cyrl": {
     localeName: "Српски (ћирилица)",
@@ -199,6 +235,9 @@ export const translations: Record<Locale, Dict> = {
       ctaPrimary: "Израчунај цену одмах",
       ctaSecondary: "Погледај услуге",
       trust: { reliable: "Поуздано", onTime: "Тачно на време", allSerbia: "Цела Србија" },
+      rating: "4.9 / 5 (120+ оцена)",
+      happyClients: "300+ задовољних клијената",
+      sinceYear: "Од 2019.",
     },
     config: {
       sectionTitle: "Саставите свој пакет услуга",
@@ -225,6 +264,10 @@ export const translations: Record<Locale, Dict> = {
         cvece: { name: "Садња цвећа и сезонско уређење", desc: "Садња, прихрана и нега цвећа" },
         djubrenje: { name: "Ђубрење и прихрана", desc: "Прихрана травњака и биљака" },
       },
+      selected: "Изабрано",
+      add: "Додај",
+      remove: "Уклони",
+      monthlyMini: "/ месец",
     },
     freq: {
       "2x_nedeljno": "2x недељно",
@@ -241,6 +284,7 @@ export const translations: Record<Locale, Dict> = {
       address: "Адреса",
       notes: "Додатне напомене",
       notesPlaceholder: "Нпр. период одсуства, посебни захтеви, приступ дворишту...",
+      submitting: "Шаље се...",
     },
     summary: {
       title: "Ваш пакет",
@@ -251,6 +295,9 @@ export const translations: Record<Locale, Dict> = {
       estimateNote: "Процена на основу унетих података. Коначна цена се потврђује након договора.",
       orderBtn: "Поручи — необавезујуће",
       noObligation: "Без обавезе · Контакт у року од 24ч",
+      itemsCount: (n) => n === 1 ? "1 услуга" : (n >= 2 && n <= 4) ? n + " услуге" : n + " услуга",
+      continueToContact: "Настави на контакт",
+      backToServices: "Назад на услуге",
     },
     toasts: {
       missingTitle: "Подаци недостају",
@@ -261,13 +308,38 @@ export const translations: Record<Locale, Dict> = {
       successDesc: (phone) =>
         `Контактираћемо Вас на ${phone} у најкраћем року. Наруџбина је потпуно необавезујућа.`,
     },
-    footer: { tagline: "Одржавање баште и дворишта широм Србије" },
+    footer: { tagline: "Одржавање баште и дворишта широм Србије", contact: "Контакт", whatsapp: "WhatsApp", call: "Позови" },
     langSwitcher: { language: "Језик", script: "Писмо", latin: "Латиница", cyrillic: "Ћирилица" },
     meta: {
       title: "Зелена Оаза — Одржавање баште за дијаспору и старије",
       description:
         "Професионално одржавање баште и дворишта у Србији: заливање, кошење, плевљење. Израчунајте цену у РСД и поручите необавезујуће.",
+    },,
+    steps: {
+      title: "Како функционише",
+      subtitle: "Три једноставна корака до уређене баште",
+      s1: { title: "1. Саставите пакет", desc: "Означите услуге и унесите површину — цена се рачуна одмах." },
+      s2: { title: "2. Пошаљите необавезујућу наруџбину", desc: "Јављамо Вам се у року од 24ч ради потврде термина." },
+      s3: { title: "3. Ми се бринемо о свему", desc: "Шаљемо Вам слике пре и после сваке посете." },
     },
+    testimonials: {
+      title: "Шта кажу наши клијенти",
+      subtitle: "Породице из дијаспоре и старији суграђани верују нам своје баште",
+      items: [
+        { quote: "Враћамо се из Беча свако лето у савршено уређену башту. Вреди сваке паре!", author: "Марија Ј.", location: "Беч → Нови Сад" },
+        { quote: "Откад ми помажу, двориште мојих родитеља изгледа као никад раније.", author: "Стефан М.", location: "Франкфурт → Крагујевац" },
+        { quote: "Професионално, тачно и приступачно. Најтоплије препоруке.", author: "Ана П.", location: "Цирих → Ниш" },
+      ],
+    },
+    faq: {
+      title: "Често постављана питања",
+      items: [
+        { q: "Да ли је наруџбина обавезујућа?", a: "Не. Ваша наруџбина је потпуно необавезујућа — контактирамо Вас ради потврде и коначног договора." },
+        { q: "Како плаћам ако сам у иностранству?", a: "Плаћање је могуће преко банкарског трансфера, ИПС-а или готовином приликом Ваше посете Србији." },
+        { q: "Шаљете ли извештаје и слике?", a: "Да, после сваке посете добијате фотографије и кратак извештај путем Вибера, WhatsAppa или е-маила." },
+        { q: "Које градове покривате?", a: "Покривамо велики део Србије. Контактирајте нас за потврду Вашег места." },
+      ],
+    }
   },
   de: {
     localeName: "Deutsch",
@@ -280,6 +352,9 @@ export const translations: Record<Locale, Dict> = {
       ctaPrimary: "Preis sofort berechnen",
       ctaSecondary: "Leistungen ansehen",
       trust: { reliable: "Zuverlässig", onTime: "Pünktlich", allSerbia: "Ganz Serbien" },
+      rating: "4,9 / 5 (120+ Bewertungen)",
+      happyClients: "300+ zufriedene Kunden",
+      sinceYear: "Seit 2019",
     },
     config: {
       sectionTitle: "Stellen Sie Ihr Servicepaket zusammen",
@@ -306,6 +381,10 @@ export const translations: Record<Locale, Dict> = {
         cvece: { name: "Blumen pflanzen & saisonale Gestaltung", desc: "Pflanzen, Düngen und Pflege von Blumen" },
         djubrenje: { name: "Düngung", desc: "Düngung von Rasen und Pflanzen" },
       },
+      selected: "Ausgewählt",
+      add: "Hinzufügen",
+      remove: "Entfernen",
+      monthlyMini: "/ Monat",
     },
     freq: {
       "2x_nedeljno": "2x pro Woche",
@@ -322,6 +401,7 @@ export const translations: Record<Locale, Dict> = {
       address: "Adresse",
       notes: "Zusätzliche Hinweise",
       notesPlaceholder: "Z. B. Abwesenheitszeitraum, besondere Wünsche, Zugang zum Hof...",
+      submitting: "Wird gesendet...",
     },
     summary: {
       title: "Ihr Paket",
@@ -333,6 +413,9 @@ export const translations: Record<Locale, Dict> = {
         "Schätzung anhand Ihrer Angaben. Der Endpreis wird nach Absprache bestätigt.",
       orderBtn: "Bestellen — unverbindlich",
       noObligation: "Unverbindlich · Kontakt innerhalb von 24h",
+      itemsCount: (n) => n === 1 ? "1 Leistung" : n + " Leistungen",
+      continueToContact: "Weiter zum Kontakt",
+      backToServices: "Zurück zu den Leistungen",
     },
     toasts: {
       missingTitle: "Angaben fehlen",
@@ -343,13 +426,38 @@ export const translations: Record<Locale, Dict> = {
       successDesc: (phone) =>
         `Wir melden uns schnellstmöglich unter ${phone}. Die Bestellung ist völlig unverbindlich.`,
     },
-    footer: { tagline: "Garten- und Hofpflege in ganz Serbien" },
+    footer: { tagline: "Garten- und Hofpflege in ganz Serbien", contact: "Kontakt", whatsapp: "WhatsApp", call: "Anrufen" },
     langSwitcher: { language: "Sprache", script: "Schrift", latin: "Lateinisch", cyrillic: "Kyrillisch" },
     meta: {
       title: "Zelena Oaza — Gartenpflege für die Diaspora und Senioren",
       description:
         "Professionelle Garten- und Hofpflege in Serbien: Gießen, Mähen, Jäten. Preis in RSD berechnen und unverbindlich bestellen.",
+    },,
+    steps: {
+      title: "So funktioniert's",
+      subtitle: "In drei einfachen Schritten zum gepflegten Garten",
+      s1: { title: "1. Paket zusammenstellen", desc: "Leistungen wählen und Fläche angeben — der Preis wird sofort berechnet." },
+      s2: { title: "2. Unverbindliche Bestellung absenden", desc: "Wir melden uns innerhalb von 24h zur Terminbestätigung." },
+      s3: { title: "3. Wir kümmern uns um alles", desc: "Sie erhalten Vorher-/Nachher-Fotos nach jedem Einsatz." },
     },
+    testimonials: {
+      title: "Was unsere Kunden sagen",
+      subtitle: "Familien aus der Diaspora und Senioren vertrauen uns ihren Garten an",
+      items: [
+        { quote: "Wir kommen jeden Sommer aus Wien zurück in einen perfekt gepflegten Garten. Jeden Cent wert!", author: "Marija J.", location: "Wien → Novi Sad" },
+        { quote: "Seit sie mir helfen, sieht der Garten meiner Eltern besser aus als je zuvor.", author: "Stefan M.", location: "Frankfurt → Kragujevac" },
+        { quote: "Professionell, pünktlich und bezahlbar. Wärmste Empfehlung!", author: "Ana P.", location: "Zürich → Niš" },
+      ],
+    },
+    faq: {
+      title: "Häufige Fragen",
+      items: [
+        { q: "Ist die Bestellung verbindlich?", a: "Nein. Ihre Bestellung ist völlig unverbindlich — wir melden uns zur Bestätigung und endgültigen Absprache." },
+        { q: "Wie zahle ich aus dem Ausland?", a: "Zahlung ist per Banküberweisung, IPS oder bar bei Ihrem nächsten Aufenthalt in Serbien möglich." },
+        { q: "Bekomme ich Berichte und Fotos?", a: "Ja, nach jedem Einsatz erhalten Sie Fotos und einen kurzen Bericht via Viber, WhatsApp oder E-Mail." },
+        { q: "Welche Städte deckt ihr ab?", a: "Wir decken große Teile Serbiens ab. Kontaktieren Sie uns zur Bestätigung Ihres Orts." },
+      ],
+    }
   },
   en: {
     localeName: "English",
@@ -362,6 +470,9 @@ export const translations: Record<Locale, Dict> = {
       ctaPrimary: "Calculate price now",
       ctaSecondary: "See services",
       trust: { reliable: "Reliable", onTime: "On time", allSerbia: "All of Serbia" },
+      rating: "4.9 / 5 (120+ reviews)",
+      happyClients: "300+ happy clients",
+      sinceYear: "Since 2019",
     },
     config: {
       sectionTitle: "Build your service package",
@@ -369,6 +480,8 @@ export const translations: Record<Locale, Dict> = {
         "Pick what you need, enter the area and frequency — the price is calculated instantly in RSD.",
       areaLabel: "Total yard / garden area (m²)",
       areaHelp: "Rough estimate — used as the default for area-based services.",
+      presetsTitle: "Quick-pick size:",
+      presets: { small: "Small (50 m²)", medium: "Medium (150 m²)", large: "Large (400 m²)", estate: "Estate (800 m²)" },
     },
     services: {
       pricePerM2: (price, min) => `${price} RSD / m² (min ${min})`,
@@ -387,6 +500,10 @@ export const translations: Record<Locale, Dict> = {
         cvece: { name: "Flower planting & seasonal design", desc: "Planting, feeding and care of flowers" },
         djubrenje: { name: "Fertilising", desc: "Feeding lawn and plants" },
       },
+      selected: "Selected",
+      add: "Add",
+      remove: "Remove",
+      monthlyMini: "/ month",
     },
     freq: {
       "2x_nedeljno": "2x per week",
@@ -403,6 +520,7 @@ export const translations: Record<Locale, Dict> = {
       address: "Address",
       notes: "Additional notes",
       notesPlaceholder: "E.g. period away, special requests, yard access...",
+      submitting: "Sending...",
     },
     summary: {
       title: "Your package",
@@ -413,6 +531,9 @@ export const translations: Record<Locale, Dict> = {
       estimateNote: "Estimate based on your input. Final price confirmed after agreement.",
       orderBtn: "Order — no obligation",
       noObligation: "No obligation · Contact within 24h",
+      itemsCount: (n) => n === 1 ? "1 service" : n + " services",
+      continueToContact: "Continue to contact",
+      backToServices: "Back to services",
     },
     toasts: {
       missingTitle: "Details missing",
@@ -423,12 +544,37 @@ export const translations: Record<Locale, Dict> = {
       successDesc: (phone) =>
         `We'll contact you at ${phone} as soon as possible. The order is completely non-binding.`,
     },
-    footer: { tagline: "Garden and yard care across Serbia" },
+    footer: { tagline: "Garden and yard care across Serbia", contact: "Contact", whatsapp: "WhatsApp", call: "Call" },
     langSwitcher: { language: "Language", script: "Script", latin: "Latin", cyrillic: "Cyrillic" },
     meta: {
       title: "Zelena Oaza — Garden care for the diaspora and seniors",
       description:
         "Professional garden and yard care in Serbia: watering, mowing, weeding. Calculate price in RSD and order with no obligation.",
+    },,
+    steps: {
+      title: "How it works",
+      subtitle: "Three simple steps to a perfectly tended garden",
+      s1: { title: "1. Build your package", desc: "Pick services and enter the area — the price is calculated instantly." },
+      s2: { title: "2. Send a no-obligation order", desc: "We get back to you within 24h to confirm the schedule." },
+      s3: { title: "3. We take care of everything", desc: "You receive before/after photos after every visit." },
     },
+    testimonials: {
+      title: "What our clients say",
+      subtitle: "Diaspora families and senior residents trust us with their gardens",
+      items: [
+        { quote: "We return from Vienna every summer to a perfectly tended garden. Worth every penny!", author: "Marija J.", location: "Vienna → Novi Sad" },
+        { quote: "Since they've been helping, my parents' yard looks better than ever.", author: "Stefan M.", location: "Frankfurt → Kragujevac" },
+        { quote: "Professional, on time and affordable. Warmest recommendation!", author: "Ana P.", location: "Zurich → Niš" },
+      ],
+    },
+    faq: {
+      title: "Frequently asked questions",
+      items: [
+        { q: "Is the order binding?", a: "No. Your order is completely non-binding — we contact you for confirmation and final agreement." },
+        { q: "How do I pay from abroad?", a: "Payment is possible via bank transfer, IPS, or cash on your next visit to Serbia." },
+        { q: "Do I get reports and photos?", a: "Yes, after every visit you receive photos and a short report via Viber, WhatsApp or email." },
+        { q: "Which cities do you cover?", a: "We cover most of Serbia. Contact us to confirm your location." },
+      ],
+    }
   },
 };
