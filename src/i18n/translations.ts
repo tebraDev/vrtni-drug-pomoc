@@ -129,6 +129,8 @@ export const translations: Record<Locale, Dict> = {
       areaLabel: "Ukupna površina dvorišta / bašte (m²)",
       areaHelp:
         "Okvirna procena — koristi se kao podrazumevana vrednost za usluge po površini.",
+      presetsTitle: "Brzo izaberite veličinu:",
+      presets: { small: "Mala (50 m²)", medium: "Srednja (150 m²)", large: "Velika (400 m²)", estate: "Imanje (800 m²)" },
     },
     services: {
       pricePerM2: (price, min) => `${price} RSD / m² (min ${min})`,
@@ -246,6 +248,8 @@ export const translations: Record<Locale, Dict> = {
       areaLabel: "Укупна површина дворишта / баште (m²)",
       areaHelp:
         "Оквирна процена — користи се као подразумевана вредност за услуге по површини.",
+      presetsTitle: "Брзо изаберите величину:",
+      presets: { small: "Мала (50 m²)", medium: "Средња (150 m²)", large: "Велика (400 m²)", estate: "Имање (800 m²)" },
     },
     services: {
       pricePerM2: (price, min) => `${price} РСД / m² (мин ${min})`,
@@ -363,6 +367,8 @@ export const translations: Record<Locale, Dict> = {
       areaLabel: "Gesamtfläche von Hof / Garten (m²)",
       areaHelp:
         "Grobe Schätzung — wird als Standardwert für flächenbasierte Leistungen verwendet.",
+      presetsTitle: "Größe schnell auswählen:",
+      presets: { small: "Klein (50 m²)", medium: "Mittel (150 m²)", large: "Groß (400 m²)", estate: "Anwesen (800 m²)" },
     },
     services: {
       pricePerM2: (price, min) => `${price} RSD / m² (min. ${min})`,
