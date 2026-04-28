@@ -276,6 +276,38 @@ const GardenLanding = () => {
         </div>
       </section>
 
+      {/* BEFORE/AFTER GALLERY */}
+      <section className="bg-secondary/30 border-y border-border">
+        <div className="container py-14">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">{t.gallery.title}</h2>
+            <p className="mt-3 text-muted-foreground">{t.gallery.subtitle}</p>
+            <p className="mt-2 text-xs text-muted-foreground/80">{t.gallery.dragHint}</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {t.gallery.items.map((it, i) => {
+              const pair = GALLERY_PAIRS[i];
+              if (!pair) return null;
+              return (
+                <div key={i} className="space-y-3">
+                  <BeforeAfterSlider
+                    beforeSrc={pair.before}
+                    afterSrc={pair.after}
+                    beforeLabel={t.gallery.before}
+                    afterLabel={t.gallery.after}
+                    alt={it.title}
+                  />
+                  <div className="px-1">
+                    <h3 className="font-semibold text-foreground text-sm">{it.title}</h3>
+                    <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{it.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* SERVICES + CALCULATOR */}
       <section id="porucivanje" className="container py-12 md:py-16 scroll-mt-4">
         <div className="text-center max-w-2xl mx-auto mb-10">
