@@ -549,34 +549,6 @@ const GardenLanding = () => {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="bg-secondary/30 border-y border-border">
-        <div className="container py-14">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground">{t.testimonials.title}</h2>
-            <p className="mt-3 text-muted-foreground">{t.testimonials.subtitle}</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-5">
-            {t.testimonials.items.map((it, i) => (
-              <Card key={i} className="p-6 shadow-soft bg-card">
-                <div className="flex gap-0.5 mb-3">
-                  {[0, 1, 2, 3, 4].map((s) => (
-                    <Star key={s} className="h-4 w-4 fill-accent text-accent" />
-                  ))}
-                </div>
-                <p className="text-foreground/90 text-sm leading-relaxed">"{it.quote}"</p>
-                <div className="mt-4 pt-4 border-t border-border">
-                  <p className="text-sm font-semibold text-foreground">{it.author}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1">
-                    <MapPin className="h-3 w-3" /> {it.location}
-                  </p>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* FAQ */}
       <section className="container py-14">
         <div className="max-w-2xl mx-auto">
