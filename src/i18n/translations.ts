@@ -10,6 +10,7 @@ export interface Dict {
     ctaPrimary: string;
     ctaSecondary: string;
     trust: { reliable: string; onTime: string; allSerbia: string };
+    serviceArea: string;
     rating: string;
     happyClients: string;
     sinceYear: string;
@@ -44,6 +45,7 @@ export interface Dict {
     name: string;
     phone: string;
     city: string;
+    cityPlaceholder: string;
     address: string;
     notes: string;
     notesPlaceholder: string;
