@@ -625,6 +625,18 @@ export const translations: Record<Locale, Dict> = {
         { q: "Do I get reports and photos?", a: "Yes, after every visit you receive photos and a short report via Viber, WhatsApp or email." },
         { q: "Which cities do you cover?", a: "We cover most of Serbia. Contact us to confirm your location." },
       ],
+    },
+    gallery: {
+      title: "Before & after — our work speaks for itself",
+      subtitle: "Drag the slider and see the transformation first-hand",
+      dragHint: "← drag to compare →",
+      before: "Before",
+      after: "After",
+      items: [
+        { title: "Mowing an overgrown lawn", desc: "Tall grass and weeds turned into a well-kept lawn" },
+        { title: "Trimming a wild hedge", desc: "Wild hedge shaped into a clean, defined form" },
+        { title: "Weeding & prepping beds", desc: "Weeds removed, soil loosened and ready to plant" },
+      ],
     }
   },
 };
