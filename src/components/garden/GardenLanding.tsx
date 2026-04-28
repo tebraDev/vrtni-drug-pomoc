@@ -21,6 +21,19 @@ import { toast } from "@/hooks/use-toast";
 import heroImg from "@/assets/garden-hero.jpg";
 import { useI18n } from "@/i18n/I18nContext";
 import LanguageSwitcher from "./LanguageSwitcher";
+import BeforeAfterSlider from "./BeforeAfterSlider";
+import lawnBefore from "@/assets/gallery/lawn-before.jpg";
+import lawnAfter from "@/assets/gallery/lawn-after.jpg";
+import hedgeBefore from "@/assets/gallery/hedge-before.jpg";
+import hedgeAfter from "@/assets/gallery/hedge-after.jpg";
+import bedsBefore from "@/assets/gallery/beds-before.jpg";
+import bedsAfter from "@/assets/gallery/beds-after.jpg";
+
+const GALLERY_PAIRS = [
+  { before: lawnBefore, after: lawnAfter },
+  { before: hedgeBefore, after: hedgeAfter },
+  { before: bedsBefore, after: bedsAfter },
+];
 
 type Frequency = "1x_nedeljno" | "2x_nedeljno" | "1x_mesecno" | "2x_mesecno" | "po_potrebi";
 
@@ -260,6 +273,38 @@ const GardenLanding = () => {
               <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{step.desc}</p>
             </Card>
           ))}
+        </div>
+      </section>
+
+      {/* BEFORE/AFTER GALLERY */}
+      <section className="bg-secondary/30 border-y border-border">
+        <div className="container py-14">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">{t.gallery.title}</h2>
+            <p className="mt-3 text-muted-foreground">{t.gallery.subtitle}</p>
+            <p className="mt-2 text-xs text-muted-foreground/80">{t.gallery.dragHint}</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {t.gallery.items.map((it, i) => {
+              const pair = GALLERY_PAIRS[i];
+              if (!pair) return null;
+              return (
+                <div key={i} className="space-y-3">
+                  <BeforeAfterSlider
+                    beforeSrc={pair.before}
+                    afterSrc={pair.after}
+                    beforeLabel={t.gallery.before}
+                    afterLabel={t.gallery.after}
+                    alt={it.title}
+                  />
+                  <div className="px-1">
+                    <h3 className="font-semibold text-foreground text-sm">{it.title}</h3>
+                    <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{it.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 

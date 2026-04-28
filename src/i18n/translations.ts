@@ -89,6 +89,14 @@ export interface Dict {
     title: string;
     items: { q: string; a: string }[];
   };
+  gallery: {
+    title: string;
+    subtitle: string;
+    dragHint: string;
+    before: string;
+    after: string;
+    items: { title: string; desc: string }[];
+  };
 }
 
 const fmtRSD = (n: number, locale: string) =>
@@ -224,6 +232,18 @@ export const translations: Record<Locale, Dict> = {
         { q: "Šaljete li izveštaje i slike?", a: "Da, posle svake posete dobijate fotografije i kratak izveštaj putem Vibera, WhatsAppa ili e-maila." },
         { q: "Koje gradove pokrivate?", a: "Pokrivamo veliki deo Srbije. Kontaktirajte nas za potvrdu Vašeg mesta." },
       ],
+    },
+    gallery: {
+      title: "Pre i posle — naš rad govori umesto nas",
+      subtitle: "Povucite slajder i vidite transformaciju iz prve ruke",
+      dragHint: "← povucite za poređenje →",
+      before: "Pre",
+      after: "Posle",
+      items: [
+        { title: "Košenje zapuštenog travnjaka", desc: "Visoka trava i korov pretvoreni u negovani travnjak" },
+        { title: "Orezivanje žive ograde", desc: "Divlja živica oblikovana u čistu, pravilnu formu" },
+        { title: "Plevljenje i uređenje leja", desc: "Korov uklonjen, zemlja okopana i spremna za biljke" },
+      ],
     }
   },
   "sr-Cyrl": {
@@ -342,6 +362,18 @@ export const translations: Record<Locale, Dict> = {
         { q: "Како плаћам ако сам у иностранству?", a: "Плаћање је могуће преко банкарског трансфера, ИПС-а или готовином приликом Ваше посете Србији." },
         { q: "Шаљете ли извештаје и слике?", a: "Да, после сваке посете добијате фотографије и кратак извештај путем Вибера, WhatsAppa или е-маила." },
         { q: "Које градове покривате?", a: "Покривамо велики део Србије. Контактирајте нас за потврду Вашег места." },
+      ],
+    },
+    gallery: {
+      title: "Пре и после — наш рад говори уместо нас",
+      subtitle: "Повуците слајдер и видите трансформацију из прве руке",
+      dragHint: "← повуците за поређење →",
+      before: "Пре",
+      after: "После",
+      items: [
+        { title: "Кошење запуштеног травњака", desc: "Висока трава и коров претворени у негован травњак" },
+        { title: "Орезивање живе ограде", desc: "Дивља живица обликована у чисту, правилну форму" },
+        { title: "Плевљење и уређење леја", desc: "Коров уклоњен, земља окопана и спремна за биљке" },
       ],
     }
   },
@@ -463,6 +495,18 @@ export const translations: Record<Locale, Dict> = {
         { q: "Bekomme ich Berichte und Fotos?", a: "Ja, nach jedem Einsatz erhalten Sie Fotos und einen kurzen Bericht via Viber, WhatsApp oder E-Mail." },
         { q: "Welche Städte deckt ihr ab?", a: "Wir decken große Teile Serbiens ab. Kontaktieren Sie uns zur Bestätigung Ihres Orts." },
       ],
+    },
+    gallery: {
+      title: "Vorher & Nachher — unsere Arbeit spricht für sich",
+      subtitle: "Ziehen Sie den Regler und sehen Sie die Verwandlung direkt",
+      dragHint: "← ziehen zum Vergleichen →",
+      before: "Vorher",
+      after: "Nachher",
+      items: [
+        { title: "Verwilderten Rasen mähen", desc: "Hohes Gras und Unkraut in einen gepflegten Rasen verwandelt" },
+        { title: "Hecke in Form schneiden", desc: "Wilde Hecke zu einer sauberen, klaren Form geschnitten" },
+        { title: "Beete jäten & aufbereiten", desc: "Unkraut entfernt, Boden gelockert und pflanzbereit" },
+      ],
     }
   },
   en: {
@@ -580,6 +624,18 @@ export const translations: Record<Locale, Dict> = {
         { q: "How do I pay from abroad?", a: "Payment is possible via bank transfer, IPS, or cash on your next visit to Serbia." },
         { q: "Do I get reports and photos?", a: "Yes, after every visit you receive photos and a short report via Viber, WhatsApp or email." },
         { q: "Which cities do you cover?", a: "We cover most of Serbia. Contact us to confirm your location." },
+      ],
+    },
+    gallery: {
+      title: "Before & after — our work speaks for itself",
+      subtitle: "Drag the slider and see the transformation first-hand",
+      dragHint: "← drag to compare →",
+      before: "Before",
+      after: "After",
+      items: [
+        { title: "Mowing an overgrown lawn", desc: "Tall grass and weeds turned into a well-kept lawn" },
+        { title: "Trimming a wild hedge", desc: "Wild hedge shaped into a clean, defined form" },
+        { title: "Weeding & prepping beds", desc: "Weeds removed, soil loosened and ready to plant" },
       ],
     }
   },
