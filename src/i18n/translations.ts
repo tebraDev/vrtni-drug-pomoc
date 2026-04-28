@@ -232,6 +232,18 @@ export const translations: Record<Locale, Dict> = {
         { q: "Šaljete li izveštaje i slike?", a: "Da, posle svake posete dobijate fotografije i kratak izveštaj putem Vibera, WhatsAppa ili e-maila." },
         { q: "Koje gradove pokrivate?", a: "Pokrivamo veliki deo Srbije. Kontaktirajte nas za potvrdu Vašeg mesta." },
       ],
+    },
+    gallery: {
+      title: "Pre i posle — naš rad govori umesto nas",
+      subtitle: "Povucite slajder i vidite transformaciju iz prve ruke",
+      dragHint: "← povucite za poređenje →",
+      before: "Pre",
+      after: "Posle",
+      items: [
+        { title: "Košenje zapuštenog travnjaka", desc: "Visoka trava i korov pretvoreni u negovani travnjak" },
+        { title: "Orezivanje žive ograde", desc: "Divlja živica oblikovana u čistu, pravilnu formu" },
+        { title: "Plevljenje i uređenje leja", desc: "Korov uklonjen, zemlja okopana i spremna za biljke" },
+      ],
     }
   },
   "sr-Cyrl": {
