@@ -10,6 +10,7 @@ export interface Dict {
     ctaPrimary: string;
     ctaSecondary: string;
     trust: { reliable: string; onTime: string; allSerbia: string };
+    serviceArea: string;
     rating: string;
     happyClients: string;
     sinceYear: string;
@@ -44,6 +45,7 @@ export interface Dict {
     name: string;
     phone: string;
     city: string;
+    cityPlaceholder: string;
     address: string;
     notes: string;
     notesPlaceholder: string;
@@ -125,7 +127,8 @@ export const translations: Record<Locale, Dict> = {
         "Profesionalno održavanje dvorišta i bašte u Srbiji. Zalivamo, kosimo, plevimo i čuvamo Vaš zeleni kutak — Vi se vraćate u savršeno uređen dom.",
       ctaPrimary: "Izračunaj cenu odmah",
       ctaSecondary: "Pogledaj usluge",
-      trust: { reliable: "Pouzdano", onTime: "Tačno na vreme", allSerbia: "Cela Srbija" },
+      trust: { reliable: "Pouzdano", onTime: "Tačno na vreme", allSerbia: "Trstenik · Kruševac · Vrnjačka Banja · Aleksandrovac" },
+      serviceArea: "Radimo u: Trstenik · Kruševac · Vrnjačka Banja · Aleksandrovac",
       rating: "4.9 / 5 (120+ ocena)",
       happyClients: "300+ zadovoljnih klijenata",
       sinceYear: "Od 2019.",
@@ -174,6 +177,7 @@ export const translations: Record<Locale, Dict> = {
       name: "Ime i prezime *",
       phone: "Telefon *",
       city: "Grad / mesto",
+      cityPlaceholder: "Izaberite grad",
       address: "Adresa",
       notes: "Dodatne napomene",
       notesPlaceholder: "Npr. period odsustva, posebni zahtevi, pristup dvorištu...",
@@ -201,12 +205,12 @@ export const translations: Record<Locale, Dict> = {
       successDesc: (phone) =>
         `Kontaktiraćemo Vas na ${phone} u najkraćem roku. Narudžbina je potpuno neobavezujuća.`,
     },
-    footer: { tagline: "Održavanje bašte i dvorišta širom Srbije", contact: "Kontakt", whatsapp: "WhatsApp", call: "Pozovi" },
+    footer: { tagline: "Održavanje bašte i dvorišta — Trstenik, Kruševac, Vrnjačka Banja, Aleksandrovac", contact: "Kontakt", whatsapp: "WhatsApp", call: "Pozovi" },
     langSwitcher: { language: "Jezik", script: "Pismo", latin: "Latinica", cyrillic: "Ćirilica" },
     meta: {
       title: "Zelena Oaza — Održavanje bašte za dijasporu i starije",
       description:
-        "Profesionalno održavanje bašte i dvorišta u Srbiji: zalivanje, košenje, plevljenje. Izračunajte cenu u RSD i poručite neobavezujuće.",
+        "Održavanje bašte i dvorišta u Trsteniku, Kruševcu, Vrnjačkoj Banji i Aleksandrovcu: zalivanje, košenje, plevljenje. Cena u RSD, neobavezujuće.",
     },
     steps: {
       title: "Kako funkcioniše",
@@ -230,7 +234,7 @@ export const translations: Record<Locale, Dict> = {
         { q: "Da li je narudžbina obavezujuća?", a: "Ne. Vaša narudžbina je potpuno neobavezujuća — kontaktiramo Vas radi potvrde i konačnog dogovora." },
         { q: "Kako plaćam ako sam u inostranstvu?", a: "Plaćanje je moguće preko bankarskog transfera, IPS-a ili gotovinom prilikom Vaše posete Srbiji." },
         { q: "Šaljete li izveštaje i slike?", a: "Da, posle svake posete dobijate fotografije i kratak izveštaj putem Vibera, WhatsAppa ili e-maila." },
-        { q: "Koje gradove pokrivate?", a: "Pokrivamo veliki deo Srbije. Kontaktirajte nas za potvrdu Vašeg mesta." },
+        { q: "Koje gradove pokrivate?", a: "Trenutno radimo u Trsteniku, Kruševcu, Vrnjačkoj Banji i Aleksandrovcu. Za okolna sela nas kontaktirajte." },
       ],
     },
     gallery: {
@@ -256,7 +260,8 @@ export const translations: Record<Locale, Dict> = {
         "Професионално одржавање дворишта и баште у Србији. Заливамо, косимо, плевимо и чувамо Ваш зелени кутак — Ви се враћате у савршено уређен дом.",
       ctaPrimary: "Израчунај цену одмах",
       ctaSecondary: "Погледај услуге",
-      trust: { reliable: "Поуздано", onTime: "Тачно на време", allSerbia: "Цела Србија" },
+      trust: { reliable: "Поуздано", onTime: "Тачно на време", allSerbia: "Трстеник · Крушевац · Врњачка Бања · Александровац" },
+      serviceArea: "Радимо у: Трстеник · Крушевац · Врњачка Бања · Александровац",
       rating: "4.9 / 5 (120+ оцена)",
       happyClients: "300+ задовољних клијената",
       sinceYear: "Од 2019.",
@@ -305,6 +310,7 @@ export const translations: Record<Locale, Dict> = {
       name: "Име и презиме *",
       phone: "Телефон *",
       city: "Град / место",
+      cityPlaceholder: "Изаберите град",
       address: "Адреса",
       notes: "Додатне напомене",
       notesPlaceholder: "Нпр. период одсуства, посебни захтеви, приступ дворишту...",
@@ -332,12 +338,12 @@ export const translations: Record<Locale, Dict> = {
       successDesc: (phone) =>
         `Контактираћемо Вас на ${phone} у најкраћем року. Наруџбина је потпуно необавезујућа.`,
     },
-    footer: { tagline: "Одржавање баште и дворишта широм Србије", contact: "Контакт", whatsapp: "WhatsApp", call: "Позови" },
+    footer: { tagline: "Одржавање баште и дворишта — Трстеник, Крушевац, Врњачка Бања, Александровац", contact: "Контакт", whatsapp: "WhatsApp", call: "Позови" },
     langSwitcher: { language: "Језик", script: "Писмо", latin: "Латиница", cyrillic: "Ћирилица" },
     meta: {
       title: "Зелена Оаза — Одржавање баште за дијаспору и старије",
       description:
-        "Професионално одржавање баште и дворишта у Србији: заливање, кошење, плевљење. Израчунајте цену у РСД и поручите необавезујуће.",
+        "Одржавање баште и дворишта у Трстенику, Крушевцу, Врњачкој Бањи и Александровцу: заливање, кошење, плевљење. Цена у РСД, необавезујуће.",
     },
     steps: {
       title: "Како функционише",
@@ -361,7 +367,7 @@ export const translations: Record<Locale, Dict> = {
         { q: "Да ли је наруџбина обавезујућа?", a: "Не. Ваша наруџбина је потпуно необавезујућа — контактирамо Вас ради потврде и коначног договора." },
         { q: "Како плаћам ако сам у иностранству?", a: "Плаћање је могуће преко банкарског трансфера, ИПС-а или готовином приликом Ваше посете Србији." },
         { q: "Шаљете ли извештаје и слике?", a: "Да, после сваке посете добијате фотографије и кратак извештај путем Вибера, WhatsAppa или е-маила." },
-        { q: "Које градове покривате?", a: "Покривамо велики део Србије. Контактирајте нас за потврду Вашег места." },
+        { q: "Које градове покривате?", a: "Тренутно радимо у Трстенику, Крушевцу, Врњачкој Бањи и Александровцу. За околна села нас контактирајте." },
       ],
     },
     gallery: {
@@ -387,7 +393,8 @@ export const translations: Record<Locale, Dict> = {
         "Professionelle Garten- und Hofpflege in Serbien. Wir gießen, mähen, jäten und pflegen Ihre grüne Oase — Sie kommen in ein perfekt gepflegtes Zuhause zurück.",
       ctaPrimary: "Preis sofort berechnen",
       ctaSecondary: "Leistungen ansehen",
-      trust: { reliable: "Zuverlässig", onTime: "Pünktlich", allSerbia: "Ganz Serbien" },
+      trust: { reliable: "Zuverlässig", onTime: "Pünktlich", allSerbia: "Trstenik · Kruševac · Vrnjačka Banja · Aleksandrovac" },
+      serviceArea: "Einsatzgebiet: Trstenik · Kruševac · Vrnjačka Banja · Aleksandrovac",
       rating: "4,9 / 5 (120+ Bewertungen)",
       happyClients: "300+ zufriedene Kunden",
       sinceYear: "Seit 2019",
@@ -436,6 +443,7 @@ export const translations: Record<Locale, Dict> = {
       name: "Vor- und Nachname *",
       phone: "Telefon *",
       city: "Stadt / Ort",
+      cityPlaceholder: "Stadt auswählen",
       address: "Adresse",
       notes: "Zusätzliche Hinweise",
       notesPlaceholder: "Z. B. Abwesenheitszeitraum, besondere Wünsche, Zugang zum Hof...",
@@ -464,12 +472,12 @@ export const translations: Record<Locale, Dict> = {
       successDesc: (phone) =>
         `Wir melden uns schnellstmöglich unter ${phone}. Die Bestellung ist völlig unverbindlich.`,
     },
-    footer: { tagline: "Garten- und Hofpflege in ganz Serbien", contact: "Kontakt", whatsapp: "WhatsApp", call: "Anrufen" },
+    footer: { tagline: "Garten- und Hofpflege — Trstenik, Kruševac, Vrnjačka Banja, Aleksandrovac", contact: "Kontakt", whatsapp: "WhatsApp", call: "Anrufen" },
     langSwitcher: { language: "Sprache", script: "Schrift", latin: "Lateinisch", cyrillic: "Kyrillisch" },
     meta: {
       title: "Zelena Oaza — Gartenpflege für die Diaspora und Senioren",
       description:
-        "Professionelle Garten- und Hofpflege in Serbien: Gießen, Mähen, Jäten. Preis in RSD berechnen und unverbindlich bestellen.",
+        "Garten- und Hofpflege in Trstenik, Kruševac, Vrnjačka Banja und Aleksandrovac: Gießen, Mähen, Jäten. Preis in RSD, unverbindlich.",
     },
     steps: {
       title: "So funktioniert's",
@@ -493,7 +501,7 @@ export const translations: Record<Locale, Dict> = {
         { q: "Ist die Bestellung verbindlich?", a: "Nein. Ihre Bestellung ist völlig unverbindlich — wir melden uns zur Bestätigung und endgültigen Absprache." },
         { q: "Wie zahle ich aus dem Ausland?", a: "Zahlung ist per Banküberweisung, IPS oder bar bei Ihrem nächsten Aufenthalt in Serbien möglich." },
         { q: "Bekomme ich Berichte und Fotos?", a: "Ja, nach jedem Einsatz erhalten Sie Fotos und einen kurzen Bericht via Viber, WhatsApp oder E-Mail." },
-        { q: "Welche Städte deckt ihr ab?", a: "Wir decken große Teile Serbiens ab. Kontaktieren Sie uns zur Bestätigung Ihres Orts." },
+        { q: "Welche Städte deckt ihr ab?", a: "Aktuell arbeiten wir in Trstenik, Kruševac, Vrnjačka Banja und Aleksandrovac. Für umliegende Dörfer bitte kurz anfragen." },
       ],
     },
     gallery: {
@@ -519,7 +527,8 @@ export const translations: Record<Locale, Dict> = {
         "Professional garden and yard care in Serbia. We water, mow, weed and look after your green oasis — you return to a perfectly tended home.",
       ctaPrimary: "Calculate price now",
       ctaSecondary: "See services",
-      trust: { reliable: "Reliable", onTime: "On time", allSerbia: "All of Serbia" },
+      trust: { reliable: "Reliable", onTime: "On time", allSerbia: "Trstenik · Kruševac · Vrnjačka Banja · Aleksandrovac" },
+      serviceArea: "Service area: Trstenik · Kruševac · Vrnjačka Banja · Aleksandrovac",
       rating: "4.9 / 5 (120+ reviews)",
       happyClients: "300+ happy clients",
       sinceYear: "Since 2019",
@@ -567,6 +576,7 @@ export const translations: Record<Locale, Dict> = {
       name: "Full name *",
       phone: "Phone *",
       city: "City / town",
+      cityPlaceholder: "Select city",
       address: "Address",
       notes: "Additional notes",
       notesPlaceholder: "E.g. period away, special requests, yard access...",
@@ -594,12 +604,12 @@ export const translations: Record<Locale, Dict> = {
       successDesc: (phone) =>
         `We'll contact you at ${phone} as soon as possible. The order is completely non-binding.`,
     },
-    footer: { tagline: "Garden and yard care across Serbia", contact: "Contact", whatsapp: "WhatsApp", call: "Call" },
+    footer: { tagline: "Garden and yard care — Trstenik, Kruševac, Vrnjačka Banja, Aleksandrovac", contact: "Contact", whatsapp: "WhatsApp", call: "Call" },
     langSwitcher: { language: "Language", script: "Script", latin: "Latin", cyrillic: "Cyrillic" },
     meta: {
       title: "Zelena Oaza — Garden care for the diaspora and seniors",
       description:
-        "Professional garden and yard care in Serbia: watering, mowing, weeding. Calculate price in RSD and order with no obligation.",
+        "Garden and yard care in Trstenik, Kruševac, Vrnjačka Banja and Aleksandrovac: watering, mowing, weeding. Price in RSD, no obligation.",
     },
     steps: {
       title: "How it works",
@@ -623,7 +633,7 @@ export const translations: Record<Locale, Dict> = {
         { q: "Is the order binding?", a: "No. Your order is completely non-binding — we contact you for confirmation and final agreement." },
         { q: "How do I pay from abroad?", a: "Payment is possible via bank transfer, IPS, or cash on your next visit to Serbia." },
         { q: "Do I get reports and photos?", a: "Yes, after every visit you receive photos and a short report via Viber, WhatsApp or email." },
-        { q: "Which cities do you cover?", a: "We cover most of Serbia. Contact us to confirm your location." },
+        { q: "Which cities do you cover?", a: "Currently Trstenik, Kruševac, Vrnjačka Banja and Aleksandrovac. For nearby villages, just ask." },
       ],
     },
     gallery: {

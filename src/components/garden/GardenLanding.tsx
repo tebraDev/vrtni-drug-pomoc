@@ -17,6 +17,9 @@ import {
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import heroImg from "@/assets/garden-hero.jpg";
 import { useI18n } from "@/i18n/I18nContext";
@@ -34,6 +37,8 @@ const GALLERY_PAIRS = [
   { before: hedgeBefore, after: hedgeAfter },
   { before: bedsBefore, after: bedsAfter },
 ];
+
+const SERVICE_CITIES = ["Trstenik", "Kruševac", "Vrnjačka Banja", "Aleksandrovac"];
 
 type Frequency = "1x_nedeljno" | "2x_nedeljno" | "1x_mesecno" | "2x_mesecno" | "po_potrebi";
 
@@ -256,6 +261,16 @@ const GardenLanding = () => {
           </div>
         </div>
       </header>
+
+      {/* SERVICE AREA BAND */}
+      <div className="bg-primary/5 border-b border-primary/10">
+        <div className="container py-3 flex items-center justify-center gap-2 text-center">
+          <MapPin className="h-4 w-4 text-primary shrink-0" />
+          <p className="text-xs sm:text-sm font-medium text-foreground/90">
+            {t.hero.serviceArea}
+          </p>
+        </div>
+      </div>
 
       {/* HOW IT WORKS */}
       <section className="container py-12 md:py-16">
@@ -654,7 +669,16 @@ const GardenLanding = () => {
             </div>
             <div>
               <Label htmlFor="city">{t.contact.city}</Label>
-              <Input id="city" value={contact.city} onChange={(e) => setContact({ ...contact, city: e.target.value })} maxLength={80} />
+              <Select value={contact.city} onValueChange={(v) => setContact({ ...contact, city: v })}>
+                <SelectTrigger id="city">
+                  <SelectValue placeholder={t.contact.cityPlaceholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  {SERVICE_CITIES.map((c) => (
+                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <Label htmlFor="address">{t.contact.address}</Label>
