@@ -21,6 +21,19 @@ import { toast } from "@/hooks/use-toast";
 import heroImg from "@/assets/garden-hero.jpg";
 import { useI18n } from "@/i18n/I18nContext";
 import LanguageSwitcher from "./LanguageSwitcher";
+import BeforeAfterSlider from "./BeforeAfterSlider";
+import lawnBefore from "@/assets/gallery/lawn-before.jpg";
+import lawnAfter from "@/assets/gallery/lawn-after.jpg";
+import hedgeBefore from "@/assets/gallery/hedge-before.jpg";
+import hedgeAfter from "@/assets/gallery/hedge-after.jpg";
+import bedsBefore from "@/assets/gallery/beds-before.jpg";
+import bedsAfter from "@/assets/gallery/beds-after.jpg";
+
+const GALLERY_PAIRS = [
+  { before: lawnBefore, after: lawnAfter },
+  { before: hedgeBefore, after: hedgeAfter },
+  { before: bedsBefore, after: bedsAfter },
+];
 
 type Frequency = "1x_nedeljno" | "2x_nedeljno" | "1x_mesecno" | "2x_mesecno" | "po_potrebi";
 
