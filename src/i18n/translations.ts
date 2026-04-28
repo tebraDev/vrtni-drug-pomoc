@@ -495,6 +495,18 @@ export const translations: Record<Locale, Dict> = {
         { q: "Bekomme ich Berichte und Fotos?", a: "Ja, nach jedem Einsatz erhalten Sie Fotos und einen kurzen Bericht via Viber, WhatsApp oder E-Mail." },
         { q: "Welche Städte deckt ihr ab?", a: "Wir decken große Teile Serbiens ab. Kontaktieren Sie uns zur Bestätigung Ihres Orts." },
       ],
+    },
+    gallery: {
+      title: "Vorher & Nachher — unsere Arbeit spricht für sich",
+      subtitle: "Ziehen Sie den Regler und sehen Sie die Verwandlung direkt",
+      dragHint: "← ziehen zum Vergleichen →",
+      before: "Vorher",
+      after: "Nachher",
+      items: [
+        { title: "Verwilderten Rasen mähen", desc: "Hohes Gras und Unkraut in einen gepflegten Rasen verwandelt" },
+        { title: "Hecke in Form schneiden", desc: "Wilde Hecke zu einer sauberen, klaren Form geschnitten" },
+        { title: "Beete jäten & aufbereiten", desc: "Unkraut entfernt, Boden gelockert und pflanzbereit" },
+      ],
     }
   },
   en: {
