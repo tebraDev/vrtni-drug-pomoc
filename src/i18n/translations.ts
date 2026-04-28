@@ -89,6 +89,14 @@ export interface Dict {
     title: string;
     items: { q: string; a: string }[];
   };
+  gallery: {
+    title: string;
+    subtitle: string;
+    dragHint: string;
+    before: string;
+    after: string;
+    items: { title: string; desc: string }[];
+  };
 }
 
 const fmtRSD = (n: number, locale: string) =>
