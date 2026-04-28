@@ -229,20 +229,6 @@ const GardenLanding = () => {
               </Button>
             </div>
 
-            {/* Trust strip */}
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-primary-foreground/95">
-              <div className="flex items-center gap-1.5">
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <Star key={i} className="h-4 w-4 fill-accent text-accent" />
-                ))}
-                <span className="ml-1 text-sm font-medium">{t.hero.rating}</span>
-              </div>
-              <span className="hidden sm:inline text-primary-foreground/40">·</span>
-              <span className="text-sm font-medium">{t.hero.happyClients}</span>
-              <span className="hidden sm:inline text-primary-foreground/40">·</span>
-              <span className="text-sm font-medium">{t.hero.sinceYear}</span>
-            </div>
-
             <div className="mt-8 grid grid-cols-3 gap-4 max-w-md">
               {[
                 { icon: ShieldCheck, label: t.hero.trust.reliable },
