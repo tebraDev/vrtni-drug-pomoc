@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
@@ -100,6 +101,8 @@ const GardenLanding = () => {
   const [contactOpen, setContactOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [contact, setContact] = useState({ name: "", phone: "", city: "", address: "", notes: "" });
+  const [consent, setConsent] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   const toggleService = (def: ServiceDef) => {
     setSelected((prev) => {
@@ -156,6 +159,10 @@ const GardenLanding = () => {
   const sendOrder = () => {
     if (!contact.name || !contact.phone) {
       toast({ title: t.toasts.missingTitle, description: t.toasts.missingDesc, variant: "destructive" });
+      return;
+    }
+    if (!consent) {
+      toast({ title: t.toasts.missingTitle, description: t.privacy.consentRequired, variant: "destructive" });
       return;
     }
     setSubmitting(true);
@@ -580,6 +587,15 @@ const GardenLanding = () => {
           <p className="text-center text-xs text-muted-foreground mt-6">
             © {new Date().getFullYear()} Zelena Oaza · {t.footer.tagline}
           </p>
+          <p className="text-center text-xs text-muted-foreground mt-2">
+            <button
+              type="button"
+              onClick={() => setPrivacyOpen(true)}
+              className="text-primary underline hover:no-underline"
+            >
+              {t.privacy.footerLink}
+            </button>
+          </p>
         </div>
       </footer>
 
@@ -654,13 +670,39 @@ const GardenLanding = () => {
               />
             </div>
           </div>
+
+          <div className="mt-4 rounded-lg bg-muted/40 border border-border p-3 text-xs text-muted-foreground leading-relaxed flex gap-2">
+            <ShieldCheck className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+            <span>{t.privacy.inlineNotice}</span>
+          </div>
+
+          <div className="mt-3 flex items-start gap-2">
+            <Checkbox
+              id="consent"
+              checked={consent}
+              onCheckedChange={(v) => setConsent(v === true)}
+              className="mt-0.5"
+            />
+            <Label htmlFor="consent" className="text-xs leading-relaxed text-foreground font-normal cursor-pointer">
+              {t.privacy.consentLabel}{" "}
+              <button
+                type="button"
+                onClick={() => setPrivacyOpen(true)}
+                className="text-primary underline hover:no-underline font-medium"
+              >
+                {t.privacy.consentLink}
+              </button>
+              .
+            </Label>
+          </div>
+
           <DialogFooter className="mt-2 gap-2 sm:gap-2">
             <Button variant="outline" onClick={() => setContactOpen(false)}>
               {t.summary.backToServices}
             </Button>
             <Button
               onClick={sendOrder}
-              disabled={submitting}
+              disabled={submitting || !consent}
               className="bg-gradient-primary text-primary-foreground shadow-glow font-semibold"
             >
               {submitting ? t.contact.submitting : t.summary.orderBtn}
@@ -670,6 +712,31 @@ const GardenLanding = () => {
             <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
             {t.summary.noObligation}
           </p>
+        </DialogContent>
+      </Dialog>
+
+      {/* PRIVACY POLICY DIALOG */}
+      <Dialog open={privacyOpen} onOpenChange={setPrivacyOpen}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-primary" /> {t.privacy.dialogTitle}
+            </DialogTitle>
+            <DialogDescription>{t.privacy.lastUpdated}</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 mt-2">
+            {t.privacy.sections.map((s, i) => (
+              <div key={i}>
+                <h3 className="font-semibold text-foreground text-sm">{s.title}</h3>
+                <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{s.body}</p>
+              </div>
+            ))}
+          </div>
+          <DialogFooter className="mt-4">
+            <Button variant="outline" onClick={() => setPrivacyOpen(false)}>
+              {t.privacy.close}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

@@ -75,6 +75,17 @@ export interface Dict {
   footer: { tagline: string; contact: string; whatsapp: string; call: string };
   langSwitcher: { language: string; script: string; latin: string; cyrillic: string };
   meta: { title: string; description: string };
+  privacy: {
+    consentLabel: string;
+    consentLink: string;
+    consentRequired: string;
+    inlineNotice: string;
+    footerLink: string;
+    dialogTitle: string;
+    lastUpdated: string;
+    sections: { title: string; body: string }[];
+    close: string;
+  };
   steps: {
     title: string;
     subtitle: string;
@@ -248,6 +259,26 @@ export const translations: Record<Locale, Dict> = {
         { title: "Orezivanje žive ograde", desc: "Divlja živica oblikovana u čistu, pravilnu formu" },
         { title: "Plevljenje i uređenje leja", desc: "Korov uklonjen, zemlja okopana i spremna za biljke" },
       ],
+    },
+    privacy: {
+      consentLabel: "Saglasan/na sam da se moji podaci (ime, telefon, opciono adresa i napomene) koriste isključivo radi kontakta i pripreme ponude.",
+      consentLink: "Pročitajte Politiku privatnosti",
+      consentRequired: "Morate prihvatiti Politiku privatnosti da biste poslali zahtev.",
+      inlineNotice: "Vaši podaci se koriste samo za kontakt u vezi sa ovom narudžbinom. Ne prosleđujemo ih trećim licima i ne koristimo za marketing bez Vaše izričite saglasnosti.",
+      footerLink: "Politika privatnosti",
+      dialogTitle: "Politika privatnosti",
+      lastUpdated: "Poslednje ažuriranje: april 2026.",
+      close: "Zatvori",
+      sections: [
+        { title: "1. Rukovalac podataka", body: "Zelena Oaza (vlasnik / preduzetnik) — kontakt: [ime, adresa, e-mail]. Rukovalac u smislu Zakona o zaštiti podataka o ličnosti Republike Srbije („ZZPL“, Sl. glasnik RS br. 87/2018)." },
+        { title: "2. Koje podatke prikupljamo", body: "Putem kontakt forme: ime i prezime, broj telefona, opciono grad/adresa i napomene. Sajt ne koristi kolačiće za praćenje, niti analitiku trećih strana. Hosting: GitHub Pages (statički sajt, bez baze podataka — podaci se šalju direktno nama putem WhatsApp-a/poziva)." },
+        { title: "3. Svrha obrade", body: "Podatke koristimo isključivo da Vas kontaktiramo radi potvrde narudžbine, dogovora termina i izrade ponude. Ne koristimo ih za marketing bez Vaše izričite, dodatne saglasnosti." },
+        { title: "4. Pravni osnov", body: "Vaša saglasnost (čl. 12 st. 1 tač. 1 ZZPL) data potvrdom polja za saglasnost u formi, kao i preduzimanje radnji pre zaključenja ugovora na Vaš zahtev (čl. 12 st. 1 tač. 2 ZZPL)." },
+        { title: "5. Rok čuvanja", body: "Podatke iz upita čuvamo najviše 12 meseci od poslednjeg kontakta. Ukoliko dođe do zaključenja ugovora, računovodstvene podatke čuvamo onoliko koliko zahteva poreski i računovodstveni propis (do 5 godina)." },
+        { title: "6. Primaoci podataka", body: "Podaci se ne prosleđuju trećim licima. Komunikacija može ići preko WhatsApp-a (Meta Platforms Ireland) ako Vi tako kontaktirate — u tom slučaju važe i njihovi uslovi privatnosti." },
+        { title: "7. Vaša prava", body: "Imate pravo na: pristup podacima, ispravku, brisanje, ograničenje obrade, prenosivost, prigovor i opoziv saglasnosti u svakom trenutku. Zahtev šaljete na naš kontakt e-mail. Imate i pravo pritužbe Povereniku za informacije od javnog značaja i zaštitu podataka o ličnosti (www.poverenik.rs)." },
+        { title: "8. Bezbednost", body: "Sajt se servira preko HTTPS-a (GitHub Pages). Pristup porukama imamo samo mi. Nemamo bazu podataka na samom sajtu." },
+      ],
     }
   },
   "sr-Cyrl": {
@@ -380,6 +411,26 @@ export const translations: Record<Locale, Dict> = {
         { title: "Кошење запуштеног травњака", desc: "Висока трава и коров претворени у негован травњак" },
         { title: "Орезивање живе ограде", desc: "Дивља живица обликована у чисту, правилну форму" },
         { title: "Плевљење и уређење леја", desc: "Коров уклоњен, земља окопана и спремна за биљке" },
+      ],
+    },
+    privacy: {
+      consentLabel: "Сагласан/на сам да се моји подаци (име, телефон, опционо адреса и напомене) користе искључиво ради контакта и припреме понуде.",
+      consentLink: "Прочитајте Политику приватности",
+      consentRequired: "Морате прихватити Политику приватности да бисте послали захтев.",
+      inlineNotice: "Ваши подаци се користе само за контакт у вези са овом наруџбином. Не прослеђујемо их трећим лицима и не користимо за маркетинг без Ваше изричите сагласности.",
+      footerLink: "Политика приватности",
+      dialogTitle: "Политика приватности",
+      lastUpdated: "Последње ажурирање: април 2026.",
+      close: "Затвори",
+      sections: [
+        { title: "1. Руковалац подацима", body: "Зелена Оаза (власник / предузетник) — контакт: [име, адреса, е-маил]. Руковалац у смислу Закона о заштити података о личности Републике Србије („ЗЗПЛ“, Сл. гласник РС бр. 87/2018)." },
+        { title: "2. Које податке прикупљамо", body: "Путем контакт форме: име и презиме, број телефона, опционо град/адреса и напомене. Сајт не користи колачиће за праћење, нити аналитику трећих страна. Хостинг: GitHub Pages (статички сајт, без базе података — подаци се шаљу директно нама путем WhatsApp-а/позива)." },
+        { title: "3. Сврха обраде", body: "Податке користимо искључиво да Вас контактирамо ради потврде наруџбине, договора термина и израде понуде. Не користимо их за маркетинг без Ваше изричите, додатне сагласности." },
+        { title: "4. Правни основ", body: "Ваша сагласност (чл. 12 ст. 1 тач. 1 ЗЗПЛ) дата потврдом поља за сагласност у форми, као и предузимање радњи пре закључења уговора на Ваш захтев (чл. 12 ст. 1 тач. 2 ЗЗПЛ)." },
+        { title: "5. Рок чувања", body: "Податке из упита чувамо највише 12 месеци од последњег контакта. Уколико дође до закључења уговора, рачуноводствене податке чувамо онолико колико захтева порески и рачуноводствени пропис (до 5 година)." },
+        { title: "6. Примаоци података", body: "Подаци се не прослеђују трећим лицима. Комуникација може ићи преко WhatsApp-а (Meta Platforms Ireland) ако Ви тако контактирате — у том случају важе и њихови услови приватности." },
+        { title: "7. Ваша права", body: "Имате право на: приступ подацима, исправку, брисање, ограничење обраде, преносивост, приговор и опозив сагласности у сваком тренутку. Захтев шаљете на наш контакт е-маил. Имате и право притужбе Поверенику за информације од јавног значаја и заштиту података о личности (www.poverenik.rs)." },
+        { title: "8. Безбедност", body: "Сајт се сервира преко HTTPS-а (GitHub Pages). Приступ порукама имамо само ми. Немамо базу података на самом сајту." },
       ],
     }
   },
@@ -515,6 +566,26 @@ export const translations: Record<Locale, Dict> = {
         { title: "Hecke in Form schneiden", desc: "Wilde Hecke zu einer sauberen, klaren Form geschnitten" },
         { title: "Beete jäten & aufbereiten", desc: "Unkraut entfernt, Boden gelockert und pflanzbereit" },
       ],
+    },
+    privacy: {
+      consentLabel: "Ich bin damit einverstanden, dass meine Angaben (Name, Telefon, optional Adresse und Notizen) ausschließlich zur Kontaktaufnahme und Angebotserstellung genutzt werden.",
+      consentLink: "Datenschutzerklärung lesen",
+      consentRequired: "Bitte stimmen Sie der Datenschutzerklärung zu, um die Anfrage zu senden.",
+      inlineNotice: "Ihre Daten werden ausschließlich für den Kontakt zu dieser Anfrage verwendet. Keine Weitergabe an Dritte, kein Marketing ohne Ihre ausdrückliche Einwilligung.",
+      footerLink: "Datenschutzerklärung",
+      dialogTitle: "Datenschutzerklärung",
+      lastUpdated: "Stand: April 2026",
+      close: "Schließen",
+      sections: [
+        { title: "1. Verantwortlicher", body: "Zelena Oaza (Inhaber / Unternehmer) — Kontakt: [Name, Adresse, E-Mail]. Verantwortlicher im Sinne des serbischen Gesetzes über den Schutz personenbezogener Daten („ZZPL“, Amtsblatt RS Nr. 87/2018), das eng an die DSGVO angelehnt ist." },
+        { title: "2. Welche Daten wir erheben", body: "Über das Kontaktformular: Name, Telefonnummer, optional Stadt/Adresse und Anmerkungen. Die Website verwendet keine Tracking-Cookies und keine Drittanbieter-Analytik. Hosting: GitHub Pages (statische Seite, keine Datenbank — Daten gehen direkt über WhatsApp/Anruf an uns)." },
+        { title: "3. Zweck der Verarbeitung", body: "Wir verwenden die Daten ausschließlich, um Sie zur Bestätigung der Anfrage, Terminabsprache und Angebotserstellung zu kontaktieren. Keine Marketingnutzung ohne ausdrückliche, separate Einwilligung." },
+        { title: "4. Rechtsgrundlage", body: "Ihre Einwilligung (Art. 12 Abs. 1 Nr. 1 ZZPL) durch Ankreuzen des Einwilligungsfeldes sowie vorvertragliche Maßnahmen auf Ihre Anfrage hin (Art. 12 Abs. 1 Nr. 2 ZZPL)." },
+        { title: "5. Speicherdauer", body: "Anfragedaten speichern wir maximal 12 Monate nach dem letzten Kontakt. Kommt es zu einem Vertrag, gelten die steuer- und buchhaltungsrechtlichen Aufbewahrungsfristen (bis 5 Jahre)." },
+        { title: "6. Empfänger", body: "Keine Weitergabe an Dritte. Falls Sie über WhatsApp (Meta Platforms Ireland) kommunizieren, gelten zusätzlich deren Datenschutzbedingungen." },
+        { title: "7. Ihre Rechte", body: "Sie haben Recht auf: Auskunft, Berichtigung, Löschung, Einschränkung, Übertragbarkeit, Widerspruch und jederzeitigen Widerruf der Einwilligung. Anfragen an unsere Kontakt-E-Mail. Beschwerderecht beim serbischen Datenschutzbeauftragten (www.poverenik.rs)." },
+        { title: "8. Sicherheit", body: "Auslieferung über HTTPS (GitHub Pages). Zugriff auf eingehende Nachrichten haben nur wir. Keine Datenbank auf der Website selbst." },
+      ],
     }
   },
   en: {
@@ -646,6 +717,26 @@ export const translations: Record<Locale, Dict> = {
         { title: "Mowing an overgrown lawn", desc: "Tall grass and weeds turned into a well-kept lawn" },
         { title: "Trimming a wild hedge", desc: "Wild hedge shaped into a clean, defined form" },
         { title: "Weeding & prepping beds", desc: "Weeds removed, soil loosened and ready to plant" },
+      ],
+    },
+    privacy: {
+      consentLabel: "I consent to my details (name, phone, optional address and notes) being used solely to contact me and prepare a quote.",
+      consentLink: "Read the Privacy Policy",
+      consentRequired: "You must accept the Privacy Policy to send the request.",
+      inlineNotice: "Your data is used only to contact you about this enquiry. Never shared with third parties, never used for marketing without your explicit consent.",
+      footerLink: "Privacy Policy",
+      dialogTitle: "Privacy Policy",
+      lastUpdated: "Last updated: April 2026",
+      close: "Close",
+      sections: [
+        { title: "1. Data controller", body: "Zelena Oaza (owner / sole trader) — contact: [name, address, e-mail]. Controller under the Serbian Personal Data Protection Act (\"ZZPL\", Official Gazette RS no. 87/2018), closely aligned with the GDPR." },
+        { title: "2. What we collect", body: "Via the contact form: name, phone number, optional city/address and notes. The site uses no tracking cookies and no third-party analytics. Hosting: GitHub Pages (static site, no database — data is sent directly to us via WhatsApp/phone)." },
+        { title: "3. Purpose", body: "We use the data only to contact you to confirm the order, agree on a schedule and prepare a quote. No marketing use without your explicit, separate consent." },
+        { title: "4. Legal basis", body: "Your consent (Art. 12(1)(1) ZZPL) given by ticking the consent box, and pre-contractual steps at your request (Art. 12(1)(2) ZZPL)." },
+        { title: "5. Retention", body: "Enquiry data is kept for at most 12 months after the last contact. If a contract is signed, accounting data is kept as required by Serbian tax and accounting law (up to 5 years)." },
+        { title: "6. Recipients", body: "Data is not shared with third parties. If you reach out via WhatsApp (Meta Platforms Ireland), their privacy terms also apply." },
+        { title: "7. Your rights", body: "You have the right to: access, rectification, erasure, restriction, portability, objection and to withdraw consent at any time. Send requests to our contact e-mail. You may also lodge a complaint with the Serbian Commissioner for Information of Public Importance and Personal Data Protection (www.poverenik.rs)." },
+        { title: "8. Security", body: "Served over HTTPS (GitHub Pages). Only we have access to incoming messages. No database on the site itself." },
       ],
     }
   },
