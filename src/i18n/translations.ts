@@ -259,6 +259,26 @@ export const translations: Record<Locale, Dict> = {
         { title: "Orezivanje žive ograde", desc: "Divlja živica oblikovana u čistu, pravilnu formu" },
         { title: "Plevljenje i uređenje leja", desc: "Korov uklonjen, zemlja okopana i spremna za biljke" },
       ],
+    },
+    privacy: {
+      consentLabel: "Saglasan/na sam da se moji podaci (ime, telefon, opciono adresa i napomene) koriste isključivo radi kontakta i pripreme ponude.",
+      consentLink: "Pročitajte Politiku privatnosti",
+      consentRequired: "Morate prihvatiti Politiku privatnosti da biste poslali zahtev.",
+      inlineNotice: "Vaši podaci se koriste samo za kontakt u vezi sa ovom narudžbinom. Ne prosleđujemo ih trećim licima i ne koristimo za marketing bez Vaše izričite saglasnosti.",
+      footerLink: "Politika privatnosti",
+      dialogTitle: "Politika privatnosti",
+      lastUpdated: "Poslednje ažuriranje: april 2026.",
+      close: "Zatvori",
+      sections: [
+        { title: "1. Rukovalac podataka", body: "Zelena Oaza (vlasnik / preduzetnik) — kontakt: [ime, adresa, e-mail]. Rukovalac u smislu Zakona o zaštiti podataka o ličnosti Republike Srbije („ZZPL“, Sl. glasnik RS br. 87/2018)." },
+        { title: "2. Koje podatke prikupljamo", body: "Putem kontakt forme: ime i prezime, broj telefona, opciono grad/adresa i napomene. Sajt ne koristi kolačiće za praćenje, niti analitiku trećih strana. Hosting: GitHub Pages (statički sajt, bez baze podataka — podaci se šalju direktno nama putem WhatsApp-a/poziva)." },
+        { title: "3. Svrha obrade", body: "Podatke koristimo isključivo da Vas kontaktiramo radi potvrde narudžbine, dogovora termina i izrade ponude. Ne koristimo ih za marketing bez Vaše izričite, dodatne saglasnosti." },
+        { title: "4. Pravni osnov", body: "Vaša saglasnost (čl. 12 st. 1 tač. 1 ZZPL) data potvrdom polja za saglasnost u formi, kao i preduzimanje radnji pre zaključenja ugovora na Vaš zahtev (čl. 12 st. 1 tač. 2 ZZPL)." },
+        { title: "5. Rok čuvanja", body: "Podatke iz upita čuvamo najviše 12 meseci od poslednjeg kontakta. Ukoliko dođe do zaključenja ugovora, računovodstvene podatke čuvamo onoliko koliko zahteva poreski i računovodstveni propis (do 5 godina)." },
+        { title: "6. Primaoci podataka", body: "Podaci se ne prosleđuju trećim licima. Komunikacija može ići preko WhatsApp-a (Meta Platforms Ireland) ako Vi tako kontaktirate — u tom slučaju važe i njihovi uslovi privatnosti." },
+        { title: "7. Vaša prava", body: "Imate pravo na: pristup podacima, ispravku, brisanje, ograničenje obrade, prenosivost, prigovor i opoziv saglasnosti u svakom trenutku. Zahtev šaljete na naš kontakt e-mail. Imate i pravo pritužbe Povereniku za informacije od javnog značaja i zaštitu podataka o ličnosti (www.poverenik.rs)." },
+        { title: "8. Bezbednost", body: "Sajt se servira preko HTTPS-a (GitHub Pages). Pristup porukama imamo samo mi. Nemamo bazu podataka na samom sajtu." },
+      ],
     }
   },
   "sr-Cyrl": {
