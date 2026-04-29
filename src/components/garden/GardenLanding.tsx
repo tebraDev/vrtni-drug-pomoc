@@ -756,16 +756,55 @@ const GardenLanding = () => {
             </Label>
           </div>
 
-          <DialogFooter className="mt-2 gap-2 sm:gap-2">
+          <div className="mt-4 pt-4 border-t border-border">
+            <p className="text-sm font-semibold text-foreground">{t.send.chooseTitle}</p>
+            <p className="text-xs text-muted-foreground mt-1">{t.send.chooseDesc}</p>
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <Button
+                type="button"
+                onClick={sendViaWhatsApp}
+                disabled={!consent}
+                className="gap-2 bg-[hsl(142_70%_38%)] hover:bg-[hsl(142_70%_34%)] text-primary-foreground font-semibold"
+              >
+                <MessageCircle className="h-4 w-4" /> {t.send.whatsapp}
+              </Button>
+              <Button
+                type="button"
+                onClick={sendViaViber}
+                disabled={!consent}
+                className="gap-2 bg-[hsl(271_60%_50%)] hover:bg-[hsl(271_60%_45%)] text-primary-foreground font-semibold"
+              >
+                <MessageCircle className="h-4 w-4" /> {t.send.viber}
+              </Button>
+              <Button
+                type="button"
+                onClick={sendViaEmail}
+                disabled={!consent}
+                variant="outline"
+                className="gap-2 font-semibold"
+              >
+                <Mail className="h-4 w-4" /> {t.send.email}
+              </Button>
+            </div>
+            <div className="mt-3 rounded-lg bg-muted/40 border border-dashed border-border p-3 flex items-center justify-between gap-3 flex-wrap">
+              <p className="text-xs text-muted-foreground flex-1 min-w-[12rem]">
+                {t.send.fallbackHint}
+              </p>
+              <Button
+                type="button"
+                onClick={sendViaCall}
+                size="sm"
+                variant="outline"
+                className="gap-2"
+              >
+                <Phone className="h-4 w-4" /> {t.send.call} {BUSINESS_PHONE_DISPLAY}
+              </Button>
+            </div>
+          </div>
+
+          <DialogFooter className="mt-3 gap-2 sm:gap-2">
             <Button variant="outline" onClick={() => setContactOpen(false)}>
               {t.summary.backToServices}
-            </Button>
-            <Button
-              onClick={sendOrder}
-              disabled={submitting || !consent}
-              className="bg-gradient-primary text-primary-foreground shadow-glow font-semibold"
-            >
-              {submitting ? t.contact.submitting : t.summary.orderBtn}
             </Button>
           </DialogFooter>
           <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-1">
