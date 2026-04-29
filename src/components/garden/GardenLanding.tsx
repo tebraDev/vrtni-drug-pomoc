@@ -104,7 +104,6 @@ const GardenLanding = () => {
   const [selected, setSelected] = useState<Record<string, SelectedService>>({});
   const [area, setArea] = useState<number>(150);
   const [contactOpen, setContactOpen] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
   const [contact, setContact] = useState({ name: "", phone: "", city: "", address: "", notes: "" });
   const [consent, setConsent] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
