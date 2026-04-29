@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Leaf, Droplets, Scissors, Sprout, TreePine, Trash2, Flower2, Sparkles,
   ShieldCheck, Clock, MapPin, Phone, CheckCircle2, Star, Plus, Minus,
-  ArrowRight, MessageCircle, ChevronDown, ShieldCheck as ShieldIcon,
+  ArrowRight, MessageCircle, ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
