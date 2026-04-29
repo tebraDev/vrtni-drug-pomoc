@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Leaf, Droplets, Scissors, Sprout, TreePine, Trash2, Flower2, Sparkles,
   ShieldCheck, Clock, MapPin, Phone, CheckCircle2, Star, Plus, Minus,
-  ArrowRight, MessageCircle, ChevronDown,
+  ArrowRight, MessageCircle, ChevronDown, Mail,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -40,6 +40,11 @@ const GALLERY_PAIRS = [
 ];
 
 const SERVICE_CITIES = ["Trstenik", "Kruševac", "Vrnjačka Banja", "Aleksandrovac"];
+
+// Business contact channels (placeholders — replace with real numbers/email)
+const BUSINESS_PHONE_INTL = "381600000000"; // E.164 without +
+const BUSINESS_PHONE_DISPLAY = "+381 60 000 0000";
+const BUSINESS_EMAIL = "kontakt@zelenaoaza.rs";
 
 type Frequency = "1x_nedeljno" | "2x_nedeljno" | "1x_mesecno" | "2x_mesecno" | "po_potrebi";
 
@@ -99,7 +104,6 @@ const GardenLanding = () => {
   const [selected, setSelected] = useState<Record<string, SelectedService>>({});
   const [area, setArea] = useState<number>(150);
   const [contactOpen, setContactOpen] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
   const [contact, setContact] = useState({ name: "", phone: "", city: "", address: "", notes: "" });
   const [consent, setConsent] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
@@ -156,21 +160,76 @@ const GardenLanding = () => {
     setContactOpen(true);
   };
 
-  const sendOrder = () => {
+  const validateBeforeSend = () => {
     if (!contact.name || !contact.phone) {
       toast({ title: t.toasts.missingTitle, description: t.toasts.missingDesc, variant: "destructive" });
-      return;
+      return false;
     }
     if (!consent) {
       toast({ title: t.toasts.missingTitle, description: t.privacy.consentRequired, variant: "destructive" });
-      return;
+      return false;
     }
-    setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      setContactOpen(false);
-      toast({ title: t.toasts.successTitle, description: t.toasts.successDesc(contact.phone) });
-    }, 800);
+    return true;
+  };
+
+  const buildOrderMessage = () => {
+    const lines: string[] = [];
+    lines.push(t.send.greeting);
+    lines.push("");
+    lines.push(t.send.summaryHeader);
+    for (const { def, s, freq, monthly } of calc.items) {
+      const unit = def.unit === "m²" ? t.services.units.m2 : t.services.units.kom;
+      lines.push(
+        `• ${t.services.items[def.id].name} — ${s.quantity} ${unit}, ${t.freq[freq.value]} (${formatRSD(monthly)}/mo)`
+      );
+    }
+    lines.push("");
+    lines.push(`${t.send.totalLabel}: ${formatRSD(calc.total)}`);
+    lines.push("");
+    lines.push(t.send.contactHeader);
+    lines.push(`• ${t.contact.name.replace(" *", "")}: ${contact.name}`);
+    lines.push(`• ${t.contact.phone.replace(" *", "")}: ${contact.phone}`);
+    if (contact.city) lines.push(`• ${t.contact.city}: ${contact.city}`);
+    if (contact.address) lines.push(`• ${t.contact.address}: ${contact.address}`);
+    if (contact.notes) {
+      lines.push("");
+      lines.push(t.send.notesHeader);
+      lines.push(contact.notes);
+    }
+    lines.push("");
+    lines.push(t.send.closing);
+    return lines.join("\n");
+  };
+
+  const finalize = () => {
+    setContactOpen(false);
+    toast({ title: t.toasts.successTitle, description: t.toasts.successDesc(contact.phone) });
+  };
+
+  const sendViaWhatsApp = () => {
+    if (!validateBeforeSend()) return;
+    const url = `https://wa.me/${BUSINESS_PHONE_INTL}?text=${encodeURIComponent(buildOrderMessage())}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    finalize();
+  };
+
+  const sendViaViber = () => {
+    if (!validateBeforeSend()) return;
+    // viber://chat?number=+... opens Viber app on mobile/desktop with the chat
+    const url = `viber://chat?number=%2B${BUSINESS_PHONE_INTL}&text=${encodeURIComponent(buildOrderMessage())}`;
+    window.location.href = url;
+    finalize();
+  };
+
+  const sendViaEmail = () => {
+    if (!validateBeforeSend()) return;
+    const url = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent(t.send.subject)}&body=${encodeURIComponent(buildOrderMessage())}`;
+    window.location.href = url;
+    finalize();
+  };
+
+  const sendViaCall = () => {
+    window.location.href = `tel:+${BUSINESS_PHONE_INTL}`;
   };
 
   return (
@@ -696,16 +755,55 @@ const GardenLanding = () => {
             </Label>
           </div>
 
-          <DialogFooter className="mt-2 gap-2 sm:gap-2">
+          <div className="mt-4 pt-4 border-t border-border">
+            <p className="text-sm font-semibold text-foreground">{t.send.chooseTitle}</p>
+            <p className="text-xs text-muted-foreground mt-1">{t.send.chooseDesc}</p>
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <Button
+                type="button"
+                onClick={sendViaWhatsApp}
+                disabled={!consent}
+                className="gap-2 bg-[hsl(142_70%_38%)] hover:bg-[hsl(142_70%_34%)] text-primary-foreground font-semibold"
+              >
+                <MessageCircle className="h-4 w-4" /> {t.send.whatsapp}
+              </Button>
+              <Button
+                type="button"
+                onClick={sendViaViber}
+                disabled={!consent}
+                className="gap-2 bg-[hsl(271_60%_50%)] hover:bg-[hsl(271_60%_45%)] text-primary-foreground font-semibold"
+              >
+                <MessageCircle className="h-4 w-4" /> {t.send.viber}
+              </Button>
+              <Button
+                type="button"
+                onClick={sendViaEmail}
+                disabled={!consent}
+                variant="outline"
+                className="gap-2 font-semibold"
+              >
+                <Mail className="h-4 w-4" /> {t.send.email}
+              </Button>
+            </div>
+            <div className="mt-3 rounded-lg bg-muted/40 border border-dashed border-border p-3 flex items-center justify-between gap-3 flex-wrap">
+              <p className="text-xs text-muted-foreground flex-1 min-w-[12rem]">
+                {t.send.fallbackHint}
+              </p>
+              <Button
+                type="button"
+                onClick={sendViaCall}
+                size="sm"
+                variant="outline"
+                className="gap-2"
+              >
+                <Phone className="h-4 w-4" /> {t.send.call} {BUSINESS_PHONE_DISPLAY}
+              </Button>
+            </div>
+          </div>
+
+          <DialogFooter className="mt-3 gap-2 sm:gap-2">
             <Button variant="outline" onClick={() => setContactOpen(false)}>
               {t.summary.backToServices}
-            </Button>
-            <Button
-              onClick={sendOrder}
-              disabled={submitting || !consent}
-              className="bg-gradient-primary text-primary-foreground shadow-glow font-semibold"
-            >
-              {submitting ? t.contact.submitting : t.summary.orderBtn}
             </Button>
           </DialogFooter>
           <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-1">

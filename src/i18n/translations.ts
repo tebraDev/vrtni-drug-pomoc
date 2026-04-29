@@ -74,6 +74,22 @@ export interface Dict {
   };
   footer: { tagline: string; contact: string; whatsapp: string; call: string };
   langSwitcher: { language: string; script: string; latin: string; cyrillic: string };
+  send: {
+    chooseTitle: string;
+    chooseDesc: string;
+    whatsapp: string;
+    viber: string;
+    email: string;
+    call: string;
+    fallbackHint: string;
+    subject: string;
+    greeting: string;
+    summaryHeader: string;
+    contactHeader: string;
+    notesHeader: string;
+    totalLabel: string;
+    closing: string;
+  };
   meta: { title: string; description: string };
   privacy: {
     consentLabel: string;
@@ -218,6 +234,22 @@ export const translations: Record<Locale, Dict> = {
     },
     footer: { tagline: "Održavanje bašte i dvorišta — Trstenik, Kruševac, Vrnjačka Banja, Aleksandrovac", contact: "Kontakt", whatsapp: "WhatsApp", call: "Pozovi" },
     langSwitcher: { language: "Jezik", script: "Pismo", latin: "Latinica", cyrillic: "Ćirilica" },
+    send: {
+      chooseTitle: "Pošaljite narudžbinu",
+      chooseDesc: "Izaberite kako želite da nam pošaljete narudžbinu — bez registracije i bez čuvanja podataka na sajtu.",
+      whatsapp: "WhatsApp",
+      viber: "Viber",
+      email: "E-mail",
+      call: "Pozovi",
+      fallbackHint: "Ako nijedna opcija ne radi, pozovite nas direktno.",
+      subject: "Nova narudžbina — Zelena Oaza",
+      greeting: "Poštovani, želim da poručim sledeće usluge:",
+      summaryHeader: "Usluge:",
+      contactHeader: "Kontakt:",
+      notesHeader: "Napomene:",
+      totalLabel: "Mesečna procena",
+      closing: "Hvala!",
+    },
     meta: {
       title: "Zelena Oaza — Održavanje bašte za dijasporu i starije",
       description:
@@ -371,6 +403,22 @@ export const translations: Record<Locale, Dict> = {
     },
     footer: { tagline: "Одржавање баште и дворишта — Трстеник, Крушевац, Врњачка Бања, Александровац", contact: "Контакт", whatsapp: "WhatsApp", call: "Позови" },
     langSwitcher: { language: "Језик", script: "Писмо", latin: "Латиница", cyrillic: "Ћирилица" },
+    send: {
+      chooseTitle: "Пошаљите наруџбину",
+      chooseDesc: "Изаберите како желите да нам пошаљете наруџбину — без регистрације и без чувања података на сајту.",
+      whatsapp: "WhatsApp",
+      viber: "Viber",
+      email: "Е-маил",
+      call: "Позови",
+      fallbackHint: "Ако ниједна опција не ради, позовите нас директно.",
+      subject: "Нова наруџбина — Зелена Оаза",
+      greeting: "Поштовани, желим да поручим следеће услуге:",
+      summaryHeader: "Услуге:",
+      contactHeader: "Контакт:",
+      notesHeader: "Напомене:",
+      totalLabel: "Месечна процена",
+      closing: "Хвала!",
+    },
     meta: {
       title: "Зелена Оаза — Одржавање баште за дијаспору и старије",
       description:
@@ -525,6 +573,22 @@ export const translations: Record<Locale, Dict> = {
     },
     footer: { tagline: "Garten- und Hofpflege — Trstenik, Kruševac, Vrnjačka Banja, Aleksandrovac", contact: "Kontakt", whatsapp: "WhatsApp", call: "Anrufen" },
     langSwitcher: { language: "Sprache", script: "Schrift", latin: "Lateinisch", cyrillic: "Kyrillisch" },
+    send: {
+      chooseTitle: "Bestellung senden",
+      chooseDesc: "Wählen Sie, wie Sie uns die Bestellung senden möchten — ohne Registrierung und ohne Datenspeicherung auf der Seite.",
+      whatsapp: "WhatsApp",
+      viber: "Viber",
+      email: "E-Mail",
+      call: "Anrufen",
+      fallbackHint: "Falls keine Option funktioniert, rufen Sie uns bitte direkt an.",
+      subject: "Neue Bestellung — Zelena Oaza",
+      greeting: "Guten Tag, ich möchte folgende Leistungen bestellen:",
+      summaryHeader: "Leistungen:",
+      contactHeader: "Kontakt:",
+      notesHeader: "Anmerkungen:",
+      totalLabel: "Monatliche Schätzung",
+      closing: "Danke!",
+    },
     meta: {
       title: "Zelena Oaza — Gartenpflege für die Diaspora und Senioren",
       description:
@@ -677,6 +741,22 @@ export const translations: Record<Locale, Dict> = {
     },
     footer: { tagline: "Garden and yard care — Trstenik, Kruševac, Vrnjačka Banja, Aleksandrovac", contact: "Contact", whatsapp: "WhatsApp", call: "Call" },
     langSwitcher: { language: "Language", script: "Script", latin: "Latin", cyrillic: "Cyrillic" },
+    send: {
+      chooseTitle: "Send your order",
+      chooseDesc: "Choose how you want to send the order — no registration, no data stored on the site.",
+      whatsapp: "WhatsApp",
+      viber: "Viber",
+      email: "Email",
+      call: "Call",
+      fallbackHint: "If none of the options works, please call us directly.",
+      subject: "New order — Zelena Oaza",
+      greeting: "Hello, I would like to order the following services:",
+      summaryHeader: "Services:",
+      contactHeader: "Contact:",
+      notesHeader: "Notes:",
+      totalLabel: "Monthly estimate",
+      closing: "Thank you!",
+    },
     meta: {
       title: "Zelena Oaza — Garden care for the diaspora and seniors",
       description:
