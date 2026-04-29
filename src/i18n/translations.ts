@@ -75,6 +75,17 @@ export interface Dict {
   footer: { tagline: string; contact: string; whatsapp: string; call: string };
   langSwitcher: { language: string; script: string; latin: string; cyrillic: string };
   meta: { title: string; description: string };
+  privacy: {
+    consentLabel: string;
+    consentLink: string;
+    consentRequired: string;
+    inlineNotice: string;
+    footerLink: string;
+    dialogTitle: string;
+    lastUpdated: string;
+    sections: { title: string; body: string }[];
+    close: string;
+  };
   steps: {
     title: string;
     subtitle: string;
