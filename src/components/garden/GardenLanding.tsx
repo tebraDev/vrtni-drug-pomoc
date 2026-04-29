@@ -661,13 +661,39 @@ const GardenLanding = () => {
               />
             </div>
           </div>
+
+          <div className="mt-4 rounded-lg bg-muted/40 border border-border p-3 text-xs text-muted-foreground leading-relaxed flex gap-2">
+            <ShieldCheck className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+            <span>{t.privacy.inlineNotice}</span>
+          </div>
+
+          <div className="mt-3 flex items-start gap-2">
+            <Checkbox
+              id="consent"
+              checked={consent}
+              onCheckedChange={(v) => setConsent(v === true)}
+              className="mt-0.5"
+            />
+            <Label htmlFor="consent" className="text-xs leading-relaxed text-foreground font-normal cursor-pointer">
+              {t.privacy.consentLabel}{" "}
+              <button
+                type="button"
+                onClick={() => setPrivacyOpen(true)}
+                className="text-primary underline hover:no-underline font-medium"
+              >
+                {t.privacy.consentLink}
+              </button>
+              .
+            </Label>
+          </div>
+
           <DialogFooter className="mt-2 gap-2 sm:gap-2">
             <Button variant="outline" onClick={() => setContactOpen(false)}>
               {t.summary.backToServices}
             </Button>
             <Button
               onClick={sendOrder}
-              disabled={submitting}
+              disabled={submitting || !consent}
               className="bg-gradient-primary text-primary-foreground shadow-glow font-semibold"
             >
               {submitting ? t.contact.submitting : t.summary.orderBtn}
