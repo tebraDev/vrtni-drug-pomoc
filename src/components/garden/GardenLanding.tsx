@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Leaf, Droplets, Scissors, Sprout, TreePine, Trash2, Flower2, Sparkles,
   ShieldCheck, Clock, MapPin, Phone, CheckCircle2, Star, Plus, Minus,
-  ArrowRight, MessageCircle, ChevronDown,
+  ArrowRight, MessageCircle, ChevronDown, ShieldCheck as ShieldIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
@@ -100,6 +101,8 @@ const GardenLanding = () => {
   const [contactOpen, setContactOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [contact, setContact] = useState({ name: "", phone: "", city: "", address: "", notes: "" });
+  const [consent, setConsent] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   const toggleService = (def: ServiceDef) => {
     setSelected((prev) => {
@@ -156,6 +159,10 @@ const GardenLanding = () => {
   const sendOrder = () => {
     if (!contact.name || !contact.phone) {
       toast({ title: t.toasts.missingTitle, description: t.toasts.missingDesc, variant: "destructive" });
+      return;
+    }
+    if (!consent) {
+      toast({ title: t.toasts.missingTitle, description: t.privacy.consentRequired, variant: "destructive" });
       return;
     }
     setSubmitting(true);
