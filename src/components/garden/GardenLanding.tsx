@@ -206,30 +206,44 @@ const GardenLanding = () => {
     toast({ title: t.toasts.successTitle, description: t.toasts.successDesc(contact.phone) });
   };
 
+  // Open URL via a real anchor click. Required because:
+  // - Custom schemes (mailto:, tel:, viber:) are often blocked when triggered via
+  //   window.location from a sandboxed iframe (Lovable preview, GitHub Pages embeds).
+  // - A synthetic anchor click with target="_top" breaks out of the iframe and
+  //   triggers the OS handler reliably in Chrome/Safari/Firefox.
+  const openExternal = (url: string, newTab = false) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.rel = "noopener noreferrer";
+    a.target = newTab ? "_blank" : "_top";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   const sendViaWhatsApp = () => {
     if (!validateBeforeSend()) return;
     const url = `https://wa.me/${BUSINESS_PHONE_INTL}?text=${encodeURIComponent(buildOrderMessage())}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+    openExternal(url, true);
     finalize();
   };
 
   const sendViaViber = () => {
     if (!validateBeforeSend()) return;
-    // viber://chat?number=+... opens Viber app on mobile/desktop with the chat
     const url = `viber://chat?number=%2B${BUSINESS_PHONE_INTL}&text=${encodeURIComponent(buildOrderMessage())}`;
-    window.location.href = url;
+    openExternal(url);
     finalize();
   };
 
   const sendViaEmail = () => {
     if (!validateBeforeSend()) return;
     const url = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent(t.send.subject)}&body=${encodeURIComponent(buildOrderMessage())}`;
-    window.location.href = url;
+    openExternal(url);
     finalize();
   };
 
   const sendViaCall = () => {
-    window.location.href = `tel:+${BUSINESS_PHONE_INTL}`;
+    openExternal(`tel:+${BUSINESS_PHONE_INTL}`);
   };
 
   return (
