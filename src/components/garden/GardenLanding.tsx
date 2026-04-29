@@ -41,6 +41,11 @@ const GALLERY_PAIRS = [
 
 const SERVICE_CITIES = ["Trstenik", "Kruševac", "Vrnjačka Banja", "Aleksandrovac"];
 
+// Business contact channels (placeholders — replace with real numbers/email)
+const BUSINESS_PHONE_INTL = "381600000000"; // E.164 without +
+const BUSINESS_PHONE_DISPLAY = "+381 60 000 0000";
+const BUSINESS_EMAIL = "kontakt@zelenaoaza.rs";
+
 type Frequency = "1x_nedeljno" | "2x_nedeljno" | "1x_mesecno" | "2x_mesecno" | "po_potrebi";
 
 interface ServiceDef {
