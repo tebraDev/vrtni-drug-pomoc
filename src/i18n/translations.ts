@@ -234,6 +234,22 @@ export const translations: Record<Locale, Dict> = {
     },
     footer: { tagline: "Održavanje bašte i dvorišta — Trstenik, Kruševac, Vrnjačka Banja, Aleksandrovac", contact: "Kontakt", whatsapp: "WhatsApp", call: "Pozovi" },
     langSwitcher: { language: "Jezik", script: "Pismo", latin: "Latinica", cyrillic: "Ćirilica" },
+    send: {
+      chooseTitle: "Pošaljite narudžbinu",
+      chooseDesc: "Izaberite kako želite da nam pošaljete narudžbinu — bez registracije i bez čuvanja podataka na sajtu.",
+      whatsapp: "WhatsApp",
+      viber: "Viber",
+      email: "E-mail",
+      call: "Pozovi",
+      fallbackHint: "Ako nijedna opcija ne radi, pozovite nas direktno.",
+      subject: "Nova narudžbina — Zelena Oaza",
+      greeting: "Poštovani, želim da poručim sledeće usluge:",
+      summaryHeader: "Usluge:",
+      contactHeader: "Kontakt:",
+      notesHeader: "Napomene:",
+      totalLabel: "Mesečna procena",
+      closing: "Hvala!",
+    },
     meta: {
       title: "Zelena Oaza — Održavanje bašte za dijasporu i starije",
       description:
