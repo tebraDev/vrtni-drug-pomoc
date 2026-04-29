@@ -587,6 +587,15 @@ const GardenLanding = () => {
           <p className="text-center text-xs text-muted-foreground mt-6">
             © {new Date().getFullYear()} Zelena Oaza · {t.footer.tagline}
           </p>
+          <p className="text-center text-xs text-muted-foreground mt-2">
+            <button
+              type="button"
+              onClick={() => setPrivacyOpen(true)}
+              className="text-primary underline hover:no-underline"
+            >
+              {t.privacy.footerLink}
+            </button>
+          </p>
         </div>
       </footer>
 
@@ -703,6 +712,31 @@ const GardenLanding = () => {
             <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
             {t.summary.noObligation}
           </p>
+        </DialogContent>
+      </Dialog>
+
+      {/* PRIVACY POLICY DIALOG */}
+      <Dialog open={privacyOpen} onOpenChange={setPrivacyOpen}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-primary" /> {t.privacy.dialogTitle}
+            </DialogTitle>
+            <DialogDescription>{t.privacy.lastUpdated}</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 mt-2">
+            {t.privacy.sections.map((s, i) => (
+              <div key={i}>
+                <h3 className="font-semibold text-foreground text-sm">{s.title}</h3>
+                <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{s.body}</p>
+              </div>
+            ))}
+          </div>
+          <DialogFooter className="mt-4">
+            <Button variant="outline" onClick={() => setPrivacyOpen(false)}>
+              {t.privacy.close}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
