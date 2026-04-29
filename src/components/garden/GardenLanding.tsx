@@ -161,21 +161,76 @@ const GardenLanding = () => {
     setContactOpen(true);
   };
 
-  const sendOrder = () => {
+  const validateBeforeSend = () => {
     if (!contact.name || !contact.phone) {
       toast({ title: t.toasts.missingTitle, description: t.toasts.missingDesc, variant: "destructive" });
-      return;
+      return false;
     }
     if (!consent) {
       toast({ title: t.toasts.missingTitle, description: t.privacy.consentRequired, variant: "destructive" });
-      return;
+      return false;
     }
-    setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      setContactOpen(false);
-      toast({ title: t.toasts.successTitle, description: t.toasts.successDesc(contact.phone) });
-    }, 800);
+    return true;
+  };
+
+  const buildOrderMessage = () => {
+    const lines: string[] = [];
+    lines.push(t.send.greeting);
+    lines.push("");
+    lines.push(t.send.summaryHeader);
+    for (const { def, s, freq, monthly } of calc.items) {
+      const unit = def.unit === "m²" ? t.services.units.m2 : t.services.units.kom;
+      lines.push(
+        `• ${t.services.items[def.id].name} — ${s.quantity} ${unit}, ${t.freq[freq.value]} (${formatRSD(monthly)}/mo)`
+      );
+    }
+    lines.push("");
+    lines.push(`${t.send.totalLabel}: ${formatRSD(calc.total)}`);
+    lines.push("");
+    lines.push(t.send.contactHeader);
+    lines.push(`• ${t.contact.name.replace(" *", "")}: ${contact.name}`);
+    lines.push(`• ${t.contact.phone.replace(" *", "")}: ${contact.phone}`);
+    if (contact.city) lines.push(`• ${t.contact.city}: ${contact.city}`);
+    if (contact.address) lines.push(`• ${t.contact.address}: ${contact.address}`);
+    if (contact.notes) {
+      lines.push("");
+      lines.push(t.send.notesHeader);
+      lines.push(contact.notes);
+    }
+    lines.push("");
+    lines.push(t.send.closing);
+    return lines.join("\n");
+  };
+
+  const finalize = () => {
+    setContactOpen(false);
+    toast({ title: t.toasts.successTitle, description: t.toasts.successDesc(contact.phone) });
+  };
+
+  const sendViaWhatsApp = () => {
+    if (!validateBeforeSend()) return;
+    const url = `https://wa.me/${BUSINESS_PHONE_INTL}?text=${encodeURIComponent(buildOrderMessage())}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    finalize();
+  };
+
+  const sendViaViber = () => {
+    if (!validateBeforeSend()) return;
+    // viber://chat?number=+... opens Viber app on mobile/desktop with the chat
+    const url = `viber://chat?number=%2B${BUSINESS_PHONE_INTL}&text=${encodeURIComponent(buildOrderMessage())}`;
+    window.location.href = url;
+    finalize();
+  };
+
+  const sendViaEmail = () => {
+    if (!validateBeforeSend()) return;
+    const url = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent(t.send.subject)}&body=${encodeURIComponent(buildOrderMessage())}`;
+    window.location.href = url;
+    finalize();
+  };
+
+  const sendViaCall = () => {
+    window.location.href = `tel:+${BUSINESS_PHONE_INTL}`;
   };
 
   return (
