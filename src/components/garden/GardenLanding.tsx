@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Leaf, Droplets, Scissors, Sprout, TreePine, Trash2, Flower2, Sparkles,
   ShieldCheck, Clock, MapPin, Phone, CheckCircle2, Star, Plus, Minus,
-  ArrowRight, MessageCircle, ChevronDown, Mail,
+  ArrowRight, MessageCircle, ChevronDown, Send, Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -44,7 +44,10 @@ const SERVICE_CITIES = ["Trstenik", "Kruševac", "Vrnjačka Banja", "Aleksandrov
 // Business contact channels (placeholders — replace with real numbers/email)
 const BUSINESS_PHONE_INTL = "381600000000"; // E.164 without +
 const BUSINESS_PHONE_DISPLAY = "+381 60 000 0000";
-const BUSINESS_EMAIL = "kontakt@zelenaoaza.rs";
+
+// Cloudflare Worker endpoint that forwards the form to our Telegram bot.
+// Replace with your actual Worker URL once deployed (see /worker/README.md).
+const WORKER_ENDPOINT = "https://zelena-oaza-order.example.workers.dev/order";
 
 type Frequency = "1x_nedeljno" | "2x_nedeljno" | "1x_mesecno" | "2x_mesecno" | "po_potrebi";
 
@@ -107,6 +110,7 @@ const GardenLanding = () => {
   const [contact, setContact] = useState({ name: "", phone: "", city: "", address: "", notes: "" });
   const [consent, setConsent] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const toggleService = (def: ServiceDef) => {
     setSelected((prev) => {
@@ -180,11 +184,11 @@ const GardenLanding = () => {
     for (const { def, s, freq, monthly } of calc.items) {
       const unit = def.unit === "m²" ? t.services.units.m2 : t.services.units.kom;
       lines.push(
-        `• ${t.services.items[def.id].name} — ${s.quantity} ${unit}, ${t.freq[freq.value]} (${formatRSD(monthly)}/mo)`
+        `• ${t.services.items[def.id].name} — ${s.quantity} ${unit}, ${t.freq[freq.value]} (${formatRSD(monthly)} / ${t.send.monthlySuffix})`
       );
     }
     lines.push("");
-    lines.push(`${t.send.totalLabel}: ${formatRSD(calc.total)}`);
+    lines.push(`${t.send.totalLabel}: ${formatRSD(calc.total)} / ${t.send.monthlySuffix}`);
     lines.push("");
     lines.push(t.send.contactHeader);
     lines.push(`• ${t.contact.name.replace(" *", "")}: ${contact.name}`);
@@ -201,16 +205,7 @@ const GardenLanding = () => {
     return lines.join("\n");
   };
 
-  const finalize = () => {
-    setContactOpen(false);
-    toast({ title: t.toasts.successTitle, description: t.toasts.successDesc(contact.phone) });
-  };
-
-  // Open URL via a real anchor click. Required because:
-  // - Custom schemes (mailto:, tel:, viber:) are often blocked when triggered via
-  //   window.location from a sandboxed iframe (Lovable preview, GitHub Pages embeds).
-  // - A synthetic anchor click with target="_top" breaks out of the iframe and
-  //   triggers the OS handler reliably in Chrome/Safari/Firefox.
+  // Open URL via a real anchor click — needed for tel: schemes inside sandboxed iframes.
   const openExternal = (url: string, newTab = false) => {
     const a = document.createElement("a");
     a.href = url;
@@ -221,29 +216,65 @@ const GardenLanding = () => {
     document.body.removeChild(a);
   };
 
-  const sendViaWhatsApp = () => {
-    if (!validateBeforeSend()) return;
-    const url = `https://wa.me/${BUSINESS_PHONE_INTL}?text=${encodeURIComponent(buildOrderMessage())}`;
-    openExternal(url, true);
-    finalize();
-  };
-
-  const sendViaViber = () => {
-    if (!validateBeforeSend()) return;
-    const url = `viber://chat?number=%2B${BUSINESS_PHONE_INTL}&text=${encodeURIComponent(buildOrderMessage())}`;
-    openExternal(url);
-    finalize();
-  };
-
-  const sendViaEmail = () => {
-    if (!validateBeforeSend()) return;
-    const url = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent(t.send.subject)}&body=${encodeURIComponent(buildOrderMessage())}`;
-    openExternal(url);
-    finalize();
-  };
-
   const sendViaCall = () => {
     openExternal(`tel:+${BUSINESS_PHONE_INTL}`);
+  };
+
+  // Submit the order to our Cloudflare Worker, which forwards it to our Telegram bot.
+  // The Worker is the only thing that holds the bot token / chat id — the static
+  // GitHub Pages site stores no secrets and no data.
+  const sendOrder = async () => {
+    if (!validateBeforeSend()) return;
+    setSending(true);
+    try {
+      const payload = {
+        // Pre-rendered, human-readable message (already localized)
+        message: buildOrderMessage(),
+        // Structured fields, useful if you later want to format it server-side
+        contact: {
+          name: contact.name,
+          phone: contact.phone,
+          city: contact.city || null,
+          address: contact.address || null,
+          notes: contact.notes || null,
+        },
+        items: calc.items.map(({ def, s, freq, monthly, perVisit }) => ({
+          id: def.id,
+          name: t.services.items[def.id].name,
+          quantity: s.quantity,
+          unit: def.unit,
+          frequency: freq.value,
+          perVisitRSD: Math.round(perVisit),
+          monthlyRSD: Math.round(monthly),
+        })),
+        totalMonthlyRSD: Math.round(calc.total),
+        locale: typeof navigator !== "undefined" ? navigator.language : "sr-RS",
+        source: "zelena-oaza-web",
+        sentAt: new Date().toISOString(),
+      };
+
+      const res = await fetch(WORKER_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error(`Worker responded ${res.status}`);
+
+      setContactOpen(false);
+      toast({ title: t.send.sentTitle, description: t.send.sentDesc });
+      // Reset only consent so the next order requires re-consent
+      setConsent(false);
+    } catch (err) {
+      console.error("Order submission failed", err);
+      toast({
+        title: t.send.errorTitle,
+        description: t.send.errorDesc,
+        variant: "destructive",
+      });
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -772,36 +803,26 @@ const GardenLanding = () => {
           <div className="mt-4 pt-4 border-t border-border">
             <p className="text-sm font-semibold text-foreground">{t.send.chooseTitle}</p>
             <p className="text-xs text-muted-foreground mt-1">{t.send.chooseDesc}</p>
-            <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <Button
-                type="button"
-                onClick={sendViaWhatsApp}
-                disabled={!consent}
-                className="gap-2 bg-[hsl(142_70%_38%)] hover:bg-[hsl(142_70%_34%)] text-primary-foreground font-semibold"
-              >
-                <MessageCircle className="h-4 w-4" /> {t.send.whatsapp}
-              </Button>
-              <Button
-                type="button"
-                onClick={sendViaViber}
-                disabled={!consent}
-                className="gap-2 bg-[hsl(271_60%_50%)] hover:bg-[hsl(271_60%_45%)] text-primary-foreground font-semibold"
-              >
-                <MessageCircle className="h-4 w-4" /> {t.send.viber}
-              </Button>
-              <Button
-                type="button"
-                onClick={sendViaEmail}
-                disabled={!consent}
-                variant="outline"
-                className="gap-2 font-semibold"
-              >
-                <Mail className="h-4 w-4" /> {t.send.email}
-              </Button>
-            </div>
+            <Button
+              type="button"
+              onClick={sendOrder}
+              disabled={!consent || sending}
+              size="lg"
+              className="mt-3 w-full gap-2 bg-gradient-primary text-primary-foreground hover:opacity-90 shadow-glow font-semibold h-12"
+            >
+              {sending ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" /> {t.send.submitting}
+                </>
+              ) : (
+                <>
+                  <Send className="h-4 w-4" /> {t.send.submit}
+                </>
+              )}
+            </Button>
             <div className="mt-3 rounded-lg bg-muted/40 border border-dashed border-border p-3 flex items-center justify-between gap-3 flex-wrap">
               <p className="text-xs text-muted-foreground flex-1 min-w-[12rem]">
-                {t.send.fallbackHint}
+                {t.send.errorDesc}
               </p>
               <Button
                 type="button"
@@ -810,7 +831,7 @@ const GardenLanding = () => {
                 variant="outline"
                 className="gap-2"
               >
-                <Phone className="h-4 w-4" /> {t.send.call} {BUSINESS_PHONE_DISPLAY}
+                <Phone className="h-4 w-4" /> {t.send.callFallback} {BUSINESS_PHONE_DISPLAY}
               </Button>
             </div>
           </div>

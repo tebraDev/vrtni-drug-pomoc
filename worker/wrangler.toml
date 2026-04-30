@@ -1,0 +1,8 @@
+name = "zelena-oaza-order"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# Secrets (set with `wrangler secret put <NAME>`):
+#   TELEGRAM_BOT_TOKEN
+#   TELEGRAM_CHAT_ID
+#   ALLOWED_ORIGIN   (optional, e.g. https://yourname.github.io)

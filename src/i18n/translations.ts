@@ -77,17 +77,19 @@ export interface Dict {
   send: {
     chooseTitle: string;
     chooseDesc: string;
-    whatsapp: string;
-    viber: string;
-    email: string;
-    call: string;
-    fallbackHint: string;
-    subject: string;
+    submit: string;
+    submitting: string;
+    sentTitle: string;
+    sentDesc: string;
+    errorTitle: string;
+    errorDesc: string;
+    callFallback: string;
     greeting: string;
     summaryHeader: string;
     contactHeader: string;
     notesHeader: string;
     totalLabel: string;
+    monthlySuffix: string;
     closing: string;
   };
   meta: { title: string; description: string };
@@ -236,18 +238,20 @@ export const translations: Record<Locale, Dict> = {
     langSwitcher: { language: "Jezik", script: "Pismo", latin: "Latinica", cyrillic: "Ćirilica" },
     send: {
       chooseTitle: "Pošaljite narudžbinu",
-      chooseDesc: "Izaberite kako želite da nam pošaljete narudžbinu — bez registracije i bez čuvanja podataka na sajtu.",
-      whatsapp: "WhatsApp",
-      viber: "Viber",
-      email: "E-mail",
-      call: "Pozovi",
-      fallbackHint: "Ako nijedna opcija ne radi, pozovite nas direktno.",
-      subject: "Nova narudžbina — Zelena Oaza",
+      chooseDesc: "Pošaljite narudžbinu jednim klikom — šalje se direktno nama, bez baze podataka na sajtu.",
+      submit: "Pošalji narudžbinu",
+      submitting: "Šalje se...",
+      sentTitle: "Hvala! Narudžbina poslata ✓",
+      sentDesc: "Javljamo Vam se u najkraćem roku.",
+      errorTitle: "Slanje nije uspelo",
+      errorDesc: "Molimo pokušajte ponovo ili nas pozovite direktno.",
+      callFallback: "Pozovi",
       greeting: "Poštovani, želim da poručim sledeće usluge:",
       summaryHeader: "Usluge:",
       contactHeader: "Kontakt:",
       notesHeader: "Napomene:",
       totalLabel: "Mesečna procena",
+      monthlySuffix: "mesečno",
       closing: "Hvala!",
     },
     meta: {
@@ -303,13 +307,13 @@ export const translations: Record<Locale, Dict> = {
       close: "Zatvori",
       sections: [
         { title: "1. Rukovalac podataka", body: "Zelena Oaza (vlasnik / preduzetnik) — kontakt: [ime, adresa, e-mail]. Rukovalac u smislu Zakona o zaštiti podataka o ličnosti Republike Srbije („ZZPL“, Sl. glasnik RS br. 87/2018)." },
-        { title: "2. Koje podatke prikupljamo", body: "Putem kontakt forme: ime i prezime, broj telefona, opciono grad/adresa i napomene. Sajt ne koristi kolačiće za praćenje, niti analitiku trećih strana. Hosting: GitHub Pages (statički sajt, bez baze podataka — podaci se šalju direktno nama putem WhatsApp-a/poziva)." },
+        { title: "2. Koje podatke prikupljamo", body: "Putem kontakt forme: ime i prezime, broj telefona, opciono grad/adresa i napomene. Sajt ne koristi kolačiće za praćenje, niti analitiku trećih strana. Hosting: GitHub Pages (statički sajt, bez baze podataka)." },
         { title: "3. Svrha obrade", body: "Podatke koristimo isključivo da Vas kontaktiramo radi potvrde narudžbine, dogovora termina i izrade ponude. Ne koristimo ih za marketing bez Vaše izričite, dodatne saglasnosti." },
         { title: "4. Pravni osnov", body: "Vaša saglasnost (čl. 12 st. 1 tač. 1 ZZPL) data potvrdom polja za saglasnost u formi, kao i preduzimanje radnji pre zaključenja ugovora na Vaš zahtev (čl. 12 st. 1 tač. 2 ZZPL)." },
         { title: "5. Rok čuvanja", body: "Podatke iz upita čuvamo najviše 12 meseci od poslednjeg kontakta. Ukoliko dođe do zaključenja ugovora, računovodstvene podatke čuvamo onoliko koliko zahteva poreski i računovodstveni propis (do 5 godina)." },
-        { title: "6. Primaoci podataka", body: "Podaci se ne prosleđuju trećim licima. Komunikacija može ići preko WhatsApp-a (Meta Platforms Ireland) ako Vi tako kontaktirate — u tom slučaju važe i njihovi uslovi privatnosti." },
+        { title: "6. Primaoci i obrađivači", body: "Pri slanju forme, podaci prolaze kroz Cloudflare Workers (Cloudflare, Inc., obrađivač u funkciji prosleđivanja zahteva, bez čuvanja sadržaja) i isporučuju se nama kao poruka putem Telegram Bot API-ja (Telegram FZ-LLC). Nakon toga se čuvaju isključivo u našoj internoj Telegram prepisci. Bez prosleđivanja drugim trećim licima." },
         { title: "7. Vaša prava", body: "Imate pravo na: pristup podacima, ispravku, brisanje, ograničenje obrade, prenosivost, prigovor i opoziv saglasnosti u svakom trenutku. Zahtev šaljete na naš kontakt e-mail. Imate i pravo pritužbe Povereniku za informacije od javnog značaja i zaštitu podataka o ličnosti (www.poverenik.rs)." },
-        { title: "8. Bezbednost", body: "Sajt se servira preko HTTPS-a (GitHub Pages). Pristup porukama imamo samo mi. Nemamo bazu podataka na samom sajtu." },
+        { title: "8. Bezbednost", body: "Sajt se servira preko HTTPS-a (GitHub Pages). Slanje forme ide preko HTTPS-a do Cloudflare Workera, koji prosleđuje poruku našem Telegram botu. Pristup porukama imamo samo mi. Nemamo bazu podataka na samom sajtu." },
       ],
     }
   },
@@ -405,18 +409,20 @@ export const translations: Record<Locale, Dict> = {
     langSwitcher: { language: "Језик", script: "Писмо", latin: "Латиница", cyrillic: "Ћирилица" },
     send: {
       chooseTitle: "Пошаљите наруџбину",
-      chooseDesc: "Изаберите како желите да нам пошаљете наруџбину — без регистрације и без чувања података на сајту.",
-      whatsapp: "WhatsApp",
-      viber: "Viber",
-      email: "Е-маил",
-      call: "Позови",
-      fallbackHint: "Ако ниједна опција не ради, позовите нас директно.",
-      subject: "Нова наруџбина — Зелена Оаза",
+      chooseDesc: "Пошаљите наруџбину једним кликом — шаље се директно нама, без базе података на сајту.",
+      submit: "Пошаљи наруџбину",
+      submitting: "Шаље се...",
+      sentTitle: "Хвала! Наруџбина послата ✓",
+      sentDesc: "Јављамо Вам се у најкраћем року.",
+      errorTitle: "Слање није успело",
+      errorDesc: "Молимо покушајте поново или нас позовите директно.",
+      callFallback: "Позови",
       greeting: "Поштовани, желим да поручим следеће услуге:",
       summaryHeader: "Услуге:",
       contactHeader: "Контакт:",
       notesHeader: "Напомене:",
       totalLabel: "Месечна процена",
+      monthlySuffix: "месечно",
       closing: "Хвала!",
     },
     meta: {
@@ -472,13 +478,13 @@ export const translations: Record<Locale, Dict> = {
       close: "Затвори",
       sections: [
         { title: "1. Руковалац подацима", body: "Зелена Оаза (власник / предузетник) — контакт: [име, адреса, е-маил]. Руковалац у смислу Закона о заштити података о личности Републике Србије („ЗЗПЛ“, Сл. гласник РС бр. 87/2018)." },
-        { title: "2. Које податке прикупљамо", body: "Путем контакт форме: име и презиме, број телефона, опционо град/адреса и напомене. Сајт не користи колачиће за праћење, нити аналитику трећих страна. Хостинг: GitHub Pages (статички сајт, без базе података — подаци се шаљу директно нама путем WhatsApp-а/позива)." },
+        { title: "2. Које податке прикупљамо", body: "Путем контакт форме: име и презиме, број телефона, опционо град/адреса и напомене. Сајт не користи колачиће за праћење, нити аналитику трећих страна. Хостинг: GitHub Pages (статички сајт, без базе података)." },
         { title: "3. Сврха обраде", body: "Податке користимо искључиво да Вас контактирамо ради потврде наруџбине, договора термина и израде понуде. Не користимо их за маркетинг без Ваше изричите, додатне сагласности." },
         { title: "4. Правни основ", body: "Ваша сагласност (чл. 12 ст. 1 тач. 1 ЗЗПЛ) дата потврдом поља за сагласност у форми, као и предузимање радњи пре закључења уговора на Ваш захтев (чл. 12 ст. 1 тач. 2 ЗЗПЛ)." },
         { title: "5. Рок чувања", body: "Податке из упита чувамо највише 12 месеци од последњег контакта. Уколико дође до закључења уговора, рачуноводствене податке чувамо онолико колико захтева порески и рачуноводствени пропис (до 5 година)." },
-        { title: "6. Примаоци података", body: "Подаци се не прослеђују трећим лицима. Комуникација може ићи преко WhatsApp-а (Meta Platforms Ireland) ако Ви тако контактирате — у том случају важе и њихови услови приватности." },
+        { title: "6. Примаоци и обрађивачи", body: "При слању форме, подаци пролазе кроз Cloudflare Workers (Cloudflare, Inc., обрађивач у функцији прослеђивања захтева, без чувања садржаја) и испоручују се нама као порука путем Telegram Bot API-ја (Telegram FZ-LLC). Након тога се чувају искључиво у нашој интерној Telegram преписци. Без прослеђивања другим трећим лицима." },
         { title: "7. Ваша права", body: "Имате право на: приступ подацима, исправку, брисање, ограничење обраде, преносивост, приговор и опозив сагласности у сваком тренутку. Захтев шаљете на наш контакт е-маил. Имате и право притужбе Поверенику за информације од јавног значаја и заштиту података о личности (www.poverenik.rs)." },
-        { title: "8. Безбедност", body: "Сајт се сервира преко HTTPS-а (GitHub Pages). Приступ порукама имамо само ми. Немамо базу података на самом сајту." },
+        { title: "8. Безбедност", body: "Сајт се сервира преко HTTPS-а (GitHub Pages). Слање форме иде преко HTTPS-а до Cloudflare Worker-а, који прослеђује поруку нашем Telegram боту. Приступ порукама имамо само ми. Немамо базу података на самом сајту." },
       ],
     }
   },
@@ -575,18 +581,20 @@ export const translations: Record<Locale, Dict> = {
     langSwitcher: { language: "Sprache", script: "Schrift", latin: "Lateinisch", cyrillic: "Kyrillisch" },
     send: {
       chooseTitle: "Bestellung senden",
-      chooseDesc: "Wählen Sie, wie Sie uns die Bestellung senden möchten — ohne Registrierung und ohne Datenspeicherung auf der Seite.",
-      whatsapp: "WhatsApp",
-      viber: "Viber",
-      email: "E-Mail",
-      call: "Anrufen",
-      fallbackHint: "Falls keine Option funktioniert, rufen Sie uns bitte direkt an.",
-      subject: "Neue Bestellung — Zelena Oaza",
+      chooseDesc: "Senden Sie die Bestellung mit einem Klick — sie geht direkt an uns, ohne Datenbank auf der Seite.",
+      submit: "Bestellung senden",
+      submitting: "Wird gesendet...",
+      sentTitle: "Danke! Bestellung gesendet ✓",
+      sentDesc: "Wir melden uns schnellstmöglich.",
+      errorTitle: "Senden fehlgeschlagen",
+      errorDesc: "Bitte erneut versuchen oder uns direkt anrufen.",
+      callFallback: "Anrufen",
       greeting: "Guten Tag, ich möchte folgende Leistungen bestellen:",
       summaryHeader: "Leistungen:",
       contactHeader: "Kontakt:",
       notesHeader: "Anmerkungen:",
       totalLabel: "Monatliche Schätzung",
+      monthlySuffix: "pro Monat",
       closing: "Danke!",
     },
     meta: {
@@ -642,13 +650,13 @@ export const translations: Record<Locale, Dict> = {
       close: "Schließen",
       sections: [
         { title: "1. Verantwortlicher", body: "Zelena Oaza (Inhaber / Unternehmer) — Kontakt: [Name, Adresse, E-Mail]. Verantwortlicher im Sinne des serbischen Gesetzes über den Schutz personenbezogener Daten („ZZPL“, Amtsblatt RS Nr. 87/2018), das eng an die DSGVO angelehnt ist." },
-        { title: "2. Welche Daten wir erheben", body: "Über das Kontaktformular: Name, Telefonnummer, optional Stadt/Adresse und Anmerkungen. Die Website verwendet keine Tracking-Cookies und keine Drittanbieter-Analytik. Hosting: GitHub Pages (statische Seite, keine Datenbank — Daten gehen direkt über WhatsApp/Anruf an uns)." },
+        { title: "2. Welche Daten wir erheben", body: "Über das Kontaktformular: Name, Telefonnummer, optional Stadt/Adresse und Anmerkungen. Die Website verwendet keine Tracking-Cookies und keine Drittanbieter-Analytik. Hosting: GitHub Pages (statische Seite, keine Datenbank)." },
         { title: "3. Zweck der Verarbeitung", body: "Wir verwenden die Daten ausschließlich, um Sie zur Bestätigung der Anfrage, Terminabsprache und Angebotserstellung zu kontaktieren. Keine Marketingnutzung ohne ausdrückliche, separate Einwilligung." },
         { title: "4. Rechtsgrundlage", body: "Ihre Einwilligung (Art. 12 Abs. 1 Nr. 1 ZZPL) durch Ankreuzen des Einwilligungsfeldes sowie vorvertragliche Maßnahmen auf Ihre Anfrage hin (Art. 12 Abs. 1 Nr. 2 ZZPL)." },
         { title: "5. Speicherdauer", body: "Anfragedaten speichern wir maximal 12 Monate nach dem letzten Kontakt. Kommt es zu einem Vertrag, gelten die steuer- und buchhaltungsrechtlichen Aufbewahrungsfristen (bis 5 Jahre)." },
-        { title: "6. Empfänger", body: "Keine Weitergabe an Dritte. Falls Sie über WhatsApp (Meta Platforms Ireland) kommunizieren, gelten zusätzlich deren Datenschutzbedingungen." },
+        { title: "6. Empfänger & Auftragsverarbeiter", body: "Beim Absenden des Formulars werden die Daten über Cloudflare Workers (Cloudflare, Inc., Auftragsverarbeiter zur reinen Anfrageweiterleitung, kein Speichern der Inhalte) an unseren Telegram-Bot via Telegram Bot API (Telegram FZ-LLC) übermittelt. Danach liegen sie ausschließlich in unserem internen Telegram-Chat. Keine Weitergabe an weitere Dritte." },
         { title: "7. Ihre Rechte", body: "Sie haben Recht auf: Auskunft, Berichtigung, Löschung, Einschränkung, Übertragbarkeit, Widerspruch und jederzeitigen Widerruf der Einwilligung. Anfragen an unsere Kontakt-E-Mail. Beschwerderecht beim serbischen Datenschutzbeauftragten (www.poverenik.rs)." },
-        { title: "8. Sicherheit", body: "Auslieferung über HTTPS (GitHub Pages). Zugriff auf eingehende Nachrichten haben nur wir. Keine Datenbank auf der Website selbst." },
+        { title: "8. Sicherheit", body: "Auslieferung über HTTPS (GitHub Pages). Das Formular wird per HTTPS an unseren Cloudflare Worker gesendet, der die Nachricht an unseren Telegram-Bot weiterleitet. Zugriff auf eingehende Nachrichten haben nur wir. Keine Datenbank auf der Website selbst." },
       ],
     }
   },
@@ -743,18 +751,20 @@ export const translations: Record<Locale, Dict> = {
     langSwitcher: { language: "Language", script: "Script", latin: "Latin", cyrillic: "Cyrillic" },
     send: {
       chooseTitle: "Send your order",
-      chooseDesc: "Choose how you want to send the order — no registration, no data stored on the site.",
-      whatsapp: "WhatsApp",
-      viber: "Viber",
-      email: "Email",
-      call: "Call",
-      fallbackHint: "If none of the options works, please call us directly.",
-      subject: "New order — Zelena Oaza",
+      chooseDesc: "Send your order with one click — it goes directly to us, no database on the site.",
+      submit: "Send order",
+      submitting: "Sending...",
+      sentTitle: "Thank you! Order sent ✓",
+      sentDesc: "We'll get back to you as soon as possible.",
+      errorTitle: "Sending failed",
+      errorDesc: "Please try again or call us directly.",
+      callFallback: "Call",
       greeting: "Hello, I would like to order the following services:",
       summaryHeader: "Services:",
       contactHeader: "Contact:",
       notesHeader: "Notes:",
       totalLabel: "Monthly estimate",
+      monthlySuffix: "per month",
       closing: "Thank you!",
     },
     meta: {
@@ -810,13 +820,13 @@ export const translations: Record<Locale, Dict> = {
       close: "Close",
       sections: [
         { title: "1. Data controller", body: "Zelena Oaza (owner / sole trader) — contact: [name, address, e-mail]. Controller under the Serbian Personal Data Protection Act (\"ZZPL\", Official Gazette RS no. 87/2018), closely aligned with the GDPR." },
-        { title: "2. What we collect", body: "Via the contact form: name, phone number, optional city/address and notes. The site uses no tracking cookies and no third-party analytics. Hosting: GitHub Pages (static site, no database — data is sent directly to us via WhatsApp/phone)." },
+        { title: "2. What we collect", body: "Via the contact form: name, phone number, optional city/address and notes. The site uses no tracking cookies and no third-party analytics. Hosting: GitHub Pages (static site, no database)." },
         { title: "3. Purpose", body: "We use the data only to contact you to confirm the order, agree on a schedule and prepare a quote. No marketing use without your explicit, separate consent." },
         { title: "4. Legal basis", body: "Your consent (Art. 12(1)(1) ZZPL) given by ticking the consent box, and pre-contractual steps at your request (Art. 12(1)(2) ZZPL)." },
         { title: "5. Retention", body: "Enquiry data is kept for at most 12 months after the last contact. If a contract is signed, accounting data is kept as required by Serbian tax and accounting law (up to 5 years)." },
-        { title: "6. Recipients", body: "Data is not shared with third parties. If you reach out via WhatsApp (Meta Platforms Ireland), their privacy terms also apply." },
+        { title: "6. Recipients & processors", body: "When you submit the form, the data passes through Cloudflare Workers (Cloudflare, Inc., a processor that only forwards the request and does not store the content) and is delivered to us as a message via the Telegram Bot API (Telegram FZ-LLC). It then resides only in our private Telegram chat. No further sharing with third parties." },
         { title: "7. Your rights", body: "You have the right to: access, rectification, erasure, restriction, portability, objection and to withdraw consent at any time. Send requests to our contact e-mail. You may also lodge a complaint with the Serbian Commissioner for Information of Public Importance and Personal Data Protection (www.poverenik.rs)." },
-        { title: "8. Security", body: "Served over HTTPS (GitHub Pages). Only we have access to incoming messages. No database on the site itself." },
+        { title: "8. Security", body: "Served over HTTPS (GitHub Pages). The form is sent over HTTPS to our Cloudflare Worker, which forwards the message to our Telegram bot. Only we have access to incoming messages. No database on the site itself." },
       ],
     }
   },
