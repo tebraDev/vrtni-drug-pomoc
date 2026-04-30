@@ -77,17 +77,19 @@ export interface Dict {
   send: {
     chooseTitle: string;
     chooseDesc: string;
-    whatsapp: string;
-    viber: string;
-    email: string;
-    call: string;
-    fallbackHint: string;
-    subject: string;
+    submit: string;
+    submitting: string;
+    sentTitle: string;
+    sentDesc: string;
+    errorTitle: string;
+    errorDesc: string;
+    callFallback: string;
     greeting: string;
     summaryHeader: string;
     contactHeader: string;
     notesHeader: string;
     totalLabel: string;
+    monthlySuffix: string;
     closing: string;
   };
   meta: { title: string; description: string };
