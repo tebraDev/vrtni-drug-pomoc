@@ -307,13 +307,13 @@ export const translations: Record<Locale, Dict> = {
       close: "Zatvori",
       sections: [
         { title: "1. Rukovalac podataka", body: "Zelena Oaza (vlasnik / preduzetnik) — kontakt: [ime, adresa, e-mail]. Rukovalac u smislu Zakona o zaštiti podataka o ličnosti Republike Srbije („ZZPL“, Sl. glasnik RS br. 87/2018)." },
-        { title: "2. Koje podatke prikupljamo", body: "Putem kontakt forme: ime i prezime, broj telefona, opciono grad/adresa i napomene. Sajt ne koristi kolačiće za praćenje, niti analitiku trećih strana. Hosting: GitHub Pages (statički sajt, bez baze podataka — podaci se šalju direktno nama putem WhatsApp-a/poziva)." },
+        { title: "2. Koje podatke prikupljamo", body: "Putem kontakt forme: ime i prezime, broj telefona, opciono grad/adresa i napomene. Sajt ne koristi kolačiće za praćenje, niti analitiku trećih strana. Hosting: GitHub Pages (statički sajt, bez baze podataka)." },
         { title: "3. Svrha obrade", body: "Podatke koristimo isključivo da Vas kontaktiramo radi potvrde narudžbine, dogovora termina i izrade ponude. Ne koristimo ih za marketing bez Vaše izričite, dodatne saglasnosti." },
         { title: "4. Pravni osnov", body: "Vaša saglasnost (čl. 12 st. 1 tač. 1 ZZPL) data potvrdom polja za saglasnost u formi, kao i preduzimanje radnji pre zaključenja ugovora na Vaš zahtev (čl. 12 st. 1 tač. 2 ZZPL)." },
         { title: "5. Rok čuvanja", body: "Podatke iz upita čuvamo najviše 12 meseci od poslednjeg kontakta. Ukoliko dođe do zaključenja ugovora, računovodstvene podatke čuvamo onoliko koliko zahteva poreski i računovodstveni propis (do 5 godina)." },
-        { title: "6. Primaoci podataka", body: "Podaci se ne prosleđuju trećim licima. Komunikacija može ići preko WhatsApp-a (Meta Platforms Ireland) ako Vi tako kontaktirate — u tom slučaju važe i njihovi uslovi privatnosti." },
+        { title: "6. Primaoci i obrađivači", body: "Pri slanju forme, podaci prolaze kroz Cloudflare Workers (Cloudflare, Inc., obrađivač u funkciji prosleđivanja zahteva, bez čuvanja sadržaja) i isporučuju se nama kao poruka putem Telegram Bot API-ja (Telegram FZ-LLC). Nakon toga se čuvaju isključivo u našoj internoj Telegram prepisci. Bez prosleđivanja drugim trećim licima." },
         { title: "7. Vaša prava", body: "Imate pravo na: pristup podacima, ispravku, brisanje, ograničenje obrade, prenosivost, prigovor i opoziv saglasnosti u svakom trenutku. Zahtev šaljete na naš kontakt e-mail. Imate i pravo pritužbe Povereniku za informacije od javnog značaja i zaštitu podataka o ličnosti (www.poverenik.rs)." },
-        { title: "8. Bezbednost", body: "Sajt se servira preko HTTPS-a (GitHub Pages). Pristup porukama imamo samo mi. Nemamo bazu podataka na samom sajtu." },
+        { title: "8. Bezbednost", body: "Sajt se servira preko HTTPS-a (GitHub Pages). Slanje forme ide preko HTTPS-a do Cloudflare Workera, koji prosleđuje poruku našem Telegram botu. Pristup porukama imamo samo mi. Nemamo bazu podataka na samom sajtu." },
       ],
     }
   },
