@@ -766,28 +766,32 @@ const GardenLanding = () => {
 
       {/* CONTACT DIALOG */}
       <Dialog open={contactOpen} onOpenChange={setContactOpen}>
-        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-lg max-h-[92vh] overflow-y-auto rounded-2xl border-border/60">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Phone className="h-5 w-5 text-primary" /> {t.contact.title}
+            <DialogTitle className="flex items-center gap-2.5 text-xl tracking-tight">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft">
+                <Phone className="h-4 w-4" />
+              </div>
+              {t.contact.title}
             </DialogTitle>
-            <DialogDescription>
-              {t.summary.itemsCount(calc.items.length)} · {t.summary.totalMonthly}: <strong className="text-primary">{formatRSD(calc.total)}</strong>
+            <DialogDescription className="pt-1">
+              {t.summary.itemsCount(calc.items.length)} · {t.summary.totalMonthly}:{" "}
+              <strong className="text-primary tabular-nums">{formatRSD(calc.total)}</strong>
             </DialogDescription>
           </DialogHeader>
-          <div className="grid sm:grid-cols-2 gap-3 mt-2">
+          <div className="grid sm:grid-cols-2 gap-4 mt-2">
             <div className="sm:col-span-2">
-              <Label htmlFor="name">{t.contact.name}</Label>
-              <Input id="name" value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} maxLength={100} />
+              <Label htmlFor="name" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.name}</Label>
+              <Input id="name" value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} maxLength={100} className="mt-1.5 h-11 rounded-xl" />
             </div>
             <div className="sm:col-span-2">
-              <Label htmlFor="phone">{t.contact.phone}</Label>
-              <Input id="phone" value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} maxLength={30} placeholder="+381 ..." inputMode="tel" />
+              <Label htmlFor="phone" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.phone}</Label>
+              <Input id="phone" value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} maxLength={30} placeholder="+381 ..." inputMode="tel" className="mt-1.5 h-11 rounded-xl" />
             </div>
             <div>
-              <Label htmlFor="city">{t.contact.city}</Label>
+              <Label htmlFor="city" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.city}</Label>
               <Select value={contact.city} onValueChange={(v) => setContact({ ...contact, city: v })}>
-                <SelectTrigger id="city">
+                <SelectTrigger id="city" className="mt-1.5 h-11 rounded-xl">
                   <SelectValue placeholder={t.contact.cityPlaceholder} />
                 </SelectTrigger>
                 <SelectContent>
@@ -798,11 +802,11 @@ const GardenLanding = () => {
               </Select>
             </div>
             <div>
-              <Label htmlFor="address">{t.contact.address}</Label>
-              <Input id="address" value={contact.address} onChange={(e) => setContact({ ...contact, address: e.target.value })} maxLength={150} />
+              <Label htmlFor="address" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.address}</Label>
+              <Input id="address" value={contact.address} onChange={(e) => setContact({ ...contact, address: e.target.value })} maxLength={150} className="mt-1.5 h-11 rounded-xl" />
             </div>
             <div className="sm:col-span-2">
-              <Label htmlFor="notes">{t.contact.notes}</Label>
+              <Label htmlFor="notes" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.notes}</Label>
               <Textarea
                 id="notes"
                 value={contact.notes}
@@ -810,16 +814,17 @@ const GardenLanding = () => {
                 maxLength={1000}
                 placeholder={t.contact.notesPlaceholder}
                 rows={3}
+                className="mt-1.5 rounded-xl"
               />
             </div>
           </div>
 
-          <div className="mt-4 rounded-lg bg-muted/40 border border-border p-3 text-xs text-muted-foreground leading-relaxed flex gap-2">
+          <div className="mt-4 rounded-xl bg-secondary/40 border border-border/60 p-3.5 text-xs text-muted-foreground leading-relaxed flex gap-2.5">
             <ShieldCheck className="h-4 w-4 text-primary shrink-0 mt-0.5" />
             <span>{t.privacy.inlineNotice}</span>
           </div>
 
-          <div className="mt-3 flex items-start gap-2">
+          <div className="mt-3 flex items-start gap-2.5 rounded-xl p-3 hover:bg-secondary/30 transition-colors">
             <Checkbox
               id="consent"
               checked={consent}
@@ -839,15 +844,15 @@ const GardenLanding = () => {
             </Label>
           </div>
 
-          <div className="mt-4 pt-4 border-t border-border">
-            <p className="text-sm font-semibold text-foreground">{t.send.chooseTitle}</p>
+          <div className="mt-4 pt-4 border-t border-border/60">
+            <p className="text-sm font-semibold text-foreground tracking-tight">{t.send.chooseTitle}</p>
             <p className="text-xs text-muted-foreground mt-1">{t.send.chooseDesc}</p>
             <Button
               type="button"
               onClick={sendOrder}
               disabled={!consent || sending}
               size="lg"
-              className="mt-3 w-full gap-2 bg-gradient-primary text-primary-foreground hover:opacity-90 shadow-glow font-semibold h-12"
+              className="mt-3 w-full gap-2 bg-gradient-primary text-primary-foreground hover:opacity-95 hover:scale-[1.01] active:scale-[0.99] disabled:hover:scale-100 shadow-glow font-semibold h-12 rounded-full transition-all duration-200"
             >
               {sending ? (
                 <>
@@ -859,7 +864,7 @@ const GardenLanding = () => {
                 </>
               )}
             </Button>
-            <div className="mt-3 rounded-lg bg-muted/40 border border-dashed border-border p-3 flex items-center justify-between gap-3 flex-wrap">
+            <div className="mt-3 rounded-xl bg-muted/40 border border-dashed border-border/60 p-3 flex items-center justify-between gap-3 flex-wrap">
               <p className="text-xs text-muted-foreground flex-1 min-w-[12rem]">
                 {t.send.errorDesc}
               </p>
@@ -868,7 +873,7 @@ const GardenLanding = () => {
                 onClick={sendViaCall}
                 size="sm"
                 variant="outline"
-                className="gap-2"
+                className="gap-2 rounded-full"
               >
                 <Phone className="h-4 w-4" /> {t.send.callFallback} {BUSINESS_PHONE_DISPLAY}
               </Button>
