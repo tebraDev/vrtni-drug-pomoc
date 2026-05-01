@@ -439,9 +439,10 @@ const GardenLanding = () => {
       <section id="porucivanje" className="container py-16 md:py-24 scroll-mt-4">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
-            {t.config.sectionTitle}
+            {t.summary.orderBtn}
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">{t.config.sectionDesc}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">{t.config.sectionTitle}</h2>
+          <p className="mt-4 text-muted-foreground text-lg text-balance">{t.config.sectionDesc}</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
