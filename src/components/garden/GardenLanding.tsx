@@ -278,7 +278,7 @@ const GardenLanding = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-soft pb-24 lg:pb-0">
+    <div className="min-h-screen bg-gradient-soft pb-24 lg:pb-0 antialiased">
       {/* HERO */}
       <header className="relative overflow-hidden">
         <div className="absolute inset-0">
@@ -287,44 +287,48 @@ const GardenLanding = () => {
             alt="Uređena bašta u Srbiji"
             width={1600}
             height={900}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover scale-105"
           />
           <div className="absolute inset-0 bg-gradient-hero" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+          {/* Aurora glow */}
+          <div className="absolute -top-32 -left-32 h-[28rem] w-[28rem] rounded-full bg-gradient-aurora blur-3xl animate-aurora" />
+          <div className="absolute top-20 right-0 h-[24rem] w-[24rem] rounded-full bg-gradient-aurora blur-3xl animate-aurora [animation-delay:2s] opacity-70" />
         </div>
         <nav className="relative z-10 container flex items-center justify-between py-5">
-          <div className="flex items-center gap-2 text-primary-foreground">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-foreground/15 backdrop-blur">
+          <div className="flex items-center gap-2.5 text-primary-foreground animate-fade-in">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl glass-dark shadow-glow">
               <Leaf className="h-5 w-5" />
             </div>
-            <span className="text-xl font-bold tracking-tight">Zelena Oaza</span>
+            <span className="text-xl font-semibold tracking-tight">Zelena Oaza</span>
           </div>
           <div className="flex items-center gap-2">
             <a
               href="#porucivanje"
-              className="hidden sm:inline-flex h-9 items-center text-primary-foreground/90 hover:text-primary-foreground text-sm font-medium px-3"
+              className="hidden sm:inline-flex h-9 items-center text-primary-foreground/90 hover:text-primary-foreground text-sm font-medium px-3 transition-colors"
             >
               {t.nav.order}
             </a>
             <LanguageSwitcher />
           </div>
         </nav>
-        <div className="relative z-10 container py-16 md:py-28">
-          <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/15 px-4 py-1.5 text-sm font-medium text-primary-foreground backdrop-blur ring-1 ring-primary-foreground/20">
-              <Sparkles className="h-4 w-4" /> {t.hero.badge}
+        <div className="relative z-10 container py-20 md:py-32">
+          <div className="max-w-2xl animate-fade-in-up">
+            <span className="inline-flex items-center gap-2 rounded-full glass-dark px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft">
+              <Sparkles className="h-4 w-4 text-accent" /> {t.hero.badge}
             </span>
-            <h1 className="mt-6 text-4xl md:text-6xl font-bold leading-[1.1] text-primary-foreground drop-shadow-md">
+            <h1 className="mt-7 text-balance text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight text-primary-foreground drop-shadow-lg">
               {t.hero.title}
             </h1>
-            <p className="mt-6 text-lg md:text-xl text-primary-foreground/95 leading-relaxed max-w-xl">
+            <p className="mt-6 text-lg md:text-xl text-primary-foreground/95 leading-relaxed max-w-xl text-balance">
               {t.hero.subtitle}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-9 flex flex-wrap gap-3">
               <Button
                 asChild
                 size="lg"
-                className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-glow text-base font-semibold h-12 px-7"
+                className="bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-[1.02] active:scale-[0.98] shadow-glow text-base font-semibold h-13 px-8 rounded-full transition-spring"
+                style={{ transition: "var(--transition-spring)" }}
               >
                 <a href="#porucivanje">
                   {t.hero.ctaPrimary} <ArrowRight className="ml-1 h-5 w-5" />
@@ -334,24 +338,25 @@ const GardenLanding = () => {
                 asChild
                 size="lg"
                 variant="outline"
-                className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/20 backdrop-blur h-12 px-6"
+                className="glass-dark text-primary-foreground border-0 hover:bg-primary-foreground/15 h-13 px-7 rounded-full"
               >
                 <a href="#usluge">{t.hero.ctaSecondary}</a>
               </Button>
             </div>
 
-            <div className="mt-8 grid grid-cols-3 gap-4 max-w-md">
+            <div className="mt-10 grid grid-cols-3 gap-3 max-w-md">
               {[
                 { icon: ShieldCheck, label: t.hero.trust.reliable },
                 { icon: Clock, label: t.hero.trust.onTime },
                 { icon: MapPin, label: t.hero.trust.allSerbia },
-              ].map(({ icon: Icon, label }) => (
+              ].map(({ icon: Icon, label }, i) => (
                 <div
                   key={label}
-                  className="flex flex-col items-center gap-1.5 rounded-xl bg-primary-foreground/10 backdrop-blur ring-1 ring-primary-foreground/15 px-3 py-3 text-primary-foreground"
+                  className="flex flex-col items-center gap-2 rounded-2xl glass-dark px-3 py-4 text-primary-foreground animate-fade-in-up"
+                  style={{ animationDelay: `${0.2 + i * 0.1}s` }}
                 >
-                  <Icon className="h-5 w-5" />
-                  <span className="text-xs font-medium text-center">{label}</span>
+                  <Icon className="h-5 w-5 text-accent" />
+                  <span className="text-xs font-medium text-center leading-tight">{label}</span>
                 </div>
               ))}
             </div>
@@ -360,58 +365,69 @@ const GardenLanding = () => {
       </header>
 
       {/* SERVICE AREA BAND */}
-      <div className="bg-primary/5 border-b border-primary/10">
+      <div className="bg-primary/5 border-b border-primary/10 backdrop-blur">
         <div className="container py-3 flex items-center justify-center gap-2 text-center">
-          <MapPin className="h-4 w-4 text-primary shrink-0" />
-          <p className="text-xs sm:text-sm font-medium text-foreground/90">
+          <MapPin className="h-4 w-4 text-primary shrink-0 animate-pulse" />
+          <p className="text-xs sm:text-sm font-medium text-foreground/90 tracking-tight">
             {t.hero.serviceArea}
           </p>
         </div>
       </div>
 
       {/* HOW IT WORKS */}
-      <section className="container py-12 md:py-16">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground">{t.steps.title}</h2>
-          <p className="mt-3 text-muted-foreground">{t.steps.subtitle}</p>
+      <section className="container py-16 md:py-24 bg-mesh">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
+            {t.steps.title}
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">{t.steps.subtitle}</h2>
         </div>
-        <div className="grid md:grid-cols-3 gap-5">
+        <div className="relative grid md:grid-cols-3 gap-6">
+          {/* Connecting line on desktop */}
+          <div className="hidden md:block absolute top-12 left-[16.66%] right-[16.66%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
           {[t.steps.s1, t.steps.s2, t.steps.s3].map((step, i) => (
-            <Card key={i} className="p-6 shadow-soft hover:shadow-glow transition-smooth">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft mb-4">
-                <span className="text-lg font-bold">{i + 1}</span>
-              </div>
-              <h3 className="font-semibold text-foreground text-lg">{step.title.replace(/^\d+\.\s*/, "")}</h3>
-              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{step.desc}</p>
-            </Card>
+            <div key={i} className="relative">
+              <Card className="relative p-7 shadow-ring1 hover:shadow-elevated hover:-translate-y-1 transition-all duration-300 bg-card/80 backdrop-blur border-border/60 h-full">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-glow mb-5 ring-4 ring-card">
+                  <span className="text-xl font-bold">{i + 1}</span>
+                </div>
+                <h3 className="font-semibold text-foreground text-lg tracking-tight">{step.title.replace(/^\d+\.\s*/, "")}</h3>
+                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{step.desc}</p>
+              </Card>
+            </div>
           ))}
         </div>
       </section>
 
       {/* BEFORE/AFTER GALLERY */}
-      <section className="bg-secondary/30 border-y border-border">
-        <div className="container py-14">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground">{t.gallery.title}</h2>
-            <p className="mt-3 text-muted-foreground">{t.gallery.subtitle}</p>
-            <p className="mt-2 text-xs text-muted-foreground/80">{t.gallery.dragHint}</p>
+      <section className="bg-gradient-to-b from-secondary/40 via-secondary/20 to-background border-y border-border/60">
+        <div className="container py-16 md:py-20">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
+              {t.gallery.before} / {t.gallery.after}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">{t.gallery.title}</h2>
+            <p className="mt-3 text-muted-foreground text-balance">{t.gallery.subtitle}</p>
+            <p className="mt-3 text-xs text-muted-foreground/80">{t.gallery.dragHint}</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {t.gallery.items.map((it, i) => {
               const pair = GALLERY_PAIRS[i];
               if (!pair) return null;
               return (
-                <div key={i} className="space-y-3">
-                  <BeforeAfterSlider
-                    beforeSrc={pair.before}
-                    afterSrc={pair.after}
-                    beforeLabel={t.gallery.before}
-                    afterLabel={t.gallery.after}
-                    alt={it.title}
-                  />
-                  <div className="px-1">
-                    <h3 className="font-semibold text-foreground text-sm">{it.title}</h3>
-                    <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{it.desc}</p>
+                <div key={i} className="group space-y-3 rounded-2xl p-3 transition-all duration-300 hover:bg-card hover:shadow-elevated">
+                  <div className="overflow-hidden rounded-xl ring-1 ring-border/60">
+                    <BeforeAfterSlider
+                      beforeSrc={pair.before}
+                      afterSrc={pair.after}
+                      beforeLabel={t.gallery.before}
+                      afterLabel={t.gallery.after}
+                      alt={it.title}
+                    />
+                  </div>
+                  <div className="px-2 pb-1">
+                    <h3 className="font-semibold text-foreground text-sm tracking-tight">{it.title}</h3>
+                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{it.desc}</p>
                   </div>
                 </div>
               );
@@ -421,28 +437,34 @@ const GardenLanding = () => {
       </section>
 
       {/* SERVICES + CALCULATOR */}
-      <section id="porucivanje" className="container py-12 md:py-16 scroll-mt-4">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">{t.config.sectionTitle}</h2>
-          <p className="mt-4 text-muted-foreground text-lg">{t.config.sectionDesc}</p>
+      <section id="porucivanje" className="container py-16 md:py-24 scroll-mt-4">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
+            {t.summary.orderBtn}
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">{t.config.sectionTitle}</h2>
+          <p className="mt-4 text-muted-foreground text-lg text-balance">{t.config.sectionDesc}</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* LEFT: services */}
           <div className="lg:col-span-2 space-y-6">
             {/* Area card */}
-            <Card className="p-6 shadow-soft">
-              <div className="flex items-baseline justify-between gap-3 flex-wrap">
-                <Label htmlFor="area" className="text-base font-semibold">
+            <Card className="p-7 shadow-elevated border-border/60 bg-gradient-to-br from-card to-secondary/30 backdrop-blur">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary text-xs font-bold">1</span>
+                <Label htmlFor="area" className="text-base font-semibold tracking-tight">
                   {t.config.areaLabel}
                 </Label>
-                <span className="text-2xl font-bold text-primary tabular-nums">
-                  {area} <span className="text-base text-muted-foreground font-medium">m²</span>
+              </div>
+              <div className="flex items-baseline justify-between gap-3 flex-wrap mt-3">
+                <p className="text-sm text-muted-foreground">{t.config.areaHelp}</p>
+                <span className="text-3xl font-bold text-primary tabular-nums tracking-tight">
+                  {area}<span className="text-lg text-muted-foreground font-medium ml-1">m²</span>
                 </span>
               </div>
-              <p className="text-sm text-muted-foreground mt-1">{t.config.areaHelp}</p>
 
-              <div className="mt-5">
+              <div className="mt-6">
                 <Slider
                   value={[area]}
                   min={20}
@@ -452,18 +474,18 @@ const GardenLanding = () => {
                 />
               </div>
 
-              <div className="mt-5">
-                <p className="text-xs font-medium text-muted-foreground mb-2">{t.config.presetsTitle}</p>
+              <div className="mt-6">
+                <p className="text-xs font-medium text-muted-foreground mb-2.5 uppercase tracking-wider">{t.config.presetsTitle}</p>
                 <div className="flex flex-wrap gap-2">
                   {PRESET_AREAS.map((p) => (
                     <button
                       key={p.key}
                       type="button"
                       onClick={() => setArea(p.value)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-smooth ring-1 ${
+                      className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ring-1 active:scale-95 ${
                         area === p.value
-                          ? "bg-primary text-primary-foreground ring-primary shadow-soft"
-                          : "bg-secondary text-secondary-foreground ring-border hover:bg-secondary/70"
+                          ? "bg-gradient-primary text-primary-foreground ring-primary shadow-glow scale-105"
+                          : "bg-card text-foreground/80 ring-border hover:ring-primary/40 hover:bg-secondary/50"
                       }`}
                     >
                       {t.config.presets[p.key]}
@@ -474,6 +496,12 @@ const GardenLanding = () => {
             </Card>
 
             {/* Services grid */}
+            <div className="flex items-center gap-2 pt-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary text-xs font-bold">2</span>
+              <h3 className="text-base font-semibold tracking-tight text-foreground">
+                {t.services.add}
+              </h3>
+            </div>
             <div id="usluge" className="grid sm:grid-cols-2 gap-4">
               {SERVICES.map((svc) => {
                 const isSelected = !!selected[svc.id];
@@ -487,25 +515,31 @@ const GardenLanding = () => {
                   <Card
                     key={svc.id}
                     onClick={() => toggleService(svc)}
-                    className={`group relative p-5 cursor-pointer transition-smooth overflow-hidden ${
+                    className={`group relative p-5 cursor-pointer overflow-hidden border-border/60 transition-all duration-300 ${
                       isSelected
-                        ? "ring-2 ring-primary shadow-glow bg-gradient-to-br from-secondary/60 to-card"
-                        : "hover:shadow-soft hover:-translate-y-0.5"
+                        ? "ring-2 ring-primary shadow-elevated bg-gradient-to-br from-secondary/70 via-card to-card -translate-y-0.5"
+                        : "hover:shadow-elevated hover:-translate-y-1 hover:border-primary/30 bg-card/80 backdrop-blur"
                     }`}
                   >
+                    {/* Subtle glow on selected */}
                     {isSelected && (
-                      <Badge className="absolute top-3 right-3 bg-primary text-primary-foreground gap-1 pointer-events-none">
+                      <div className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-aurora blur-2xl opacity-60" />
+                    )}
+                    {isSelected && (
+                      <Badge className="absolute top-3 right-3 bg-primary text-primary-foreground gap-1 pointer-events-none animate-scale-in shadow-soft">
                         <CheckCircle2 className="h-3 w-3" /> {t.services.selected}
                       </Badge>
                     )}
                     <div className="flex items-start gap-3">
-                      <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl shadow-soft transition-smooth ${
-                        isSelected ? "bg-gradient-primary text-primary-foreground" : "bg-secondary text-primary"
+                      <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl transition-all duration-300 ${
+                        isSelected
+                          ? "bg-gradient-primary text-primary-foreground shadow-glow scale-110 rotate-3"
+                          : "bg-secondary text-primary group-hover:scale-105 group-hover:rotate-3"
                       }`}>
                         <Icon className="h-6 w-6" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-foreground leading-tight pr-20">
+                        <h3 className="font-semibold text-foreground leading-tight pr-20 tracking-tight">
                           {item.name}
                         </h3>
                         <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
@@ -521,7 +555,7 @@ const GardenLanding = () => {
 
                     {isSelected && current && (
                       <div
-                        className="mt-4 pt-4 border-t border-border space-y-3"
+                        className="mt-4 pt-4 border-t border-border/60 space-y-3 animate-fade-in"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <div>
@@ -591,53 +625,55 @@ const GardenLanding = () => {
 
           {/* RIGHT: summary */}
           <div className="lg:col-span-1">
-            <Card className="p-6 shadow-glow lg:sticky lg:top-6 bg-card">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-foreground">{t.summary.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-0.5">
-                    {t.summary.itemsCount(calc.items.length)} · {t.summary.monthlyEstimate}
-                  </p>
-                </div>
+            <Card className="p-7 shadow-elevated lg:sticky lg:top-6 bg-card/90 backdrop-blur border-border/60 overflow-hidden relative">
+              <div className="pointer-events-none absolute -top-20 -right-20 h-40 w-40 rounded-full bg-gradient-aurora blur-2xl opacity-50" />
+              <div className="flex items-center gap-2 mb-1">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary text-xs font-bold">3</span>
+                <h3 className="text-xl font-bold text-foreground tracking-tight">{t.summary.title}</h3>
               </div>
+              <p className="text-sm text-muted-foreground">
+                {t.summary.itemsCount(calc.items.length)} · {t.summary.monthlyEstimate}
+              </p>
 
-              <div className="mt-5 space-y-3 max-h-72 overflow-y-auto pr-1">
+              <div className="mt-6 space-y-3 max-h-72 overflow-y-auto pr-1 -mr-1">
                 {calc.items.length === 0 && (
-                  <div className="text-center py-6 px-3 rounded-xl bg-muted/40 border border-dashed border-border">
-                    <Leaf className="h-7 w-7 text-muted-foreground/60 mx-auto mb-2" />
+                  <div className="text-center py-8 px-3 rounded-2xl bg-muted/30 border border-dashed border-border/60">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary/60 text-primary/60 mx-auto mb-3">
+                      <Leaf className="h-6 w-6" />
+                    </div>
                     <p className="text-sm text-muted-foreground">{t.summary.empty}</p>
                   </div>
                 )}
                 {calc.items.map(({ def, s, freq, monthly, perVisit }) => (
-                  <div key={def.id} className="border-b border-border pb-3 last:border-0">
+                  <div key={def.id} className="rounded-xl bg-secondary/30 p-3 animate-fade-in">
                     <div className="flex justify-between gap-2">
-                      <span className="font-medium text-sm text-foreground">{t.services.items[def.id].name}</span>
+                      <span className="font-medium text-sm text-foreground tracking-tight">{t.services.items[def.id].name}</span>
                       <span className="font-semibold text-sm text-primary tabular-nums">{formatRSD(monthly)}</span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-0.5">
+                    <p className="text-xs text-muted-foreground mt-1">
                       {s.quantity} {def.unit === "m²" ? t.services.units.m2 : t.services.units.kom} · {t.freq[freq.value]} · {formatRSD(perVisit)} {t.summary.perVisitSuffix}
                     </p>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-5 pt-5 border-t border-border">
-                <div className="flex items-baseline justify-between">
-                  <span className="font-semibold text-foreground">{t.summary.totalMonthly}</span>
-                  <span className="text-3xl font-bold text-primary tabular-nums">{formatRSD(calc.total)}</span>
+              <div className="mt-6 pt-6 border-t border-border/60">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-semibold text-foreground tracking-tight">{t.summary.totalMonthly}</span>
+                  <span className="text-3xl font-bold text-primary tabular-nums tracking-tight">{formatRSD(calc.total)}</span>
                 </div>
-                <p className="text-xs text-muted-foreground mt-2">{t.summary.estimateNote}</p>
+                <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{t.summary.estimateNote}</p>
               </div>
 
               <Button
                 size="lg"
                 onClick={submit}
                 disabled={calc.items.length === 0}
-                className="w-full mt-5 bg-gradient-primary text-primary-foreground hover:opacity-90 shadow-glow text-base font-semibold h-12"
+                className="w-full mt-6 bg-gradient-primary text-primary-foreground hover:opacity-95 hover:scale-[1.01] active:scale-[0.99] shadow-glow text-base font-semibold h-12 rounded-full transition-all duration-200 disabled:hover:scale-100"
               >
                 {t.summary.continueToContact} <ArrowRight className="ml-1 h-5 w-5" />
               </Button>
-              <p className="text-center text-xs text-muted-foreground mt-3 flex items-center justify-center gap-1">
+              <p className="text-center text-xs text-muted-foreground mt-3 flex items-center justify-center gap-1.5">
                 <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
                 {t.summary.noObligation}
               </p>
@@ -647,18 +683,18 @@ const GardenLanding = () => {
       </section>
 
       {/* FAQ */}
-      <section className="container py-14">
+      <section className="container py-16 md:py-20">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground text-center mb-10 tracking-tight text-balance">
             {t.faq.title}
           </h2>
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full space-y-2">
             {t.faq.items.map((it, i) => (
-              <AccordionItem key={i} value={`item-${i}`} className="border-border">
-                <AccordionTrigger className="text-left font-semibold hover:no-underline">
+              <AccordionItem key={i} value={`item-${i}`} className="border border-border/60 rounded-2xl px-5 bg-card/60 backdrop-blur data-[state=open]:shadow-soft data-[state=open]:border-primary/30 transition-all">
+                <AccordionTrigger className="text-left font-semibold hover:no-underline tracking-tight py-5">
                   {it.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed">
+                <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
                   {it.a}
                 </AccordionContent>
               </AccordionItem>
@@ -668,56 +704,59 @@ const GardenLanding = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-border bg-card">
-        <div className="container py-10">
+      <footer className="border-t border-border/60 bg-gradient-to-b from-card to-secondary/30">
+        <div className="container py-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2 text-foreground font-semibold">
-              <Leaf className="h-5 w-5 text-primary" />
-              Zelena Oaza
+            <div className="flex items-center gap-2.5 text-foreground font-semibold tracking-tight">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft">
+                <Leaf className="h-5 w-5" />
+              </div>
+              <span className="text-base">Zelena Oaza</span>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <Button asChild variant="outline" size="sm" className="gap-2">
-                <a href="tel:+381600000000">
+              <Button asChild variant="outline" size="sm" className="gap-2 rounded-full border-border/60 hover:border-primary/40">
+                <a href={`tel:+${BUSINESS_PHONE_INTL}`}>
                   <Phone className="h-4 w-4" /> {t.footer.call}
                 </a>
               </Button>
-              <Button asChild size="sm" className="gap-2 bg-[hsl(142_70%_38%)] hover:bg-[hsl(142_70%_34%)] text-primary-foreground">
-                <a href="https://wa.me/381600000000" target="_blank" rel="noreferrer">
+              <Button asChild size="sm" className="gap-2 bg-[hsl(142_70%_38%)] hover:bg-[hsl(142_70%_34%)] text-primary-foreground rounded-full shadow-soft">
+                <a href={`https://wa.me/${BUSINESS_PHONE_INTL}`} target="_blank" rel="noreferrer">
                   <MessageCircle className="h-4 w-4" /> {t.footer.whatsapp}
                 </a>
               </Button>
             </div>
           </div>
-          <p className="text-center text-xs text-muted-foreground mt-6">
-            © {new Date().getFullYear()} Zelena Oaza · {t.footer.tagline}
-          </p>
-          <p className="text-center text-xs text-muted-foreground mt-2">
+          <div className="mt-8 pt-6 border-t border-border/40 flex flex-col items-center gap-2">
+            <p className="text-center text-xs text-muted-foreground">
+              © {new Date().getFullYear()} Zelena Oaza · {t.footer.tagline}
+            </p>
             <button
               type="button"
               onClick={() => setPrivacyOpen(true)}
-              className="text-primary underline hover:no-underline"
+              className="text-xs text-primary hover:underline font-medium"
             >
               {t.privacy.footerLink}
             </button>
-          </p>
+          </div>
         </div>
       </footer>
 
       {/* MOBILE STICKY CTA */}
       {calc.items.length > 0 && (
-        <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-border shadow-glow">
+        <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 glass border-t border-border/60 shadow-elevated animate-fade-in-up">
           <div className="container flex items-center justify-between gap-3 py-3">
             <div className="min-w-0">
-              <p className="text-[11px] text-muted-foreground leading-tight">
+              <p className="text-[11px] text-muted-foreground leading-tight uppercase tracking-wider">
                 {t.summary.itemsCount(calc.items.length)} · {t.summary.totalMonthly}
               </p>
-              <p className="text-lg font-bold text-primary leading-tight tabular-nums truncate">
+              <p className="text-xl font-bold text-primary leading-tight tabular-nums truncate tracking-tight">
                 {formatRSD(calc.total)}
               </p>
             </div>
             <Button
               onClick={submit}
-              className="bg-gradient-primary text-primary-foreground shadow-glow font-semibold gap-1 shrink-0"
+              size="lg"
+              className="bg-gradient-primary text-primary-foreground shadow-glow font-semibold gap-1 shrink-0 rounded-full px-6 active:scale-95 transition-transform"
             >
               {t.summary.orderBtn} <ArrowRight className="h-4 w-4" />
             </Button>
@@ -727,28 +766,32 @@ const GardenLanding = () => {
 
       {/* CONTACT DIALOG */}
       <Dialog open={contactOpen} onOpenChange={setContactOpen}>
-        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-lg max-h-[92vh] overflow-y-auto rounded-2xl border-border/60">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Phone className="h-5 w-5 text-primary" /> {t.contact.title}
+            <DialogTitle className="flex items-center gap-2.5 text-xl tracking-tight">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft">
+                <Phone className="h-4 w-4" />
+              </div>
+              {t.contact.title}
             </DialogTitle>
-            <DialogDescription>
-              {t.summary.itemsCount(calc.items.length)} · {t.summary.totalMonthly}: <strong className="text-primary">{formatRSD(calc.total)}</strong>
+            <DialogDescription className="pt-1">
+              {t.summary.itemsCount(calc.items.length)} · {t.summary.totalMonthly}:{" "}
+              <strong className="text-primary tabular-nums">{formatRSD(calc.total)}</strong>
             </DialogDescription>
           </DialogHeader>
-          <div className="grid sm:grid-cols-2 gap-3 mt-2">
+          <div className="grid sm:grid-cols-2 gap-4 mt-2">
             <div className="sm:col-span-2">
-              <Label htmlFor="name">{t.contact.name}</Label>
-              <Input id="name" value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} maxLength={100} />
+              <Label htmlFor="name" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.name}</Label>
+              <Input id="name" value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} maxLength={100} className="mt-1.5 h-11 rounded-xl" />
             </div>
             <div className="sm:col-span-2">
-              <Label htmlFor="phone">{t.contact.phone}</Label>
-              <Input id="phone" value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} maxLength={30} placeholder="+381 ..." inputMode="tel" />
+              <Label htmlFor="phone" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.phone}</Label>
+              <Input id="phone" value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} maxLength={30} placeholder="+381 ..." inputMode="tel" className="mt-1.5 h-11 rounded-xl" />
             </div>
             <div>
-              <Label htmlFor="city">{t.contact.city}</Label>
+              <Label htmlFor="city" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.city}</Label>
               <Select value={contact.city} onValueChange={(v) => setContact({ ...contact, city: v })}>
-                <SelectTrigger id="city">
+                <SelectTrigger id="city" className="mt-1.5 h-11 rounded-xl">
                   <SelectValue placeholder={t.contact.cityPlaceholder} />
                 </SelectTrigger>
                 <SelectContent>
@@ -759,11 +802,11 @@ const GardenLanding = () => {
               </Select>
             </div>
             <div>
-              <Label htmlFor="address">{t.contact.address}</Label>
-              <Input id="address" value={contact.address} onChange={(e) => setContact({ ...contact, address: e.target.value })} maxLength={150} />
+              <Label htmlFor="address" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.address}</Label>
+              <Input id="address" value={contact.address} onChange={(e) => setContact({ ...contact, address: e.target.value })} maxLength={150} className="mt-1.5 h-11 rounded-xl" />
             </div>
             <div className="sm:col-span-2">
-              <Label htmlFor="notes">{t.contact.notes}</Label>
+              <Label htmlFor="notes" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.notes}</Label>
               <Textarea
                 id="notes"
                 value={contact.notes}
@@ -771,16 +814,17 @@ const GardenLanding = () => {
                 maxLength={1000}
                 placeholder={t.contact.notesPlaceholder}
                 rows={3}
+                className="mt-1.5 rounded-xl"
               />
             </div>
           </div>
 
-          <div className="mt-4 rounded-lg bg-muted/40 border border-border p-3 text-xs text-muted-foreground leading-relaxed flex gap-2">
+          <div className="mt-4 rounded-xl bg-secondary/40 border border-border/60 p-3.5 text-xs text-muted-foreground leading-relaxed flex gap-2.5">
             <ShieldCheck className="h-4 w-4 text-primary shrink-0 mt-0.5" />
             <span>{t.privacy.inlineNotice}</span>
           </div>
 
-          <div className="mt-3 flex items-start gap-2">
+          <div className="mt-3 flex items-start gap-2.5 rounded-xl p-3 hover:bg-secondary/30 transition-colors">
             <Checkbox
               id="consent"
               checked={consent}
@@ -800,15 +844,15 @@ const GardenLanding = () => {
             </Label>
           </div>
 
-          <div className="mt-4 pt-4 border-t border-border">
-            <p className="text-sm font-semibold text-foreground">{t.send.chooseTitle}</p>
+          <div className="mt-4 pt-4 border-t border-border/60">
+            <p className="text-sm font-semibold text-foreground tracking-tight">{t.send.chooseTitle}</p>
             <p className="text-xs text-muted-foreground mt-1">{t.send.chooseDesc}</p>
             <Button
               type="button"
               onClick={sendOrder}
               disabled={!consent || sending}
               size="lg"
-              className="mt-3 w-full gap-2 bg-gradient-primary text-primary-foreground hover:opacity-90 shadow-glow font-semibold h-12"
+              className="mt-3 w-full gap-2 bg-gradient-primary text-primary-foreground hover:opacity-95 hover:scale-[1.01] active:scale-[0.99] disabled:hover:scale-100 shadow-glow font-semibold h-12 rounded-full transition-all duration-200"
             >
               {sending ? (
                 <>
@@ -820,7 +864,7 @@ const GardenLanding = () => {
                 </>
               )}
             </Button>
-            <div className="mt-3 rounded-lg bg-muted/40 border border-dashed border-border p-3 flex items-center justify-between gap-3 flex-wrap">
+            <div className="mt-3 rounded-xl bg-muted/40 border border-dashed border-border/60 p-3 flex items-center justify-between gap-3 flex-wrap">
               <p className="text-xs text-muted-foreground flex-1 min-w-[12rem]">
                 {t.send.errorDesc}
               </p>
@@ -829,7 +873,7 @@ const GardenLanding = () => {
                 onClick={sendViaCall}
                 size="sm"
                 variant="outline"
-                className="gap-2"
+                className="gap-2 rounded-full"
               >
                 <Phone className="h-4 w-4" /> {t.send.callFallback} {BUSINESS_PHONE_DISPLAY}
               </Button>
