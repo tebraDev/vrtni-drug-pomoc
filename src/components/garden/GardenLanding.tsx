@@ -498,7 +498,9 @@ const GardenLanding = () => {
             {/* Services grid */}
             <div className="flex items-center gap-2 pt-2">
               <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary text-xs font-bold">2</span>
-              <h3 className="text-base font-semibold tracking-tight">{t.summary.empty}</h3>
+              <h3 className="text-base font-semibold tracking-tight text-foreground">
+                {t.services.add}
+              </h3>
             </div>
             <div id="usluge" className="grid sm:grid-cols-2 gap-4">
               {SERVICES.map((svc) => {
