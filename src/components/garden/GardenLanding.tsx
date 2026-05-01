@@ -625,53 +625,55 @@ const GardenLanding = () => {
 
           {/* RIGHT: summary */}
           <div className="lg:col-span-1">
-            <Card className="p-6 shadow-glow lg:sticky lg:top-6 bg-card">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-foreground">{t.summary.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-0.5">
-                    {t.summary.itemsCount(calc.items.length)} · {t.summary.monthlyEstimate}
-                  </p>
-                </div>
+            <Card className="p-7 shadow-elevated lg:sticky lg:top-6 bg-card/90 backdrop-blur border-border/60 overflow-hidden relative">
+              <div className="pointer-events-none absolute -top-20 -right-20 h-40 w-40 rounded-full bg-gradient-aurora blur-2xl opacity-50" />
+              <div className="flex items-center gap-2 mb-1">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary text-xs font-bold">3</span>
+                <h3 className="text-xl font-bold text-foreground tracking-tight">{t.summary.title}</h3>
               </div>
+              <p className="text-sm text-muted-foreground">
+                {t.summary.itemsCount(calc.items.length)} · {t.summary.monthlyEstimate}
+              </p>
 
-              <div className="mt-5 space-y-3 max-h-72 overflow-y-auto pr-1">
+              <div className="mt-6 space-y-3 max-h-72 overflow-y-auto pr-1 -mr-1">
                 {calc.items.length === 0 && (
-                  <div className="text-center py-6 px-3 rounded-xl bg-muted/40 border border-dashed border-border">
-                    <Leaf className="h-7 w-7 text-muted-foreground/60 mx-auto mb-2" />
+                  <div className="text-center py-8 px-3 rounded-2xl bg-muted/30 border border-dashed border-border/60">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary/60 text-primary/60 mx-auto mb-3">
+                      <Leaf className="h-6 w-6" />
+                    </div>
                     <p className="text-sm text-muted-foreground">{t.summary.empty}</p>
                   </div>
                 )}
                 {calc.items.map(({ def, s, freq, monthly, perVisit }) => (
-                  <div key={def.id} className="border-b border-border pb-3 last:border-0">
+                  <div key={def.id} className="rounded-xl bg-secondary/30 p-3 animate-fade-in">
                     <div className="flex justify-between gap-2">
-                      <span className="font-medium text-sm text-foreground">{t.services.items[def.id].name}</span>
+                      <span className="font-medium text-sm text-foreground tracking-tight">{t.services.items[def.id].name}</span>
                       <span className="font-semibold text-sm text-primary tabular-nums">{formatRSD(monthly)}</span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-0.5">
+                    <p className="text-xs text-muted-foreground mt-1">
                       {s.quantity} {def.unit === "m²" ? t.services.units.m2 : t.services.units.kom} · {t.freq[freq.value]} · {formatRSD(perVisit)} {t.summary.perVisitSuffix}
                     </p>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-5 pt-5 border-t border-border">
-                <div className="flex items-baseline justify-between">
-                  <span className="font-semibold text-foreground">{t.summary.totalMonthly}</span>
-                  <span className="text-3xl font-bold text-primary tabular-nums">{formatRSD(calc.total)}</span>
+              <div className="mt-6 pt-6 border-t border-border/60">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-semibold text-foreground tracking-tight">{t.summary.totalMonthly}</span>
+                  <span className="text-3xl font-bold text-primary tabular-nums tracking-tight">{formatRSD(calc.total)}</span>
                 </div>
-                <p className="text-xs text-muted-foreground mt-2">{t.summary.estimateNote}</p>
+                <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{t.summary.estimateNote}</p>
               </div>
 
               <Button
                 size="lg"
                 onClick={submit}
                 disabled={calc.items.length === 0}
-                className="w-full mt-5 bg-gradient-primary text-primary-foreground hover:opacity-90 shadow-glow text-base font-semibold h-12"
+                className="w-full mt-6 bg-gradient-primary text-primary-foreground hover:opacity-95 hover:scale-[1.01] active:scale-[0.99] shadow-glow text-base font-semibold h-12 rounded-full transition-all duration-200 disabled:hover:scale-100"
               >
                 {t.summary.continueToContact} <ArrowRight className="ml-1 h-5 w-5" />
               </Button>
-              <p className="text-center text-xs text-muted-foreground mt-3 flex items-center justify-center gap-1">
+              <p className="text-center text-xs text-muted-foreground mt-3 flex items-center justify-center gap-1.5">
                 <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
                 {t.summary.noObligation}
               </p>
