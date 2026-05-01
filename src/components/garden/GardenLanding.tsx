@@ -278,7 +278,7 @@ const GardenLanding = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-soft pb-24 lg:pb-0">
+    <div className="min-h-screen bg-gradient-soft pb-24 lg:pb-0 antialiased">
       {/* HERO */}
       <header className="relative overflow-hidden">
         <div className="absolute inset-0">
@@ -287,44 +287,48 @@ const GardenLanding = () => {
             alt="Uređena bašta u Srbiji"
             width={1600}
             height={900}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover scale-105"
           />
           <div className="absolute inset-0 bg-gradient-hero" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+          {/* Aurora glow */}
+          <div className="absolute -top-32 -left-32 h-[28rem] w-[28rem] rounded-full bg-gradient-aurora blur-3xl animate-aurora" />
+          <div className="absolute top-20 right-0 h-[24rem] w-[24rem] rounded-full bg-gradient-aurora blur-3xl animate-aurora [animation-delay:2s] opacity-70" />
         </div>
         <nav className="relative z-10 container flex items-center justify-between py-5">
-          <div className="flex items-center gap-2 text-primary-foreground">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-foreground/15 backdrop-blur">
+          <div className="flex items-center gap-2.5 text-primary-foreground animate-fade-in">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl glass-dark shadow-glow">
               <Leaf className="h-5 w-5" />
             </div>
-            <span className="text-xl font-bold tracking-tight">Zelena Oaza</span>
+            <span className="text-xl font-semibold tracking-tight">Zelena Oaza</span>
           </div>
           <div className="flex items-center gap-2">
             <a
               href="#porucivanje"
-              className="hidden sm:inline-flex h-9 items-center text-primary-foreground/90 hover:text-primary-foreground text-sm font-medium px-3"
+              className="hidden sm:inline-flex h-9 items-center text-primary-foreground/90 hover:text-primary-foreground text-sm font-medium px-3 transition-colors"
             >
               {t.nav.order}
             </a>
             <LanguageSwitcher />
           </div>
         </nav>
-        <div className="relative z-10 container py-16 md:py-28">
-          <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/15 px-4 py-1.5 text-sm font-medium text-primary-foreground backdrop-blur ring-1 ring-primary-foreground/20">
-              <Sparkles className="h-4 w-4" /> {t.hero.badge}
+        <div className="relative z-10 container py-20 md:py-32">
+          <div className="max-w-2xl animate-fade-in-up">
+            <span className="inline-flex items-center gap-2 rounded-full glass-dark px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft">
+              <Sparkles className="h-4 w-4 text-accent" /> {t.hero.badge}
             </span>
-            <h1 className="mt-6 text-4xl md:text-6xl font-bold leading-[1.1] text-primary-foreground drop-shadow-md">
+            <h1 className="mt-7 text-balance text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight text-primary-foreground drop-shadow-lg">
               {t.hero.title}
             </h1>
-            <p className="mt-6 text-lg md:text-xl text-primary-foreground/95 leading-relaxed max-w-xl">
+            <p className="mt-6 text-lg md:text-xl text-primary-foreground/95 leading-relaxed max-w-xl text-balance">
               {t.hero.subtitle}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-9 flex flex-wrap gap-3">
               <Button
                 asChild
                 size="lg"
-                className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-glow text-base font-semibold h-12 px-7"
+                className="bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-[1.02] active:scale-[0.98] shadow-glow text-base font-semibold h-13 px-8 rounded-full transition-spring"
+                style={{ transition: "var(--transition-spring)" }}
               >
                 <a href="#porucivanje">
                   {t.hero.ctaPrimary} <ArrowRight className="ml-1 h-5 w-5" />
@@ -334,24 +338,25 @@ const GardenLanding = () => {
                 asChild
                 size="lg"
                 variant="outline"
-                className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/20 backdrop-blur h-12 px-6"
+                className="glass-dark text-primary-foreground border-0 hover:bg-primary-foreground/15 h-13 px-7 rounded-full"
               >
                 <a href="#usluge">{t.hero.ctaSecondary}</a>
               </Button>
             </div>
 
-            <div className="mt-8 grid grid-cols-3 gap-4 max-w-md">
+            <div className="mt-10 grid grid-cols-3 gap-3 max-w-md">
               {[
                 { icon: ShieldCheck, label: t.hero.trust.reliable },
                 { icon: Clock, label: t.hero.trust.onTime },
                 { icon: MapPin, label: t.hero.trust.allSerbia },
-              ].map(({ icon: Icon, label }) => (
+              ].map(({ icon: Icon, label }, i) => (
                 <div
                   key={label}
-                  className="flex flex-col items-center gap-1.5 rounded-xl bg-primary-foreground/10 backdrop-blur ring-1 ring-primary-foreground/15 px-3 py-3 text-primary-foreground"
+                  className="flex flex-col items-center gap-2 rounded-2xl glass-dark px-3 py-4 text-primary-foreground animate-fade-in-up"
+                  style={{ animationDelay: `${0.2 + i * 0.1}s` }}
                 >
-                  <Icon className="h-5 w-5" />
-                  <span className="text-xs font-medium text-center">{label}</span>
+                  <Icon className="h-5 w-5 text-accent" />
+                  <span className="text-xs font-medium text-center leading-tight">{label}</span>
                 </div>
               ))}
             </div>
