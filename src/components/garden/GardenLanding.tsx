@@ -404,9 +404,10 @@ const GardenLanding = () => {
         <div className="container py-16 md:py-20">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
-              {t.gallery.title}
+              {t.gallery.before} / {t.gallery.after}
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">{t.gallery.subtitle}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">{t.gallery.title}</h2>
+            <p className="mt-3 text-muted-foreground text-balance">{t.gallery.subtitle}</p>
             <p className="mt-3 text-xs text-muted-foreground/80">{t.gallery.dragHint}</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
