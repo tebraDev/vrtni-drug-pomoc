@@ -683,18 +683,18 @@ const GardenLanding = () => {
       </section>
 
       {/* FAQ */}
-      <section className="container py-14">
+      <section className="container py-16 md:py-20">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground text-center mb-10 tracking-tight text-balance">
             {t.faq.title}
           </h2>
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full space-y-2">
             {t.faq.items.map((it, i) => (
-              <AccordionItem key={i} value={`item-${i}`} className="border-border">
-                <AccordionTrigger className="text-left font-semibold hover:no-underline">
+              <AccordionItem key={i} value={`item-${i}`} className="border border-border/60 rounded-2xl px-5 bg-card/60 backdrop-blur data-[state=open]:shadow-soft data-[state=open]:border-primary/30 transition-all">
+                <AccordionTrigger className="text-left font-semibold hover:no-underline tracking-tight py-5">
                   {it.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed">
+                <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
                   {it.a}
                 </AccordionContent>
               </AccordionItem>
@@ -704,56 +704,59 @@ const GardenLanding = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-border bg-card">
-        <div className="container py-10">
+      <footer className="border-t border-border/60 bg-gradient-to-b from-card to-secondary/30">
+        <div className="container py-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2 text-foreground font-semibold">
-              <Leaf className="h-5 w-5 text-primary" />
-              Zelena Oaza
+            <div className="flex items-center gap-2.5 text-foreground font-semibold tracking-tight">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft">
+                <Leaf className="h-5 w-5" />
+              </div>
+              <span className="text-base">Zelena Oaza</span>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <Button asChild variant="outline" size="sm" className="gap-2">
-                <a href="tel:+381600000000">
+              <Button asChild variant="outline" size="sm" className="gap-2 rounded-full border-border/60 hover:border-primary/40">
+                <a href={`tel:+${BUSINESS_PHONE_INTL}`}>
                   <Phone className="h-4 w-4" /> {t.footer.call}
                 </a>
               </Button>
-              <Button asChild size="sm" className="gap-2 bg-[hsl(142_70%_38%)] hover:bg-[hsl(142_70%_34%)] text-primary-foreground">
-                <a href="https://wa.me/381600000000" target="_blank" rel="noreferrer">
+              <Button asChild size="sm" className="gap-2 bg-[hsl(142_70%_38%)] hover:bg-[hsl(142_70%_34%)] text-primary-foreground rounded-full shadow-soft">
+                <a href={`https://wa.me/${BUSINESS_PHONE_INTL}`} target="_blank" rel="noreferrer">
                   <MessageCircle className="h-4 w-4" /> {t.footer.whatsapp}
                 </a>
               </Button>
             </div>
           </div>
-          <p className="text-center text-xs text-muted-foreground mt-6">
-            © {new Date().getFullYear()} Zelena Oaza · {t.footer.tagline}
-          </p>
-          <p className="text-center text-xs text-muted-foreground mt-2">
+          <div className="mt-8 pt-6 border-t border-border/40 flex flex-col items-center gap-2">
+            <p className="text-center text-xs text-muted-foreground">
+              © {new Date().getFullYear()} Zelena Oaza · {t.footer.tagline}
+            </p>
             <button
               type="button"
               onClick={() => setPrivacyOpen(true)}
-              className="text-primary underline hover:no-underline"
+              className="text-xs text-primary hover:underline font-medium"
             >
               {t.privacy.footerLink}
             </button>
-          </p>
+          </div>
         </div>
       </footer>
 
       {/* MOBILE STICKY CTA */}
       {calc.items.length > 0 && (
-        <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-border shadow-glow">
+        <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 glass border-t border-border/60 shadow-elevated animate-fade-in-up">
           <div className="container flex items-center justify-between gap-3 py-3">
             <div className="min-w-0">
-              <p className="text-[11px] text-muted-foreground leading-tight">
+              <p className="text-[11px] text-muted-foreground leading-tight uppercase tracking-wider">
                 {t.summary.itemsCount(calc.items.length)} · {t.summary.totalMonthly}
               </p>
-              <p className="text-lg font-bold text-primary leading-tight tabular-nums truncate">
+              <p className="text-xl font-bold text-primary leading-tight tabular-nums truncate tracking-tight">
                 {formatRSD(calc.total)}
               </p>
             </div>
             <Button
               onClick={submit}
-              className="bg-gradient-primary text-primary-foreground shadow-glow font-semibold gap-1 shrink-0"
+              size="lg"
+              className="bg-gradient-primary text-primary-foreground shadow-glow font-semibold gap-1 shrink-0 rounded-full px-6 active:scale-95 transition-transform"
             >
               {t.summary.orderBtn} <ArrowRight className="h-4 w-4" />
             </Button>
