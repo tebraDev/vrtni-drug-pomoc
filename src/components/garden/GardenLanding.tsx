@@ -365,58 +365,68 @@ const GardenLanding = () => {
       </header>
 
       {/* SERVICE AREA BAND */}
-      <div className="bg-primary/5 border-b border-primary/10">
+      <div className="bg-primary/5 border-b border-primary/10 backdrop-blur">
         <div className="container py-3 flex items-center justify-center gap-2 text-center">
-          <MapPin className="h-4 w-4 text-primary shrink-0" />
-          <p className="text-xs sm:text-sm font-medium text-foreground/90">
+          <MapPin className="h-4 w-4 text-primary shrink-0 animate-pulse" />
+          <p className="text-xs sm:text-sm font-medium text-foreground/90 tracking-tight">
             {t.hero.serviceArea}
           </p>
         </div>
       </div>
 
       {/* HOW IT WORKS */}
-      <section className="container py-12 md:py-16">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground">{t.steps.title}</h2>
-          <p className="mt-3 text-muted-foreground">{t.steps.subtitle}</p>
+      <section className="container py-16 md:py-24 bg-mesh">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
+            {t.steps.title}
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">{t.steps.subtitle}</h2>
         </div>
-        <div className="grid md:grid-cols-3 gap-5">
+        <div className="relative grid md:grid-cols-3 gap-6">
+          {/* Connecting line on desktop */}
+          <div className="hidden md:block absolute top-12 left-[16.66%] right-[16.66%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
           {[t.steps.s1, t.steps.s2, t.steps.s3].map((step, i) => (
-            <Card key={i} className="p-6 shadow-soft hover:shadow-glow transition-smooth">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft mb-4">
-                <span className="text-lg font-bold">{i + 1}</span>
-              </div>
-              <h3 className="font-semibold text-foreground text-lg">{step.title.replace(/^\d+\.\s*/, "")}</h3>
-              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{step.desc}</p>
-            </Card>
+            <div key={i} className="relative">
+              <Card className="relative p-7 shadow-ring1 hover:shadow-elevated hover:-translate-y-1 transition-all duration-300 bg-card/80 backdrop-blur border-border/60 h-full">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-glow mb-5 ring-4 ring-card">
+                  <span className="text-xl font-bold">{i + 1}</span>
+                </div>
+                <h3 className="font-semibold text-foreground text-lg tracking-tight">{step.title.replace(/^\d+\.\s*/, "")}</h3>
+                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{step.desc}</p>
+              </Card>
+            </div>
           ))}
         </div>
       </section>
 
       {/* BEFORE/AFTER GALLERY */}
-      <section className="bg-secondary/30 border-y border-border">
-        <div className="container py-14">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground">{t.gallery.title}</h2>
-            <p className="mt-3 text-muted-foreground">{t.gallery.subtitle}</p>
-            <p className="mt-2 text-xs text-muted-foreground/80">{t.gallery.dragHint}</p>
+      <section className="bg-gradient-to-b from-secondary/40 via-secondary/20 to-background border-y border-border/60">
+        <div className="container py-16 md:py-20">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
+              {t.gallery.title}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">{t.gallery.subtitle}</h2>
+            <p className="mt-3 text-xs text-muted-foreground/80">{t.gallery.dragHint}</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {t.gallery.items.map((it, i) => {
               const pair = GALLERY_PAIRS[i];
               if (!pair) return null;
               return (
-                <div key={i} className="space-y-3">
-                  <BeforeAfterSlider
-                    beforeSrc={pair.before}
-                    afterSrc={pair.after}
-                    beforeLabel={t.gallery.before}
-                    afterLabel={t.gallery.after}
-                    alt={it.title}
-                  />
-                  <div className="px-1">
-                    <h3 className="font-semibold text-foreground text-sm">{it.title}</h3>
-                    <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{it.desc}</p>
+                <div key={i} className="group space-y-3 rounded-2xl p-3 transition-all duration-300 hover:bg-card hover:shadow-elevated">
+                  <div className="overflow-hidden rounded-xl ring-1 ring-border/60">
+                    <BeforeAfterSlider
+                      beforeSrc={pair.before}
+                      afterSrc={pair.after}
+                      beforeLabel={t.gallery.before}
+                      afterLabel={t.gallery.after}
+                      alt={it.title}
+                    />
+                  </div>
+                  <div className="px-2 pb-1">
+                    <h3 className="font-semibold text-foreground text-sm tracking-tight">{it.title}</h3>
+                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{it.desc}</p>
                   </div>
                 </div>
               );
@@ -426,10 +436,12 @@ const GardenLanding = () => {
       </section>
 
       {/* SERVICES + CALCULATOR */}
-      <section id="porucivanje" className="container py-12 md:py-16 scroll-mt-4">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">{t.config.sectionTitle}</h2>
-          <p className="mt-4 text-muted-foreground text-lg">{t.config.sectionDesc}</p>
+      <section id="porucivanje" className="container py-16 md:py-24 scroll-mt-4">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
+            {t.config.sectionTitle}
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">{t.config.sectionDesc}</h2>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
