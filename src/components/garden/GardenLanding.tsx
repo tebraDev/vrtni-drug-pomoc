@@ -450,18 +450,21 @@ const GardenLanding = () => {
           {/* LEFT: services */}
           <div className="lg:col-span-2 space-y-6">
             {/* Area card */}
-            <Card className="p-6 shadow-soft">
-              <div className="flex items-baseline justify-between gap-3 flex-wrap">
-                <Label htmlFor="area" className="text-base font-semibold">
+            <Card className="p-7 shadow-elevated border-border/60 bg-gradient-to-br from-card to-secondary/30 backdrop-blur">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary text-xs font-bold">1</span>
+                <Label htmlFor="area" className="text-base font-semibold tracking-tight">
                   {t.config.areaLabel}
                 </Label>
-                <span className="text-2xl font-bold text-primary tabular-nums">
-                  {area} <span className="text-base text-muted-foreground font-medium">m²</span>
+              </div>
+              <div className="flex items-baseline justify-between gap-3 flex-wrap mt-3">
+                <p className="text-sm text-muted-foreground">{t.config.areaHelp}</p>
+                <span className="text-3xl font-bold text-primary tabular-nums tracking-tight">
+                  {area}<span className="text-lg text-muted-foreground font-medium ml-1">m²</span>
                 </span>
               </div>
-              <p className="text-sm text-muted-foreground mt-1">{t.config.areaHelp}</p>
 
-              <div className="mt-5">
+              <div className="mt-6">
                 <Slider
                   value={[area]}
                   min={20}
@@ -471,18 +474,18 @@ const GardenLanding = () => {
                 />
               </div>
 
-              <div className="mt-5">
-                <p className="text-xs font-medium text-muted-foreground mb-2">{t.config.presetsTitle}</p>
+              <div className="mt-6">
+                <p className="text-xs font-medium text-muted-foreground mb-2.5 uppercase tracking-wider">{t.config.presetsTitle}</p>
                 <div className="flex flex-wrap gap-2">
                   {PRESET_AREAS.map((p) => (
                     <button
                       key={p.key}
                       type="button"
                       onClick={() => setArea(p.value)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-smooth ring-1 ${
+                      className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ring-1 active:scale-95 ${
                         area === p.value
-                          ? "bg-primary text-primary-foreground ring-primary shadow-soft"
-                          : "bg-secondary text-secondary-foreground ring-border hover:bg-secondary/70"
+                          ? "bg-gradient-primary text-primary-foreground ring-primary shadow-glow scale-105"
+                          : "bg-card text-foreground/80 ring-border hover:ring-primary/40 hover:bg-secondary/50"
                       }`}
                     >
                       {t.config.presets[p.key]}
@@ -493,6 +496,10 @@ const GardenLanding = () => {
             </Card>
 
             {/* Services grid */}
+            <div className="flex items-center gap-2 pt-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary text-xs font-bold">2</span>
+              <h3 className="text-base font-semibold tracking-tight">{t.summary.empty}</h3>
+            </div>
             <div id="usluge" className="grid sm:grid-cols-2 gap-4">
               {SERVICES.map((svc) => {
                 const isSelected = !!selected[svc.id];
@@ -506,25 +513,31 @@ const GardenLanding = () => {
                   <Card
                     key={svc.id}
                     onClick={() => toggleService(svc)}
-                    className={`group relative p-5 cursor-pointer transition-smooth overflow-hidden ${
+                    className={`group relative p-5 cursor-pointer overflow-hidden border-border/60 transition-all duration-300 ${
                       isSelected
-                        ? "ring-2 ring-primary shadow-glow bg-gradient-to-br from-secondary/60 to-card"
-                        : "hover:shadow-soft hover:-translate-y-0.5"
+                        ? "ring-2 ring-primary shadow-elevated bg-gradient-to-br from-secondary/70 via-card to-card -translate-y-0.5"
+                        : "hover:shadow-elevated hover:-translate-y-1 hover:border-primary/30 bg-card/80 backdrop-blur"
                     }`}
                   >
+                    {/* Subtle glow on selected */}
                     {isSelected && (
-                      <Badge className="absolute top-3 right-3 bg-primary text-primary-foreground gap-1 pointer-events-none">
+                      <div className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-aurora blur-2xl opacity-60" />
+                    )}
+                    {isSelected && (
+                      <Badge className="absolute top-3 right-3 bg-primary text-primary-foreground gap-1 pointer-events-none animate-scale-in shadow-soft">
                         <CheckCircle2 className="h-3 w-3" /> {t.services.selected}
                       </Badge>
                     )}
                     <div className="flex items-start gap-3">
-                      <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl shadow-soft transition-smooth ${
-                        isSelected ? "bg-gradient-primary text-primary-foreground" : "bg-secondary text-primary"
+                      <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl transition-all duration-300 ${
+                        isSelected
+                          ? "bg-gradient-primary text-primary-foreground shadow-glow scale-110 rotate-3"
+                          : "bg-secondary text-primary group-hover:scale-105 group-hover:rotate-3"
                       }`}>
                         <Icon className="h-6 w-6" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-foreground leading-tight pr-20">
+                        <h3 className="font-semibold text-foreground leading-tight pr-20 tracking-tight">
                           {item.name}
                         </h3>
                         <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
@@ -540,7 +553,7 @@ const GardenLanding = () => {
 
                     {isSelected && current && (
                       <div
-                        className="mt-4 pt-4 border-t border-border space-y-3"
+                        className="mt-4 pt-4 border-t border-border/60 space-y-3 animate-fade-in"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <div>
