@@ -352,7 +352,7 @@ const GardenLanding = () => {
               ].map(({ icon: Icon, label }, i) => (
                 <div
                   key={label}
-                  className="flex flex-col items-center gap-2 rounded-2xl glass-dark px-3 py-4 text-primary-foreground animate-fade-in-up"
+                  className="flex flex-col items-center justify-center gap-2 rounded-2xl glass-dark px-3 py-4 text-primary-foreground animate-fade-in-up text-center"
                   style={{ animationDelay: `${0.2 + i * 0.1}s` }}
                 >
                   <Icon className="h-5 w-5 text-accent" />
