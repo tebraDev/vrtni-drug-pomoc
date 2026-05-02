@@ -327,7 +327,7 @@ const GardenLanding = () => {
               <Button
                 asChild
                 size="lg"
-                className="bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-[1.02] active:scale-[0.98] shadow-glow text-base font-semibold h-13 px-8 rounded-full transition-spring"
+                className="bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-[1.02] active:scale-[0.98] shadow-glow text-base font-semibold h-12 px-8 rounded-full transition-spring"
                 style={{ transition: "var(--transition-spring)" }}
               >
                 <a href="#porucivanje">
@@ -338,7 +338,7 @@ const GardenLanding = () => {
                 asChild
                 size="lg"
                 variant="outline"
-                className="glass-dark text-primary-foreground border-0 hover:bg-primary-foreground/15 h-13 px-7 rounded-full"
+                className="bg-white/10 backdrop-blur-md text-primary-foreground border border-white/40 hover:bg-white/20 hover:border-white/60 hover:text-primary-foreground h-12 px-7 rounded-full text-base font-medium transition-colors"
               >
                 <a href="#usluge">{t.hero.ctaSecondary}</a>
               </Button>
