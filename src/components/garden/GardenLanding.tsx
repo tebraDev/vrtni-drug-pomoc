@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Leaf, Droplets, Scissors, Sprout, TreePine, Trash2, Flower2, Sparkles,
   ShieldCheck, Clock, MapPin, Phone, CheckCircle2, Star, Plus, Minus,
-  ArrowRight, MessageCircle, ChevronDown, Send, Loader2,
+  ArrowRight, ArrowLeft, MessageCircle, ChevronDown, Send, Loader2,
 } from "lucide-react";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -111,6 +112,33 @@ const GardenLanding = () => {
   const [consent, setConsent] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [sending, setSending] = useState(false);
+  const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<"name" | "phone" | "consent", string>>>({});
+
+  // Reset wizard to step 1 every time the dialog opens
+  useEffect(() => {
+    if (contactOpen) {
+      setWizardStep(1);
+      setFieldErrors({});
+    }
+  }, [contactOpen]);
+
+  // Zod schema for contact step — keeps validation centralized & consistent.
+  const contactSchema = useMemo(
+    () =>
+      z.object({
+        name: z.string().trim().min(2, t.toasts.missingDesc).max(100),
+        // Permissive phone: digits, spaces, +, -, parens, min 6 digits total
+        phone: z
+          .string()
+          .trim()
+          .min(6, t.toasts.missingDesc)
+          .max(30)
+          .regex(/^[+\d][\d\s\-()]{5,}$/, t.toasts.missingDesc),
+        consent: z.literal(true, { errorMap: () => ({ message: t.privacy.consentRequired }) }),
+      }),
+    [t],
+  );
 
   const toggleService = (def: ServiceDef) => {
     setSelected((prev) => {
@@ -157,24 +185,43 @@ const GardenLanding = () => {
   }, [selected]);
 
   const submit = () => {
+    // Open the guided wizard. Pre-select services step if none chosen yet.
     if (calc.items.length === 0) {
-      toast({ title: t.toasts.selectTitle, description: t.toasts.selectDesc, variant: "destructive" });
-      return;
+      setWizardStep(2);
+    } else {
+      setWizardStep(1);
     }
     setContactOpen(true);
   };
 
   const validateBeforeSend = () => {
-    if (!contact.name || !contact.phone) {
+    const result = contactSchema.safeParse({
+      name: contact.name,
+      phone: contact.phone,
+      consent,
+    });
+    if (!result.success) {
+      const errs: Partial<Record<"name" | "phone" | "consent", string>> = {};
+      for (const issue of result.error.issues) {
+        const k = issue.path[0] as "name" | "phone" | "consent";
+        if (!errs[k]) errs[k] = issue.message;
+      }
+      setFieldErrors(errs);
       toast({ title: t.toasts.missingTitle, description: t.toasts.missingDesc, variant: "destructive" });
       return false;
     }
-    if (!consent) {
-      toast({ title: t.toasts.missingTitle, description: t.privacy.consentRequired, variant: "destructive" });
-      return false;
-    }
+    setFieldErrors({});
     return true;
   };
+
+  const goNext = () => {
+    if (wizardStep === 2 && calc.items.length === 0) {
+      toast({ title: t.toasts.selectTitle, description: t.toasts.selectDesc, variant: "destructive" });
+      return;
+    }
+    setWizardStep((s) => (s < 3 ? ((s + 1) as 2 | 3) : s));
+  };
+  const goBack = () => setWizardStep((s) => (s > 1 ? ((s - 1) as 1 | 2) : s));
 
   const buildOrderMessage = () => {
     const lines: string[] = [];
