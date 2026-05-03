@@ -704,6 +704,128 @@ const GardenLanding = () => {
         </div>
       </section>
 
+      {/* INLINE CONTACT FORM */}
+      <section id="kontakt" className="container py-16 md:py-20 scroll-mt-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="text-center mb-8">
+            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
+              {t.contact.title}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">
+              {t.summary.continueToContact}
+            </h2>
+            <p className="mt-3 text-muted-foreground text-balance">
+              {t.summary.itemsCount(calc.items.length)} · {t.summary.totalMonthly}:{" "}
+              <strong className="text-primary tabular-nums">{formatRSD(calc.total)}</strong>
+            </p>
+          </div>
+
+          <Card className="p-6 md:p-8 shadow-elevated border-border/60 bg-card/90 backdrop-blur">
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="sm:col-span-2">
+                <Label htmlFor="name" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.name}</Label>
+                <Input
+                  id="name"
+                  value={contact.name}
+                  onChange={(e) => { setContact({ ...contact, name: e.target.value }); if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: undefined }); }}
+                  maxLength={100}
+                  aria-invalid={!!fieldErrors.name}
+                  className={`mt-1.5 h-11 rounded-xl ${fieldErrors.name ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                />
+                {fieldErrors.name && <p className="text-xs text-destructive mt-1">{fieldErrors.name}</p>}
+              </div>
+              <div className="sm:col-span-2">
+                <Label htmlFor="phone" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.phone}</Label>
+                <Input
+                  id="phone"
+                  value={contact.phone}
+                  onChange={(e) => { setContact({ ...contact, phone: e.target.value }); if (fieldErrors.phone) setFieldErrors({ ...fieldErrors, phone: undefined }); }}
+                  maxLength={30}
+                  placeholder="+381 ..."
+                  inputMode="tel"
+                  aria-invalid={!!fieldErrors.phone}
+                  className={`mt-1.5 h-11 rounded-xl ${fieldErrors.phone ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                />
+                {fieldErrors.phone && <p className="text-xs text-destructive mt-1">{fieldErrors.phone}</p>}
+              </div>
+              <div>
+                <Label htmlFor="city" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.city}</Label>
+                <Select value={contact.city} onValueChange={(v) => setContact({ ...contact, city: v })}>
+                  <SelectTrigger id="city" className="mt-1.5 h-11 rounded-xl">
+                    <SelectValue placeholder={t.contact.cityPlaceholder} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SERVICE_CITIES.map((c) => (
+                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="address" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.address}</Label>
+                <Input id="address" value={contact.address} onChange={(e) => setContact({ ...contact, address: e.target.value })} maxLength={150} className="mt-1.5 h-11 rounded-xl" />
+              </div>
+              <div className="sm:col-span-2">
+                <Label htmlFor="notes" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.notes}</Label>
+                <Textarea
+                  id="notes"
+                  value={contact.notes}
+                  onChange={(e) => setContact({ ...contact, notes: e.target.value })}
+                  maxLength={1000}
+                  placeholder={t.contact.notesPlaceholder}
+                  rows={3}
+                  className="mt-1.5 rounded-xl"
+                />
+              </div>
+            </div>
+
+            <div className="mt-5 rounded-xl bg-secondary/40 border border-border/60 p-3 text-xs text-muted-foreground leading-relaxed flex gap-2.5">
+              <ShieldCheck className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+              <span>{t.privacy.inlineNotice}</span>
+            </div>
+
+            <div className={`mt-3 flex items-start gap-2.5 rounded-xl p-3 transition-colors ${fieldErrors.consent ? "bg-destructive/5 ring-1 ring-destructive/40" : "hover:bg-secondary/30"}`}>
+              <Checkbox
+                id="consent"
+                checked={consent}
+                onCheckedChange={(v) => { setConsent(v === true); if (v) setFieldErrors({ ...fieldErrors, consent: undefined }); }}
+                className="mt-0.5"
+              />
+              <Label htmlFor="consent" className="text-xs leading-relaxed text-foreground font-normal cursor-pointer">
+                {t.privacy.consentLabel}{" "}
+                <button type="button" onClick={() => setPrivacyOpen(true)} className="text-primary underline hover:no-underline font-medium">
+                  {t.privacy.consentLink}
+                </button>
+                .
+                {fieldErrors.consent && <span className="block text-destructive mt-1">{fieldErrors.consent}</span>}
+              </Label>
+            </div>
+
+            <Button
+              type="button"
+              onClick={sendOrder}
+              disabled={sending || calc.items.length === 0}
+              size="lg"
+              className="w-full mt-6 gap-2 bg-gradient-primary text-primary-foreground shadow-glow font-semibold h-12 rounded-full"
+            >
+              {sending ? (<><Loader2 className="h-4 w-4 animate-spin" /> {t.send.submitting}</>) : (<><Send className="h-4 w-4" /> {t.send.submit}</>)}
+            </Button>
+
+            <div className="mt-4 rounded-xl bg-muted/40 border border-dashed border-border/60 p-3 flex items-center justify-between gap-3 flex-wrap">
+              <p className="text-xs text-muted-foreground flex-1 min-w-[10rem]">{t.send.chooseDesc}</p>
+              <Button type="button" onClick={sendViaCall} size="sm" variant="outline" className="gap-2 rounded-full">
+                <Phone className="h-4 w-4" /> {t.send.callFallback} {BUSINESS_PHONE_DISPLAY}
+              </Button>
+            </div>
+
+            <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-1 mt-4">
+              <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
+              {t.summary.noObligation}
+            </p>
+          </Card>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="container py-16 md:py-20">
         <div className="max-w-2xl mx-auto">
