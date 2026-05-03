@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Leaf, Droplets, Scissors, Sprout, TreePine, Trash2, Flower2, Sparkles,
   ShieldCheck, Clock, MapPin, Phone, CheckCircle2, Star, Plus, Minus,
-  ArrowRight, ArrowLeft, MessageCircle, ChevronDown, Send, Loader2,
+  ArrowRight, MessageCircle, ChevronDown, Send, Loader2,
 } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -107,21 +107,11 @@ const GardenLanding = () => {
   const { t, formatPrice: formatRSD } = useI18n();
   const [selected, setSelected] = useState<Record<string, SelectedService>>({});
   const [area, setArea] = useState<number>(150);
-  const [contactOpen, setContactOpen] = useState(false);
   const [contact, setContact] = useState({ name: "", phone: "", city: "", address: "", notes: "" });
   const [consent, setConsent] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [sending, setSending] = useState(false);
-  const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<"name" | "phone" | "consent", string>>>({});
-
-  // Reset wizard to step 1 every time the dialog opens
-  useEffect(() => {
-    if (contactOpen) {
-      setWizardStep(1);
-      setFieldErrors({});
-    }
-  }, [contactOpen]);
 
   // Zod schema for contact step — keeps validation centralized & consistent.
   const contactSchema = useMemo(
@@ -185,13 +175,8 @@ const GardenLanding = () => {
   }, [selected]);
 
   const submit = () => {
-    // Open the guided wizard. Pre-select services step if none chosen yet.
-    if (calc.items.length === 0) {
-      setWizardStep(2);
-    } else {
-      setWizardStep(1);
-    }
-    setContactOpen(true);
+    // Scroll to the inline contact form
+    document.getElementById("kontakt")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const validateBeforeSend = () => {
@@ -213,15 +198,6 @@ const GardenLanding = () => {
     setFieldErrors({});
     return true;
   };
-
-  const goNext = () => {
-    if (wizardStep === 2 && calc.items.length === 0) {
-      toast({ title: t.toasts.selectTitle, description: t.toasts.selectDesc, variant: "destructive" });
-      return;
-    }
-    setWizardStep((s) => (s < 3 ? ((s + 1) as 2 | 3) : s));
-  };
-  const goBack = () => setWizardStep((s) => (s > 1 ? ((s - 1) as 1 | 2) : s));
 
   const buildOrderMessage = () => {
     const lines: string[] = [];
