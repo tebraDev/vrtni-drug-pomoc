@@ -284,7 +284,6 @@ const GardenLanding = () => {
 
       if (!res.ok) throw new Error(`Worker responded ${res.status}`);
 
-      setContactOpen(false);
       toast({ title: t.send.sentTitle, description: t.send.sentDesc });
       // Reset only consent so the next order requires re-consent
       setConsent(false);
