@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Leaf, Droplets, Scissors, Sprout, TreePine, Trash2, Flower2, Sparkles,
   ShieldCheck, Clock, MapPin, Phone, CheckCircle2, Star, Plus, Minus,
-  ArrowRight, ArrowLeft, MessageCircle, ChevronDown, Send, Loader2,
+  ArrowRight, MessageCircle, ChevronDown, Send, Loader2,
 } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -107,21 +107,11 @@ const GardenLanding = () => {
   const { t, formatPrice: formatRSD } = useI18n();
   const [selected, setSelected] = useState<Record<string, SelectedService>>({});
   const [area, setArea] = useState<number>(150);
-  const [contactOpen, setContactOpen] = useState(false);
   const [contact, setContact] = useState({ name: "", phone: "", city: "", address: "", notes: "" });
   const [consent, setConsent] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [sending, setSending] = useState(false);
-  const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<"name" | "phone" | "consent", string>>>({});
-
-  // Reset wizard to step 1 every time the dialog opens
-  useEffect(() => {
-    if (contactOpen) {
-      setWizardStep(1);
-      setFieldErrors({});
-    }
-  }, [contactOpen]);
 
   // Zod schema for contact step — keeps validation centralized & consistent.
   const contactSchema = useMemo(
@@ -185,13 +175,8 @@ const GardenLanding = () => {
   }, [selected]);
 
   const submit = () => {
-    // Open the guided wizard. Pre-select services step if none chosen yet.
-    if (calc.items.length === 0) {
-      setWizardStep(2);
-    } else {
-      setWizardStep(1);
-    }
-    setContactOpen(true);
+    // Scroll to the inline contact form
+    document.getElementById("kontakt")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const validateBeforeSend = () => {
@@ -213,15 +198,6 @@ const GardenLanding = () => {
     setFieldErrors({});
     return true;
   };
-
-  const goNext = () => {
-    if (wizardStep === 2 && calc.items.length === 0) {
-      toast({ title: t.toasts.selectTitle, description: t.toasts.selectDesc, variant: "destructive" });
-      return;
-    }
-    setWizardStep((s) => (s < 3 ? ((s + 1) as 2 | 3) : s));
-  };
-  const goBack = () => setWizardStep((s) => (s > 1 ? ((s - 1) as 1 | 2) : s));
 
   const buildOrderMessage = () => {
     const lines: string[] = [];
@@ -308,7 +284,6 @@ const GardenLanding = () => {
 
       if (!res.ok) throw new Error(`Worker responded ${res.status}`);
 
-      setContactOpen(false);
       toast({ title: t.send.sentTitle, description: t.send.sentDesc });
       // Reset only consent so the next order requires re-consent
       setConsent(false);
@@ -729,6 +704,128 @@ const GardenLanding = () => {
         </div>
       </section>
 
+      {/* INLINE CONTACT FORM */}
+      <section id="kontakt" className="container py-16 md:py-20 scroll-mt-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="text-center mb-8">
+            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
+              {t.contact.title}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">
+              {t.summary.continueToContact}
+            </h2>
+            <p className="mt-3 text-muted-foreground text-balance">
+              {t.summary.itemsCount(calc.items.length)} · {t.summary.totalMonthly}:{" "}
+              <strong className="text-primary tabular-nums">{formatRSD(calc.total)}</strong>
+            </p>
+          </div>
+
+          <Card className="p-6 md:p-8 shadow-elevated border-border/60 bg-card/90 backdrop-blur">
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="sm:col-span-2">
+                <Label htmlFor="name" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.name}</Label>
+                <Input
+                  id="name"
+                  value={contact.name}
+                  onChange={(e) => { setContact({ ...contact, name: e.target.value }); if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: undefined }); }}
+                  maxLength={100}
+                  aria-invalid={!!fieldErrors.name}
+                  className={`mt-1.5 h-11 rounded-xl ${fieldErrors.name ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                />
+                {fieldErrors.name && <p className="text-xs text-destructive mt-1">{fieldErrors.name}</p>}
+              </div>
+              <div className="sm:col-span-2">
+                <Label htmlFor="phone" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.phone}</Label>
+                <Input
+                  id="phone"
+                  value={contact.phone}
+                  onChange={(e) => { setContact({ ...contact, phone: e.target.value }); if (fieldErrors.phone) setFieldErrors({ ...fieldErrors, phone: undefined }); }}
+                  maxLength={30}
+                  placeholder="+381 ..."
+                  inputMode="tel"
+                  aria-invalid={!!fieldErrors.phone}
+                  className={`mt-1.5 h-11 rounded-xl ${fieldErrors.phone ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                />
+                {fieldErrors.phone && <p className="text-xs text-destructive mt-1">{fieldErrors.phone}</p>}
+              </div>
+              <div>
+                <Label htmlFor="city" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.city}</Label>
+                <Select value={contact.city} onValueChange={(v) => setContact({ ...contact, city: v })}>
+                  <SelectTrigger id="city" className="mt-1.5 h-11 rounded-xl">
+                    <SelectValue placeholder={t.contact.cityPlaceholder} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SERVICE_CITIES.map((c) => (
+                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="address" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.address}</Label>
+                <Input id="address" value={contact.address} onChange={(e) => setContact({ ...contact, address: e.target.value })} maxLength={150} className="mt-1.5 h-11 rounded-xl" />
+              </div>
+              <div className="sm:col-span-2">
+                <Label htmlFor="notes" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.notes}</Label>
+                <Textarea
+                  id="notes"
+                  value={contact.notes}
+                  onChange={(e) => setContact({ ...contact, notes: e.target.value })}
+                  maxLength={1000}
+                  placeholder={t.contact.notesPlaceholder}
+                  rows={3}
+                  className="mt-1.5 rounded-xl"
+                />
+              </div>
+            </div>
+
+            <div className="mt-5 rounded-xl bg-secondary/40 border border-border/60 p-3 text-xs text-muted-foreground leading-relaxed flex gap-2.5">
+              <ShieldCheck className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+              <span>{t.privacy.inlineNotice}</span>
+            </div>
+
+            <div className={`mt-3 flex items-start gap-2.5 rounded-xl p-3 transition-colors ${fieldErrors.consent ? "bg-destructive/5 ring-1 ring-destructive/40" : "hover:bg-secondary/30"}`}>
+              <Checkbox
+                id="consent"
+                checked={consent}
+                onCheckedChange={(v) => { setConsent(v === true); if (v) setFieldErrors({ ...fieldErrors, consent: undefined }); }}
+                className="mt-0.5"
+              />
+              <Label htmlFor="consent" className="text-xs leading-relaxed text-foreground font-normal cursor-pointer">
+                {t.privacy.consentLabel}{" "}
+                <button type="button" onClick={() => setPrivacyOpen(true)} className="text-primary underline hover:no-underline font-medium">
+                  {t.privacy.consentLink}
+                </button>
+                .
+                {fieldErrors.consent && <span className="block text-destructive mt-1">{fieldErrors.consent}</span>}
+              </Label>
+            </div>
+
+            <Button
+              type="button"
+              onClick={sendOrder}
+              disabled={sending || calc.items.length === 0}
+              size="lg"
+              className="w-full mt-6 gap-2 bg-gradient-primary text-primary-foreground shadow-glow font-semibold h-12 rounded-full"
+            >
+              {sending ? (<><Loader2 className="h-4 w-4 animate-spin" /> {t.send.submitting}</>) : (<><Send className="h-4 w-4" /> {t.send.submit}</>)}
+            </Button>
+
+            <div className="mt-4 rounded-xl bg-muted/40 border border-dashed border-border/60 p-3 flex items-center justify-between gap-3 flex-wrap">
+              <p className="text-xs text-muted-foreground flex-1 min-w-[10rem]">{t.send.chooseDesc}</p>
+              <Button type="button" onClick={sendViaCall} size="sm" variant="outline" className="gap-2 rounded-full">
+                <Phone className="h-4 w-4" /> {t.send.callFallback} {BUSINESS_PHONE_DISPLAY}
+              </Button>
+            </div>
+
+            <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-1 mt-4">
+              <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
+              {t.summary.noObligation}
+            </p>
+          </Card>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="container py-16 md:py-20">
         <div className="max-w-2xl mx-auto">
@@ -810,238 +907,6 @@ const GardenLanding = () => {
           </div>
         </div>
       )}
-
-      {/* CONTACT DIALOG */}
-      <Dialog open={contactOpen} onOpenChange={setContactOpen}>
-        <DialogContent className="max-w-lg max-h-[92vh] overflow-y-auto rounded-2xl border-border/60">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2.5 text-xl tracking-tight">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft">
-                {wizardStep === 1 ? <MapPin className="h-4 w-4" /> : wizardStep === 2 ? <Leaf className="h-4 w-4" /> : <Phone className="h-4 w-4" />}
-              </div>
-              {wizardStep === 1 ? t.config.areaLabel : wizardStep === 2 ? t.services.add : t.contact.title}
-            </DialogTitle>
-            <DialogDescription className="pt-1">
-              {t.summary.itemsCount(calc.items.length)} · {t.summary.totalMonthly}:{" "}
-              <strong className="text-primary tabular-nums">{formatRSD(calc.total)}</strong>
-            </DialogDescription>
-          </DialogHeader>
-
-          {/* Step indicator */}
-          <div className="flex items-center gap-2 mt-1" aria-label={`Step ${wizardStep} of 3`}>
-            {[1, 2, 3].map((n) => (
-              <div
-                key={n}
-                className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
-                  wizardStep >= n ? "bg-gradient-primary" : "bg-muted"
-                }`}
-              />
-            ))}
-          </div>
-
-          {/* STEP 1 — Area */}
-          {wizardStep === 1 && (
-            <div className="mt-2 animate-fade-in">
-              <div className="flex items-baseline justify-between gap-3 flex-wrap">
-                <p className="text-sm text-muted-foreground">{t.config.areaHelp}</p>
-                <span className="text-3xl font-bold text-primary tabular-nums tracking-tight">
-                  {area}<span className="text-lg text-muted-foreground font-medium ml-1">m²</span>
-                </span>
-              </div>
-              <div className="mt-5">
-                <Slider value={[area]} min={20} max={1500} step={10} onValueChange={([v]) => setArea(v)} />
-              </div>
-              <div className="mt-5">
-                <p className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wider">{t.config.presetsTitle}</p>
-                <div className="flex flex-wrap gap-2">
-                  {PRESET_AREAS.map((p) => (
-                    <button
-                      key={p.key}
-                      type="button"
-                      onClick={() => setArea(p.value)}
-                      className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ring-1 active:scale-95 ${
-                        area === p.value
-                          ? "bg-gradient-primary text-primary-foreground ring-primary shadow-glow"
-                          : "bg-card text-foreground/80 ring-border hover:ring-primary/40 hover:bg-secondary/50"
-                      }`}
-                    >
-                      {t.config.presets[p.key]}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* STEP 2 — Services */}
-          {wizardStep === 2 && (
-            <div className="mt-2 animate-fade-in">
-              <p className="text-sm text-muted-foreground mb-3">{t.summary.itemsCount(calc.items.length)}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[42vh] overflow-y-auto pr-1 -mr-1">
-                {SERVICES.map((svc) => {
-                  const isSel = !!selected[svc.id];
-                  const Icon = svc.icon;
-                  const item = t.services.items[svc.id];
-                  return (
-                    <button
-                      key={svc.id}
-                      type="button"
-                      onClick={() => toggleService(svc)}
-                      className={`text-left flex items-start gap-3 p-3 rounded-xl border transition-all ${
-                        isSel
-                          ? "border-primary bg-primary/5 ring-2 ring-primary/30 shadow-soft"
-                          : "border-border bg-card hover:border-primary/40 hover:bg-secondary/30"
-                      }`}
-                    >
-                      <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${isSel ? "bg-gradient-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
-                        <Icon className="h-4 w-4" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-foreground leading-tight">{item.name}</p>
-                        <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-2">{item.desc}</p>
-                      </div>
-                      {isSel && <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />}
-                    </button>
-                  );
-                })}
-              </div>
-              {calc.total > 0 && (
-                <div className="mt-4 flex items-baseline justify-between border-t border-border/60 pt-3">
-                  <span className="text-sm font-medium text-foreground">{t.summary.totalMonthly}</span>
-                  <span className="text-2xl font-bold text-primary tabular-nums">{formatRSD(calc.total)}</span>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* STEP 3 — Contact */}
-          {wizardStep === 3 && (
-            <div className="mt-2 animate-fade-in">
-              <div className="grid sm:grid-cols-2 gap-3">
-                <div className="sm:col-span-2">
-                  <Label htmlFor="name" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.name}</Label>
-                  <Input
-                    id="name"
-                    value={contact.name}
-                    onChange={(e) => { setContact({ ...contact, name: e.target.value }); if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: undefined }); }}
-                    maxLength={100}
-                    aria-invalid={!!fieldErrors.name}
-                    className={`mt-1.5 h-11 rounded-xl ${fieldErrors.name ? "border-destructive focus-visible:ring-destructive" : ""}`}
-                  />
-                  {fieldErrors.name && <p className="text-xs text-destructive mt-1">{fieldErrors.name}</p>}
-                </div>
-                <div className="sm:col-span-2">
-                  <Label htmlFor="phone" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.phone}</Label>
-                  <Input
-                    id="phone"
-                    value={contact.phone}
-                    onChange={(e) => { setContact({ ...contact, phone: e.target.value }); if (fieldErrors.phone) setFieldErrors({ ...fieldErrors, phone: undefined }); }}
-                    maxLength={30}
-                    placeholder="+381 ..."
-                    inputMode="tel"
-                    aria-invalid={!!fieldErrors.phone}
-                    className={`mt-1.5 h-11 rounded-xl ${fieldErrors.phone ? "border-destructive focus-visible:ring-destructive" : ""}`}
-                  />
-                  {fieldErrors.phone && <p className="text-xs text-destructive mt-1">{fieldErrors.phone}</p>}
-                </div>
-                <div>
-                  <Label htmlFor="city" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.city}</Label>
-                  <Select value={contact.city} onValueChange={(v) => setContact({ ...contact, city: v })}>
-                    <SelectTrigger id="city" className="mt-1.5 h-11 rounded-xl">
-                      <SelectValue placeholder={t.contact.cityPlaceholder} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {SERVICE_CITIES.map((c) => (
-                        <SelectItem key={c} value={c}>{c}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="address" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.address}</Label>
-                  <Input id="address" value={contact.address} onChange={(e) => setContact({ ...contact, address: e.target.value })} maxLength={150} className="mt-1.5 h-11 rounded-xl" />
-                </div>
-                <div className="sm:col-span-2">
-                  <Label htmlFor="notes" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.notes}</Label>
-                  <Textarea
-                    id="notes"
-                    value={contact.notes}
-                    onChange={(e) => setContact({ ...contact, notes: e.target.value })}
-                    maxLength={1000}
-                    placeholder={t.contact.notesPlaceholder}
-                    rows={3}
-                    className="mt-1.5 rounded-xl"
-                  />
-                </div>
-              </div>
-
-              <div className="mt-4 rounded-xl bg-secondary/40 border border-border/60 p-3 text-xs text-muted-foreground leading-relaxed flex gap-2.5">
-                <ShieldCheck className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                <span>{t.privacy.inlineNotice}</span>
-              </div>
-
-              <div className={`mt-3 flex items-start gap-2.5 rounded-xl p-3 transition-colors ${fieldErrors.consent ? "bg-destructive/5 ring-1 ring-destructive/40" : "hover:bg-secondary/30"}`}>
-                <Checkbox
-                  id="consent"
-                  checked={consent}
-                  onCheckedChange={(v) => { setConsent(v === true); if (v) setFieldErrors({ ...fieldErrors, consent: undefined }); }}
-                  className="mt-0.5"
-                />
-                <Label htmlFor="consent" className="text-xs leading-relaxed text-foreground font-normal cursor-pointer">
-                  {t.privacy.consentLabel}{" "}
-                  <button type="button" onClick={() => setPrivacyOpen(true)} className="text-primary underline hover:no-underline font-medium">
-                    {t.privacy.consentLink}
-                  </button>
-                  .
-                  {fieldErrors.consent && <span className="block text-destructive mt-1">{fieldErrors.consent}</span>}
-                </Label>
-              </div>
-
-              <div className="mt-4 rounded-xl bg-muted/40 border border-dashed border-border/60 p-3 flex items-center justify-between gap-3 flex-wrap">
-                <p className="text-xs text-muted-foreground flex-1 min-w-[10rem]">{t.send.chooseDesc}</p>
-                <Button type="button" onClick={sendViaCall} size="sm" variant="outline" className="gap-2 rounded-full">
-                  <Phone className="h-4 w-4" /> {t.send.callFallback} {BUSINESS_PHONE_DISPLAY}
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* Wizard nav */}
-          <DialogFooter className="mt-5 gap-2 sm:gap-2 flex-row sm:justify-between">
-            <Button
-              variant="outline"
-              onClick={wizardStep === 1 ? () => setContactOpen(false) : goBack}
-              className="gap-1.5 rounded-full"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              {wizardStep === 1 ? t.summary.backToServices : t.summary.backToServices}
-            </Button>
-            {wizardStep < 3 ? (
-              <Button
-                onClick={goNext}
-                size="lg"
-                className="gap-1.5 bg-gradient-primary text-primary-foreground shadow-glow font-semibold h-11 rounded-full px-6"
-              >
-                {t.summary.continueToContact} <ArrowRight className="h-4 w-4" />
-              </Button>
-            ) : (
-              <Button
-                type="button"
-                onClick={sendOrder}
-                disabled={sending}
-                size="lg"
-                className="gap-2 bg-gradient-primary text-primary-foreground shadow-glow font-semibold h-11 rounded-full px-6"
-              >
-                {sending ? (<><Loader2 className="h-4 w-4 animate-spin" /> {t.send.submitting}</>) : (<><Send className="h-4 w-4" /> {t.send.submit}</>)}
-              </Button>
-            )}
-          </DialogFooter>
-          <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-1 mt-2">
-            <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
-            {t.summary.noObligation}
-          </p>
-        </DialogContent>
-      </Dialog>
 
       {/* PRIVACY POLICY DIALOG */}
       <Dialog open={privacyOpen} onOpenChange={setPrivacyOpen}>
