@@ -25,6 +25,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import heroImg from "@/assets/garden-hero.jpg";
 import { useI18n } from "@/i18n/I18nContext";
+import { translations } from "@/i18n/translations";
 import LanguageSwitcher from "./LanguageSwitcher";
 import BeforeAfterSlider from "./BeforeAfterSlider";
 import lawnBefore from "@/assets/gallery/lawn-before.jpg";
