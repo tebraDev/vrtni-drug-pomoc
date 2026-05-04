@@ -25,6 +25,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import heroImg from "@/assets/garden-hero.jpg";
 import { useI18n } from "@/i18n/I18nContext";
+import { translations } from "@/i18n/translations";
 import LanguageSwitcher from "./LanguageSwitcher";
 import BeforeAfterSlider from "./BeforeAfterSlider";
 import lawnBefore from "@/assets/gallery/lawn-before.jpg";
@@ -200,31 +201,34 @@ const GardenLanding = () => {
   };
 
   const buildOrderMessage = () => {
+    // Telegram messages are always sent in Serbian (Latin), regardless of UI locale,
+    // so the business owner gets a consistent format.
+    const srT = translations["sr-Latn"];
     const lines: string[] = [];
-    lines.push(t.send.greeting);
+    lines.push(srT.send.greeting);
     lines.push("");
-    lines.push(t.send.summaryHeader);
+    lines.push(srT.send.summaryHeader);
     for (const { def, s, freq, monthly } of calc.items) {
-      const unit = def.unit === "m²" ? t.services.units.m2 : t.services.units.kom;
+      const unit = def.unit === "m²" ? srT.services.units.m2 : srT.services.units.kom;
       lines.push(
-        `• ${t.services.items[def.id].name} — ${s.quantity} ${unit}, ${t.freq[freq.value]} (${formatRSD(monthly)} / ${t.send.monthlySuffix})`
+        `• ${srT.services.items[def.id].name} — ${s.quantity} ${unit}, ${srT.freq[freq.value]} (${formatRSD(monthly)} / ${srT.send.monthlySuffix})`
       );
     }
     lines.push("");
-    lines.push(`${t.send.totalLabel}: ${formatRSD(calc.total)} / ${t.send.monthlySuffix}`);
+    lines.push(`${srT.send.totalLabel}: ${formatRSD(calc.total)} / ${srT.send.monthlySuffix}`);
     lines.push("");
-    lines.push(t.send.contactHeader);
-    lines.push(`• ${t.contact.name.replace(" *", "")}: ${contact.name}`);
-    lines.push(`• ${t.contact.phone.replace(" *", "")}: ${contact.phone}`);
-    if (contact.city) lines.push(`• ${t.contact.city}: ${contact.city}`);
-    if (contact.address) lines.push(`• ${t.contact.address}: ${contact.address}`);
+    lines.push(srT.send.contactHeader);
+    lines.push(`• ${srT.contact.name.replace(" *", "")}: ${contact.name}`);
+    lines.push(`• ${srT.contact.phone.replace(" *", "")}: ${contact.phone}`);
+    if (contact.city) lines.push(`• ${srT.contact.city}: ${contact.city}`);
+    if (contact.address) lines.push(`• ${srT.contact.address}: ${contact.address}`);
     if (contact.notes) {
       lines.push("");
-      lines.push(t.send.notesHeader);
+      lines.push(srT.send.notesHeader);
       lines.push(contact.notes);
     }
     lines.push("");
-    lines.push(t.send.closing);
+    lines.push(srT.send.closing);
     return lines.join("\n");
   };
 
@@ -250,8 +254,10 @@ const GardenLanding = () => {
     if (!validateBeforeSend()) return;
     setSending(true);
     try {
+      const srT = translations["sr-Latn"];
+      const userLocale = typeof navigator !== "undefined" ? navigator.language : "sr-RS";
       const payload = {
-        // Pre-rendered, human-readable message (already localized)
+        // Pre-rendered, human-readable message — always Serbian (Latin) for the business owner
         message: buildOrderMessage(),
         // Structured fields, useful if you later want to format it server-side
         contact: {
@@ -263,7 +269,7 @@ const GardenLanding = () => {
         },
         items: calc.items.map(({ def, s, freq, monthly, perVisit }) => ({
           id: def.id,
-          name: t.services.items[def.id].name,
+          name: srT.services.items[def.id].name,
           quantity: s.quantity,
           unit: def.unit,
           frequency: freq.value,
@@ -271,7 +277,10 @@ const GardenLanding = () => {
           monthlyRSD: Math.round(monthly),
         })),
         totalMonthlyRSD: Math.round(calc.total),
-        locale: typeof navigator !== "undefined" ? navigator.language : "sr-RS",
+        // Locale of the message body (always Serbian Latin). User's UI locale is kept separately
+        // so you can still see which language the visitor was browsing in.
+        locale: "sr-Latn",
+        userLocale,
         source: "zelena-oaza-web",
         sentAt: new Date().toISOString(),
       };
