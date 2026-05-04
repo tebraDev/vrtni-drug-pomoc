@@ -28,6 +28,7 @@ import { useI18n } from "@/i18n/I18nContext";
 import { translations } from "@/i18n/translations";
 import LanguageSwitcher from "./LanguageSwitcher";
 import BeforeAfterSlider from "./BeforeAfterSlider";
+import ThemeToggle from "@/components/ThemeToggle";
 import lawnBefore from "@/assets/gallery/lawn-before.jpg";
 import lawnAfter from "@/assets/gallery/lawn-after.jpg";
 import hedgeBefore from "@/assets/gallery/hedge-before.jpg";
@@ -340,6 +341,7 @@ const GardenLanding = () => {
             >
               {t.nav.order}
             </a>
+            <ThemeToggle />
             <LanguageSwitcher />
           </div>
         </nav>
@@ -546,6 +548,15 @@ const GardenLanding = () => {
                   <Card
                     key={svc.id}
                     onClick={() => toggleService(svc)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        toggleService(svc);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-pressed={isSelected}
                     className={`group relative p-5 cursor-pointer overflow-hidden border-border/60 transition-all duration-300 ${
                       isSelected
                         ? "ring-2 ring-primary shadow-elevated bg-gradient-to-br from-secondary/70 via-card to-card -translate-y-0.5"
@@ -557,9 +568,9 @@ const GardenLanding = () => {
                       <div className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-aurora blur-2xl opacity-60" />
                     )}
                     {isSelected && (
-                      <Badge className="absolute top-3 right-3 bg-primary text-primary-foreground gap-1 pointer-events-none animate-scale-in shadow-soft">
+                      <div className="absolute top-3 right-3 bg-primary text-primary-foreground gap-1 pointer-events-none animate-scale-in shadow-soft flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium">
                         <CheckCircle2 className="h-3 w-3" /> {t.services.selected}
-                      </Badge>
+                      </div>
                     )}
                     <div className="flex items-start gap-3">
                       <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl transition-all duration-300 ${
@@ -739,9 +750,10 @@ const GardenLanding = () => {
                   onChange={(e) => { setContact({ ...contact, name: e.target.value }); if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: undefined }); }}
                   maxLength={100}
                   aria-invalid={!!fieldErrors.name}
+                  aria-describedby={fieldErrors.name ? "name-error" : undefined}
                   className={`mt-1.5 h-11 rounded-xl ${fieldErrors.name ? "border-destructive focus-visible:ring-destructive" : ""}`}
                 />
-                {fieldErrors.name && <p className="text-xs text-destructive mt-1">{fieldErrors.name}</p>}
+                {fieldErrors.name && <p id="name-error" className="text-xs text-destructive mt-1">{fieldErrors.name}</p>}
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="phone" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.phone}</Label>
@@ -753,9 +765,10 @@ const GardenLanding = () => {
                   placeholder="+381 ..."
                   inputMode="tel"
                   aria-invalid={!!fieldErrors.phone}
+                  aria-describedby={fieldErrors.phone ? "phone-error" : undefined}
                   className={`mt-1.5 h-11 rounded-xl ${fieldErrors.phone ? "border-destructive focus-visible:ring-destructive" : ""}`}
                 />
-                {fieldErrors.phone && <p className="text-xs text-destructive mt-1">{fieldErrors.phone}</p>}
+                {fieldErrors.phone && <p id="phone-error" className="text-xs text-destructive mt-1">{fieldErrors.phone}</p>}
               </div>
               <div>
                 <Label htmlFor="city" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{t.contact.city}</Label>
