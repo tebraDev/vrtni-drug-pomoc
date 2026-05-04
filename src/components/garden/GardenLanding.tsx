@@ -201,31 +201,34 @@ const GardenLanding = () => {
   };
 
   const buildOrderMessage = () => {
+    // Telegram messages are always sent in Serbian (Latin), regardless of UI locale,
+    // so the business owner gets a consistent format.
+    const srT = translations["sr-Latn"];
     const lines: string[] = [];
-    lines.push(t.send.greeting);
+    lines.push(srT.send.greeting);
     lines.push("");
-    lines.push(t.send.summaryHeader);
+    lines.push(srT.send.summaryHeader);
     for (const { def, s, freq, monthly } of calc.items) {
-      const unit = def.unit === "m²" ? t.services.units.m2 : t.services.units.kom;
+      const unit = def.unit === "m²" ? srT.services.units.m2 : srT.services.units.kom;
       lines.push(
-        `• ${t.services.items[def.id].name} — ${s.quantity} ${unit}, ${t.freq[freq.value]} (${formatRSD(monthly)} / ${t.send.monthlySuffix})`
+        `• ${srT.services.items[def.id].name} — ${s.quantity} ${unit}, ${srT.freq[freq.value]} (${formatRSD(monthly)} / ${srT.send.monthlySuffix})`
       );
     }
     lines.push("");
-    lines.push(`${t.send.totalLabel}: ${formatRSD(calc.total)} / ${t.send.monthlySuffix}`);
+    lines.push(`${srT.send.totalLabel}: ${formatRSD(calc.total)} / ${srT.send.monthlySuffix}`);
     lines.push("");
-    lines.push(t.send.contactHeader);
-    lines.push(`• ${t.contact.name.replace(" *", "")}: ${contact.name}`);
-    lines.push(`• ${t.contact.phone.replace(" *", "")}: ${contact.phone}`);
-    if (contact.city) lines.push(`• ${t.contact.city}: ${contact.city}`);
-    if (contact.address) lines.push(`• ${t.contact.address}: ${contact.address}`);
+    lines.push(srT.send.contactHeader);
+    lines.push(`• ${srT.contact.name.replace(" *", "")}: ${contact.name}`);
+    lines.push(`• ${srT.contact.phone.replace(" *", "")}: ${contact.phone}`);
+    if (contact.city) lines.push(`• ${srT.contact.city}: ${contact.city}`);
+    if (contact.address) lines.push(`• ${srT.contact.address}: ${contact.address}`);
     if (contact.notes) {
       lines.push("");
-      lines.push(t.send.notesHeader);
+      lines.push(srT.send.notesHeader);
       lines.push(contact.notes);
     }
     lines.push("");
-    lines.push(t.send.closing);
+    lines.push(srT.send.closing);
     return lines.join("\n");
   };
 
