@@ -930,6 +930,20 @@ const GardenLanding = () => {
         </div>
       )}
 
+      {/* FLOATING WHATSAPP BUTTON */}
+      <a
+        href={`https://wa.me/${BUSINESS_PHONE_INTL}`}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={t.footer.whatsapp}
+        className={`fixed right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[hsl(142_70%_38%)] text-white shadow-elevated hover:scale-110 active:scale-95 transition-transform ${
+          calc.items.length > 0 ? "bottom-24 lg:bottom-6" : "bottom-6"
+        }`}
+      >
+        <MessageCircle className="h-7 w-7" />
+        <span className="sr-only">{t.footer.whatsapp}</span>
+      </a>
+
       {/* PRIVACY POLICY DIALOG */}
       <Dialog open={privacyOpen} onOpenChange={setPrivacyOpen}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
