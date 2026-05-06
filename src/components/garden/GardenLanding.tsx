@@ -766,7 +766,7 @@ const GardenLanding = () => {
       {/* INLINE CONTACT FORM */}
       <section id="kontakt" className="container py-16 md:py-20 scroll-mt-4">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-8">
+          {!success && <div className="text-center mb-8">
             <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
               {t.contact.title}
             </span>
@@ -777,8 +777,70 @@ const GardenLanding = () => {
               {t.summary.itemsCount(calc.items.length)} · {t.summary.totalMonthly}:{" "}
               <strong className="text-primary tabular-nums">{formatRSD(calc.total)}</strong>
             </p>
-          </div>
+          </div>}
 
+          {success ? (
+            <Card className="p-6 md:p-10 shadow-elevated border-primary/30 bg-gradient-to-br from-card via-secondary/30 to-card backdrop-blur text-center animate-fade-in-up overflow-hidden relative">
+              <div className="pointer-events-none absolute -top-24 -left-24 h-56 w-56 rounded-full bg-gradient-aurora blur-3xl opacity-70" />
+              <div className="pointer-events-none absolute -bottom-24 -right-24 h-56 w-56 rounded-full bg-gradient-aurora blur-3xl opacity-50" />
+              <div className="relative">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-gradient-primary text-primary-foreground shadow-glow mb-5 animate-scale-in">
+                  <CheckCircle2 className="h-8 w-8" />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight text-balance">
+                  {t.send.successTitle}
+                </h2>
+                <p className="mt-3 text-muted-foreground text-balance max-w-md mx-auto">
+                  {t.send.successIntro}
+                </p>
+
+                <div className="mt-8 text-left rounded-2xl bg-card/70 border border-border/60 p-5 max-w-md mx-auto">
+                  <h3 className="font-semibold text-foreground text-sm tracking-tight flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-accent" /> {t.send.whatNextTitle}
+                  </h3>
+                  <ol className="mt-3 space-y-2.5">
+                    {t.send.whatNextSteps.map((step, i) => (
+                      <li key={i} className="flex gap-3 text-sm text-muted-foreground leading-relaxed">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-xs font-bold">
+                          {i + 1}
+                        </span>
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                <div className="mt-6 max-w-md mx-auto rounded-2xl bg-secondary/40 border border-border/60 p-5">
+                  <p className="text-sm font-semibold text-foreground tracking-tight">{t.send.contactNowTitle}</p>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{t.send.contactNowDesc}</p>
+                  <div className="mt-4 flex flex-wrap gap-2 justify-center">
+                    <Button
+                      asChild
+                      size="lg"
+                      className="gap-2 bg-[hsl(142_70%_38%)] hover:bg-[hsl(142_70%_34%)] text-white rounded-full shadow-soft"
+                    >
+                      <a href={`https://wa.me/${BUSINESS_PHONE_INTL}`} target="_blank" rel="noreferrer">
+                        <MessageCircle className="h-5 w-5" /> {t.send.waBtn}
+                      </a>
+                    </Button>
+                    <Button asChild size="lg" variant="outline" className="gap-2 rounded-full">
+                      <a href={`tel:+${BUSINESS_PHONE_INTL}`}>
+                        <Phone className="h-5 w-5" /> {t.send.callBtn} {BUSINESS_PHONE_DISPLAY}
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setSuccess(false)}
+                  className="mt-6 text-xs text-primary hover:underline font-medium"
+                >
+                  {t.send.newOrder}
+                </button>
+              </div>
+            </Card>
+          ) : (
           <Card className="p-6 md:p-8 shadow-elevated border-border/60 bg-card/90 backdrop-blur">
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
@@ -898,6 +960,7 @@ const GardenLanding = () => {
               {t.summary.noObligation}
             </p>
           </Card>
+          )}
         </div>
       </section>
 
