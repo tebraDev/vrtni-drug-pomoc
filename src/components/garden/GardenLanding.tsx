@@ -338,7 +338,7 @@ const GardenLanding = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-soft pb-24 lg:pb-0 antialiased">
+    <div className={`min-h-screen bg-gradient-soft antialiased ${calc.items.length > 0 ? "pb-24 lg:pb-0" : ""}`}>
       {/* HERO */}
       <header className="relative overflow-hidden">
         <div className="absolute inset-0">
