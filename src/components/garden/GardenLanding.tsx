@@ -367,7 +367,7 @@ const GardenLanding = () => {
               {[
                 { id: "usluge", label: t.nav.services },
                 { id: "porucivanje", label: t.nav.order },
-                { id: "kontakt", label: t.nav.faq && "Kontakt" ? "Kontakt" : t.nav.faq },
+                { id: "kontakt", label: t.contact.title },
               ].map((it) => (
                 <a
                   key={it.id}
