@@ -158,7 +158,7 @@ export const formatPrice = (n: number, locale: Locale) => {
 export const translations: Record<Locale, Dict> = {
   "sr-Latn": {
     localeName: "Srpski (latinica)",
-    nav: { order: "Poruči uslugu" },
+    nav: { order: "Poruči uslugu", services: "Usluge", gallery: "Pre/Posle", faq: "Pitanja" },
     hero: {
       badge: "Za dijasporu i starije sugrađane",
       title: "Vaša bašta u najboljim rukama — dok ste odsutni",
@@ -263,6 +263,20 @@ export const translations: Record<Locale, Dict> = {
       totalLabel: "Mesečna procena",
       monthlySuffix: "mesečno",
       closing: "Hvala!",
+      successTitle: "Hvala! Vaša narudžbina je primljena ✓",
+      successIntro: "Poruka je uspešno poslata. Javljamo Vam se uskoro.",
+      whatNextTitle: "Šta sledi?",
+      whatNextSteps: [
+        "Pregledamo Vaš zahtev (obično u roku od par sati).",
+        "Kontaktiramo Vas telefonom ili WhatsAppom radi potvrde termina.",
+        "Šaljemo konačnu ponudu i dogovaramo prvi dolazak.",
+      ],
+      contactNowTitle: "Treba Vam odmah?",
+      contactNowDesc: "Pišite nam direktno na WhatsApp ili pozovite — odgovaramo brže.",
+      waBtn: "WhatsApp",
+      callBtn: "Pozovi",
+      newOrder: "Nova narudžbina",
+      phoneInvalid: "Unesite ispravan broj (npr. +381 60 123 4567).",
     },
     meta: {
       title: "Zelena Oaza — Održavanje bašte za dijasporu i starije",
@@ -329,7 +343,7 @@ export const translations: Record<Locale, Dict> = {
   },
   "sr-Cyrl": {
     localeName: "Српски (ћирилица)",
-    nav: { order: "Поручи услугу" },
+    nav: { order: "Поручи услугу", services: "Услуге", gallery: "Пре/После", faq: "Питања" },
     hero: {
       badge: "За дијаспору и старије суграђане",
       title: "Ваша башта у најбољим рукама — док сте одсутни",
@@ -434,6 +448,20 @@ export const translations: Record<Locale, Dict> = {
       totalLabel: "Месечна процена",
       monthlySuffix: "месечно",
       closing: "Хвала!",
+      successTitle: "Хвала! Ваша наруџбина је примљена ✓",
+      successIntro: "Порука је успешно послата. Јављамо Вам се ускоро.",
+      whatNextTitle: "Шта следи?",
+      whatNextSteps: [
+        "Прегледамо Ваш захтев (обично у року од пар сати).",
+        "Контактирамо Вас телефоном или WhatsApp-ом ради потврде термина.",
+        "Шаљемо коначну понуду и договарамо први долазак.",
+      ],
+      contactNowTitle: "Треба Вам одмах?",
+      contactNowDesc: "Пишите нам директно на WhatsApp или позовите — одговарамо брже.",
+      waBtn: "WhatsApp",
+      callBtn: "Позови",
+      newOrder: "Нова наруџбина",
+      phoneInvalid: "Унесите исправан број (нпр. +381 60 123 4567).",
     },
     meta: {
       title: "Зелена Оаза — Одржавање баште за дијаспору и старије",
@@ -500,7 +528,7 @@ export const translations: Record<Locale, Dict> = {
   },
   de: {
     localeName: "Deutsch",
-    nav: { order: "Service bestellen" },
+    nav: { order: "Service bestellen", services: "Leistungen", gallery: "Vorher/Nachher", faq: "FAQ" },
     hero: {
       badge: "Für die Diaspora und ältere Mitbürger",
       title: "Ihr Garten in besten Händen — auch wenn Sie nicht da sind",
@@ -606,6 +634,20 @@ export const translations: Record<Locale, Dict> = {
       totalLabel: "Monatliche Schätzung",
       monthlySuffix: "pro Monat",
       closing: "Danke!",
+      successTitle: "Danke! Ihre Bestellung ist eingegangen ✓",
+      successIntro: "Die Nachricht wurde erfolgreich gesendet. Wir melden uns in Kürze.",
+      whatNextTitle: "Wie geht es weiter?",
+      whatNextSteps: [
+        "Wir prüfen Ihre Anfrage (in der Regel innerhalb weniger Stunden).",
+        "Wir kontaktieren Sie per Telefon oder WhatsApp zur Terminbestätigung.",
+        "Wir senden das endgültige Angebot und vereinbaren den ersten Einsatz.",
+      ],
+      contactNowTitle: "Brauchen Sie sofort Hilfe?",
+      contactNowDesc: "Schreiben Sie uns direkt auf WhatsApp oder rufen Sie an — wir antworten schneller.",
+      waBtn: "WhatsApp",
+      callBtn: "Anrufen",
+      newOrder: "Neue Bestellung",
+      phoneInvalid: "Bitte gültige Nummer eingeben (z. B. +381 60 123 4567).",
     },
     meta: {
       title: "Zelena Oaza — Gartenpflege für die Diaspora und Senioren",
@@ -672,7 +714,7 @@ export const translations: Record<Locale, Dict> = {
   },
   en: {
     localeName: "English",
-    nav: { order: "Order service" },
+    nav: { order: "Order service", services: "Services", gallery: "Before/After", faq: "FAQ" },
     hero: {
       badge: "For the diaspora and elderly residents",
       title: "Your garden in the best hands — while you're away",
