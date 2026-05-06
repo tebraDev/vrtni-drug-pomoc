@@ -114,6 +114,30 @@ const GardenLanding = () => {
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [sending, setSending] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<"name" | "phone" | "consent", string>>>({});
+  const [success, setSuccess] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
+
+  // Phone format check (used for live inline validation)
+  const isPhoneValid = (val: string) => /^[+\d][\d\s\-()]{5,}$/.test(val.trim()) && val.replace(/\D/g, "").length >= 6;
+
+  // Scroll-spy: highlight the section currently in view in the header nav.
+  useEffect(() => {
+    const ids = ["usluge", "porucivanje", "kontakt"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActiveSection(visible[0].target.id);
+      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] },
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
 
   // Zod schema for contact step — keeps validation centralized & consistent.
   const contactSchema = useMemo(
@@ -294,9 +318,13 @@ const GardenLanding = () => {
 
       if (!res.ok) throw new Error(`Worker responded ${res.status}`);
 
-      toast({ title: t.send.sentTitle, description: t.send.sentDesc });
-      // Reset only consent so the next order requires re-consent
+      // Show inline success state (replaces the form). Reset consent for next order.
+      setSuccess(true);
       setConsent(false);
+      // Scroll to the success card so the user sees it on mobile too
+      setTimeout(() => {
+        document.getElementById("kontakt")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
     } catch (err) {
       console.error("Order submission failed", err);
       toast({
@@ -334,13 +362,24 @@ const GardenLanding = () => {
             </div>
             <span className="text-xl font-semibold tracking-tight">Zelena Oaza</span>
           </div>
-          <div className="flex items-center gap-2">
-            <a
-              href="#porucivanje"
-              className="hidden sm:inline-flex h-9 items-center text-primary-foreground/90 hover:text-primary-foreground text-sm font-medium px-3 transition-colors"
-            >
-              {t.nav.order}
-            </a>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <div className="hidden md:flex items-center gap-1 mr-1">
+              {[
+                { id: "usluge", label: t.nav.services },
+                { id: "porucivanje", label: t.nav.order },
+                { id: "kontakt", label: t.contact.title },
+              ].map((it) => (
+                <a
+                  key={it.id}
+                  href={`#${it.id}`}
+                  className={`relative inline-flex h-9 items-center rounded-full px-3 text-sm font-medium transition-colors text-primary-foreground/80 hover:text-primary-foreground ${
+                    activeSection === it.id ? "text-primary-foreground bg-white/15 backdrop-blur" : ""
+                  }`}
+                >
+                  {it.label}
+                </a>
+              ))}
+            </div>
             <ThemeToggle />
             <LanguageSwitcher />
           </div>
@@ -727,7 +766,7 @@ const GardenLanding = () => {
       {/* INLINE CONTACT FORM */}
       <section id="kontakt" className="container py-16 md:py-20 scroll-mt-4">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-8">
+          {!success && <div className="text-center mb-8">
             <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
               {t.contact.title}
             </span>
@@ -738,8 +777,70 @@ const GardenLanding = () => {
               {t.summary.itemsCount(calc.items.length)} · {t.summary.totalMonthly}:{" "}
               <strong className="text-primary tabular-nums">{formatRSD(calc.total)}</strong>
             </p>
-          </div>
+          </div>}
 
+          {success ? (
+            <Card className="p-6 md:p-10 shadow-elevated border-primary/30 bg-gradient-to-br from-card via-secondary/30 to-card backdrop-blur text-center animate-fade-in-up overflow-hidden relative">
+              <div className="pointer-events-none absolute -top-24 -left-24 h-56 w-56 rounded-full bg-gradient-aurora blur-3xl opacity-70" />
+              <div className="pointer-events-none absolute -bottom-24 -right-24 h-56 w-56 rounded-full bg-gradient-aurora blur-3xl opacity-50" />
+              <div className="relative">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-gradient-primary text-primary-foreground shadow-glow mb-5 animate-scale-in">
+                  <CheckCircle2 className="h-8 w-8" />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight text-balance">
+                  {t.send.successTitle}
+                </h2>
+                <p className="mt-3 text-muted-foreground text-balance max-w-md mx-auto">
+                  {t.send.successIntro}
+                </p>
+
+                <div className="mt-8 text-left rounded-2xl bg-card/70 border border-border/60 p-5 max-w-md mx-auto">
+                  <h3 className="font-semibold text-foreground text-sm tracking-tight flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-accent" /> {t.send.whatNextTitle}
+                  </h3>
+                  <ol className="mt-3 space-y-2.5">
+                    {t.send.whatNextSteps.map((step, i) => (
+                      <li key={i} className="flex gap-3 text-sm text-muted-foreground leading-relaxed">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-xs font-bold">
+                          {i + 1}
+                        </span>
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                <div className="mt-6 max-w-md mx-auto rounded-2xl bg-secondary/40 border border-border/60 p-5">
+                  <p className="text-sm font-semibold text-foreground tracking-tight">{t.send.contactNowTitle}</p>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{t.send.contactNowDesc}</p>
+                  <div className="mt-4 flex flex-wrap gap-2 justify-center">
+                    <Button
+                      asChild
+                      size="lg"
+                      className="gap-2 bg-[hsl(142_70%_38%)] hover:bg-[hsl(142_70%_34%)] text-white rounded-full shadow-soft"
+                    >
+                      <a href={`https://wa.me/${BUSINESS_PHONE_INTL}`} target="_blank" rel="noreferrer">
+                        <MessageCircle className="h-5 w-5" /> {t.send.waBtn}
+                      </a>
+                    </Button>
+                    <Button asChild size="lg" variant="outline" className="gap-2 rounded-full">
+                      <a href={`tel:+${BUSINESS_PHONE_INTL}`}>
+                        <Phone className="h-5 w-5" /> {t.send.callBtn} {BUSINESS_PHONE_DISPLAY}
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setSuccess(false)}
+                  className="mt-6 text-xs text-primary hover:underline font-medium"
+                >
+                  {t.send.newOrder}
+                </button>
+              </div>
+            </Card>
+          ) : (
           <Card className="p-6 md:p-8 shadow-elevated border-border/60 bg-card/90 backdrop-blur">
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
@@ -760,7 +861,21 @@ const GardenLanding = () => {
                 <Input
                   id="phone"
                   value={contact.phone}
-                  onChange={(e) => { setContact({ ...contact, phone: e.target.value }); if (fieldErrors.phone) setFieldErrors({ ...fieldErrors, phone: undefined }); }}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setContact({ ...contact, phone: v });
+                    // Live validation: clear error while typing if becomes valid; show only if user typed something
+                    if (v.trim().length === 0) {
+                      setFieldErrors({ ...fieldErrors, phone: undefined });
+                    } else if (isPhoneValid(v)) {
+                      setFieldErrors({ ...fieldErrors, phone: undefined });
+                    }
+                  }}
+                  onBlur={() => {
+                    if (contact.phone.trim().length > 0 && !isPhoneValid(contact.phone)) {
+                      setFieldErrors((prev) => ({ ...prev, phone: t.send.phoneInvalid }));
+                    }
+                  }}
                   maxLength={30}
                   placeholder="+381 ..."
                   inputMode="tel"
@@ -845,6 +960,7 @@ const GardenLanding = () => {
               {t.summary.noObligation}
             </p>
           </Card>
+          )}
         </div>
       </section>
 
