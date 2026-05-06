@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Leaf, Droplets, Scissors, Sprout, TreePine, Trash2, Flower2, Sparkles,
   ShieldCheck, Clock, MapPin, Phone, CheckCircle2, Star, Plus, Minus,
-  ArrowRight, MessageCircle, ChevronDown, Send, Loader2,
+  ArrowRight, MessageCircle, ChevronDown, Send, Loader2, PartyPopper,
 } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -114,6 +114,30 @@ const GardenLanding = () => {
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [sending, setSending] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<"name" | "phone" | "consent", string>>>({});
+  const [success, setSuccess] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
+
+  // Phone format check (used for live inline validation)
+  const isPhoneValid = (val: string) => /^[+\d][\d\s\-()]{5,}$/.test(val.trim()) && val.replace(/\D/g, "").length >= 6;
+
+  // Scroll-spy: highlight the section currently in view in the header nav.
+  useEffect(() => {
+    const ids = ["usluge", "porucivanje", "kontakt"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActiveSection(visible[0].target.id);
+      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] },
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
 
   // Zod schema for contact step — keeps validation centralized & consistent.
   const contactSchema = useMemo(
@@ -294,9 +318,13 @@ const GardenLanding = () => {
 
       if (!res.ok) throw new Error(`Worker responded ${res.status}`);
 
-      toast({ title: t.send.sentTitle, description: t.send.sentDesc });
-      // Reset only consent so the next order requires re-consent
+      // Show inline success state (replaces the form). Reset consent for next order.
+      setSuccess(true);
       setConsent(false);
+      // Scroll to the success card so the user sees it on mobile too
+      setTimeout(() => {
+        document.getElementById("kontakt")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
     } catch (err) {
       console.error("Order submission failed", err);
       toast({
