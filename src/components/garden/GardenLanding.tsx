@@ -362,13 +362,24 @@ const GardenLanding = () => {
             </div>
             <span className="text-xl font-semibold tracking-tight">Zelena Oaza</span>
           </div>
-          <div className="flex items-center gap-2">
-            <a
-              href="#porucivanje"
-              className="hidden sm:inline-flex h-9 items-center text-primary-foreground/90 hover:text-primary-foreground text-sm font-medium px-3 transition-colors"
-            >
-              {t.nav.order}
-            </a>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <div className="hidden md:flex items-center gap-1 mr-1">
+              {[
+                { id: "usluge", label: t.nav.services },
+                { id: "porucivanje", label: t.nav.order },
+                { id: "kontakt", label: t.nav.faq && "Kontakt" ? "Kontakt" : t.nav.faq },
+              ].map((it) => (
+                <a
+                  key={it.id}
+                  href={`#${it.id}`}
+                  className={`relative inline-flex h-9 items-center rounded-full px-3 text-sm font-medium transition-colors text-primary-foreground/80 hover:text-primary-foreground ${
+                    activeSection === it.id ? "text-primary-foreground bg-white/15 backdrop-blur" : ""
+                  }`}
+                >
+                  {it.label}
+                </a>
+              ))}
+            </div>
             <ThemeToggle />
             <LanguageSwitcher />
           </div>
