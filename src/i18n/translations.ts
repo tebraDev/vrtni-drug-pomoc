@@ -2,7 +2,7 @@ export type Locale = "sr-Latn" | "sr-Cyrl" | "de" | "en";
 
 export interface Dict {
   localeName: string;
-  nav: { order: string };
+  nav: { order: string; services: string; gallery: string; faq: string };
   hero: {
     badge: string;
     title: string;
@@ -91,6 +91,16 @@ export interface Dict {
     totalLabel: string;
     monthlySuffix: string;
     closing: string;
+    successTitle: string;
+    successIntro: string;
+    whatNextTitle: string;
+    whatNextSteps: string[];
+    contactNowTitle: string;
+    contactNowDesc: string;
+    waBtn: string;
+    callBtn: string;
+    newOrder: string;
+    phoneInvalid: string;
   };
   meta: { title: string; description: string };
   privacy: {
