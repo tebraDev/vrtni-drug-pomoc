@@ -799,7 +799,21 @@ const GardenLanding = () => {
                 <Input
                   id="phone"
                   value={contact.phone}
-                  onChange={(e) => { setContact({ ...contact, phone: e.target.value }); if (fieldErrors.phone) setFieldErrors({ ...fieldErrors, phone: undefined }); }}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setContact({ ...contact, phone: v });
+                    // Live validation: clear error while typing if becomes valid; show only if user typed something
+                    if (v.trim().length === 0) {
+                      setFieldErrors({ ...fieldErrors, phone: undefined });
+                    } else if (isPhoneValid(v)) {
+                      setFieldErrors({ ...fieldErrors, phone: undefined });
+                    }
+                  }}
+                  onBlur={() => {
+                    if (contact.phone.trim().length > 0 && !isPhoneValid(contact.phone)) {
+                      setFieldErrors((prev) => ({ ...prev, phone: t.send.phoneInvalid }));
+                    }
+                  }}
                   maxLength={30}
                   placeholder="+381 ..."
                   inputMode="tel"
