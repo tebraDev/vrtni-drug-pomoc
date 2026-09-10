@@ -395,7 +395,16 @@ const GardenLanding = () => {
             <p className="mt-6 text-lg md:text-xl text-primary-foreground/95 leading-relaxed max-w-xl text-balance">
               {t.hero.subtitle}
             </p>
-            <div className="mt-9 flex flex-wrap gap-3">
+            <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-primary-foreground/90">
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
+                <Star className="h-4 w-4 text-accent fill-accent" /> {t.hero.rating}
+              </span>
+              <span className="hidden sm:inline text-primary-foreground/40">·</span>
+              <span className="text-sm font-medium">{t.hero.happyClients}</span>
+              <span className="hidden sm:inline text-primary-foreground/40">·</span>
+              <span className="text-sm font-medium">{t.hero.sinceYear}</span>
+            </div>
+            <div className="mt-7 flex flex-wrap gap-3">
               <Button
                 asChild
                 size="lg"
@@ -505,6 +514,41 @@ const GardenLanding = () => {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="container py-16 md:py-20">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
+            {t.testimonials.title}
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">
+            {t.testimonials.subtitle}
+          </h2>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {t.testimonials.items.map((item, i) => (
+            <Card
+              key={i}
+              className="flex h-full flex-col p-6 shadow-ring1 hover:shadow-elevated hover:-translate-y-1 transition-all duration-300 bg-card/80 backdrop-blur border-border/60"
+            >
+              <div className="flex gap-0.5 text-accent" aria-hidden="true">
+                {Array.from({ length: 5 }).map((_, s) => (
+                  <Star key={s} className="h-4 w-4 fill-accent" />
+                ))}
+              </div>
+              <p className="mt-3 flex-1 text-sm text-foreground/90 leading-relaxed">
+                &ldquo;{item.quote}&rdquo;
+              </p>
+              <div className="mt-4 pt-4 border-t border-border/60">
+                <p className="font-semibold text-sm text-foreground tracking-tight">{item.author}</p>
+                <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
+                  <MapPin className="h-3 w-3" /> {item.location}
+                </p>
+              </div>
+            </Card>
+          ))}
         </div>
       </section>
 
