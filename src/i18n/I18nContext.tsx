@@ -1,11 +1,12 @@
 import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from "react";
-import { Locale, translations, Dict, formatPrice } from "./translations";
+import { Locale, translations, Dict, formatPrice, formatEurApprox } from "./translations";
 
 interface I18nCtx {
   locale: Locale;
   setLocale: (l: Locale) => void;
   t: Dict;
   formatPrice: (n: number) => string;
+  formatEurApprox: (n: number) => string;
 }
 
 const Ctx = createContext<I18nCtx | null>(null);
@@ -54,6 +55,7 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
       setLocale,
       t: translations[locale],
       formatPrice: (n: number) => formatPrice(n, locale),
+      formatEurApprox: (n: number) => formatEurApprox(n, locale),
     }),
     [locale],
   );

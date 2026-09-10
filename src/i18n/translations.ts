@@ -58,6 +58,7 @@ export interface Dict {
     perVisitSuffix: string;
     totalMonthly: string;
     estimateNote: string;
+    approxEur: (eur: string) => string;
     orderBtn: string;
     noObligation: string;
     itemsCount: (n: number) => string;
@@ -155,6 +156,23 @@ export const formatPrice = (n: number, locale: Locale) => {
   return fmtRSD(n, "en-US");
 };
 
+// Approximate, fixed RSD→EUR rate for diaspora's mental math only (not a live
+// rate, not the actual charged amount — the real price is always in RSD).
+// The dinar is informally pegged near this level; update occasionally.
+const RSD_PER_EUR_APPROX = 117.3;
+
+const localeTagFor = (locale: Locale) =>
+  locale === "sr-Cyrl" || locale === "sr-Latn" ? "sr-RS" : locale === "de" ? "de-DE" : "en-US";
+
+export const formatEurApprox = (n: number, locale: Locale) => {
+  const eur = n / RSD_PER_EUR_APPROX;
+  return new Intl.NumberFormat(localeTagFor(locale), {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(eur);
+};
+
 export const translations: Record<Locale, Dict> = {
   "sr-Latn": {
     localeName: "Srpski (latinica)",
@@ -229,6 +247,7 @@ export const translations: Record<Locale, Dict> = {
       perVisitSuffix: "po dolasku",
       totalMonthly: "Ukupno mesečno",
       estimateNote: "Procena na osnovu unetih podataka. Konačna cena se potvrđuje nakon dogovora.",
+      approxEur: (eur) => `otprilike ${eur} (okvirni kurs, plaćanje je u RSD)`,
       orderBtn: "Poruči — neobavezujuće",
       noObligation: "Bez obaveze · Kontakt u roku od 24h",
       itemsCount: (n) => n === 1 ? "1 usluga" : (n >= 2 && n <= 4) ? n + " usluge" : n + " usluga",
@@ -414,6 +433,7 @@ export const translations: Record<Locale, Dict> = {
       perVisitSuffix: "по доласку",
       totalMonthly: "Укупно месечно",
       estimateNote: "Процена на основу унетих података. Коначна цена се потврђује након договора.",
+      approxEur: (eur) => `отприлике ${eur} (оквирни курс, плаћање је у РСД)`,
       orderBtn: "Поручи — необавезујуће",
       noObligation: "Без обавезе · Контакт у року од 24ч",
       itemsCount: (n) => n === 1 ? "1 услуга" : (n >= 2 && n <= 4) ? n + " услуге" : n + " услуга",
@@ -600,6 +620,7 @@ export const translations: Record<Locale, Dict> = {
       totalMonthly: "Monatlich gesamt",
       estimateNote:
         "Schätzung anhand Ihrer Angaben. Der Endpreis wird nach Absprache bestätigt.",
+      approxEur: (eur) => `ca. ${eur} (ungefährer Kurs, Zahlung erfolgt in RSD)`,
       orderBtn: "Bestellen — unverbindlich",
       noObligation: "Unverbindlich · Kontakt innerhalb von 24h",
       itemsCount: (n) => n === 1 ? "1 Leistung" : n + " Leistungen",
@@ -784,6 +805,7 @@ export const translations: Record<Locale, Dict> = {
       perVisitSuffix: "per visit",
       totalMonthly: "Monthly total",
       estimateNote: "Estimate based on your input. Final price confirmed after agreement.",
+      approxEur: (eur) => `approx. ${eur} (indicative rate, you pay in RSD)`,
       orderBtn: "Order — no obligation",
       noObligation: "No obligation · Contact within 24h",
       itemsCount: (n) => n === 1 ? "1 service" : n + " services",
