@@ -106,7 +106,7 @@ const computeMonthly = (def: ServiceDef, s: SelectedService) => {
 };
 
 const GardenLanding = () => {
-  const { t, formatPrice: formatRSD } = useI18n();
+  const { t, formatPrice: formatRSD, formatEurApprox } = useI18n();
   const [selected, setSelected] = useState<Record<string, SelectedService>>({});
   const [area, setArea] = useState<number>(150);
   const [contact, setContact] = useState({ name: "", phone: "", city: "", address: "", notes: "" });
@@ -122,7 +122,7 @@ const GardenLanding = () => {
 
   // Scroll-spy: highlight the section currently in view in the header nav.
   useEffect(() => {
-    const ids = ["usluge", "porucivanje", "kontakt"];
+    const ids = ["galerija", "usluge", "porucivanje", "kontakt", "pitanja"];
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -363,16 +363,18 @@ const GardenLanding = () => {
             <span className="text-xl font-semibold tracking-tight">Zelena Oaza</span>
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
-            <div className="hidden md:flex items-center gap-1 mr-1">
+            <div className="hidden lg:flex items-center gap-1 mr-1">
               {[
+                { id: "galerija", label: t.nav.gallery },
                 { id: "usluge", label: t.nav.services },
                 { id: "porucivanje", label: t.nav.order },
                 { id: "kontakt", label: t.contact.title },
+                { id: "pitanja", label: t.nav.faq },
               ].map((it) => (
                 <a
                   key={it.id}
                   href={`#${it.id}`}
-                  className={`relative inline-flex h-9 items-center rounded-full px-3 text-sm font-medium transition-colors text-primary-foreground/80 hover:text-primary-foreground ${
+                  className={`relative inline-flex h-9 items-center whitespace-nowrap rounded-full px-3 text-sm font-medium transition-colors text-primary-foreground/80 hover:text-primary-foreground ${
                     activeSection === it.id ? "text-primary-foreground bg-white/15 backdrop-blur" : ""
                   }`}
                 >
@@ -472,7 +474,7 @@ const GardenLanding = () => {
       </section>
 
       {/* BEFORE/AFTER GALLERY */}
-      <section className="bg-gradient-to-b from-secondary/40 via-secondary/20 to-background border-y border-border/60">
+      <section id="galerija" className="bg-gradient-to-b from-secondary/40 via-secondary/20 to-background border-y border-border/60 scroll-mt-20">
         <div className="container py-16 md:py-20">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary/80 mb-3">
@@ -743,6 +745,9 @@ const GardenLanding = () => {
                   <span className="font-semibold text-foreground tracking-tight">{t.summary.totalMonthly}</span>
                   <span className="text-3xl font-bold text-primary tabular-nums tracking-tight">{formatRSD(calc.total)}</span>
                 </div>
+                {calc.total > 0 && (
+                  <p className="text-xs text-muted-foreground/80 mt-1 tabular-nums">{t.summary.approxEur(formatEurApprox(calc.total))}</p>
+                )}
                 <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{t.summary.estimateNote}</p>
               </div>
 
@@ -775,7 +780,8 @@ const GardenLanding = () => {
             </h2>
             <p className="mt-3 text-muted-foreground text-balance">
               {t.summary.itemsCount(calc.items.length)} · {t.summary.totalMonthly}:{" "}
-              <strong className="text-primary tabular-nums">{formatRSD(calc.total)}</strong>
+              <strong className="text-primary tabular-nums">{formatRSD(calc.total)}</strong>{" "}
+              <span className="text-sm tabular-nums">({formatEurApprox(calc.total)})</span>
             </p>
           </div>}
 
@@ -965,7 +971,7 @@ const GardenLanding = () => {
       </section>
 
       {/* FAQ */}
-      <section className="container py-16 md:py-20">
+      <section id="pitanja" className="container py-16 md:py-20 scroll-mt-20">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground text-center mb-10 tracking-tight text-balance">
             {t.faq.title}
