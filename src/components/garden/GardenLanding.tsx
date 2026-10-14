@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
-  Leaf, Droplets, Scissors, Sprout, TreePine, Trash2, Flower2,
+  Leaf, Droplets, Scissors, Sprout, Fence, Trees, Trash2, Flower2,
   ShieldCheck, MapPin, ArrowRight, Phone, CheckCircle2, MessageCircle, Send, Loader2,
 } from "lucide-react";
 import { z } from "zod";
@@ -65,8 +65,8 @@ const SERVICES: ServiceDef[] = [
   { id: "kosenje",    icon: Scissors, pricePerM2: 25, minPrice: 2500, unit: "m²", frequency: "1x_nedeljno", quantityScale: 1 },
   { id: "zalivanje",  icon: Droplets, pricePerM2: 8,  minPrice: 1500, unit: "m²", frequency: "2x_nedeljno", quantityScale: 1 },
   { id: "plevljenje", icon: Sprout,   pricePerM2: 35, minPrice: 2000, unit: "m²", frequency: "1x_mesecno", quantityScale: 0.3 },
-  { id: "zivica",     icon: TreePine, pricePerM2: 90, minPrice: 3000, unit: "m²", frequency: "1x_mesecno", quantityScale: 0.15 },
-  { id: "drvece",     icon: TreePine, perVisit: 1500, minPrice: 1500, unit: "kom", frequency: "po_potrebi" },
+  { id: "zivica",     icon: Fence, pricePerM2: 90, minPrice: 3000, unit: "m²", frequency: "1x_mesecno", quantityScale: 0.15 },
+  { id: "drvece",     icon: Trees, perVisit: 1500, minPrice: 1500, unit: "kom", frequency: "po_potrebi" },
   { id: "ciscenje",   icon: Trash2,   pricePerM2: 12, minPrice: 2000, unit: "m²", frequency: "2x_mesecno", quantityScale: 1 },
   { id: "cvece",      icon: Flower2,  pricePerM2: 60, minPrice: 2500, unit: "m²", frequency: "po_potrebi", quantityScale: 0.2 },
   { id: "djubrenje",  icon: Leaf,     pricePerM2: 15, minPrice: 1800, unit: "m²", frequency: "1x_mesecno", quantityScale: 1 },
