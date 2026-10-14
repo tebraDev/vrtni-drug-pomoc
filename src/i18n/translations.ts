@@ -293,7 +293,7 @@ export const translations: Record<Locale, Dict> = {
       totalLabel: "Mesečna procena",
       monthlySuffix: "mesečno",
       closing: "Hvala!",
-      successTitle: "Hvala! Vaša narudžbina je primljena ✓",
+      successTitle: "Hvala! Vaš zahtev je primljen ✓",
       successIntro: "Poruka je uspešno poslata. Javljamo Vam se uskoro.",
       whatNextTitle: "Šta sledi?",
       whatNextSteps: [
@@ -305,7 +305,7 @@ export const translations: Record<Locale, Dict> = {
       contactNowDesc: "Pišite nam direktno na WhatsApp ili pozovite — odgovaramo brže.",
       waBtn: "WhatsApp",
       callBtn: "Pozovi",
-      newOrder: "Nova narudžbina",
+      newOrder: "Novi zahtev",
       phoneInvalid: "Unesite ispravan broj (npr. +381 60 123 4567).",
     },
     meta: {
@@ -332,7 +332,7 @@ export const translations: Record<Locale, Dict> = {
     faq: {
       title: "Često postavljana pitanja",
       items: [
-        { q: "Da li je narudžbina obavezujuća?", a: "Ne. Vaša narudžbina je potpuno neobavezujuća — kontaktiramo Vas radi potvrde i konačnog dogovora." },
+        { q: "Da li je zahtev obavezujući?", a: "Ne. Vaš zahtev je potpuno neobavezujući — kontaktiramo Vas radi potvrde i konačnog dogovora." },
         { q: "Kako plaćam ako sam u inostranstvu?", a: "Plaćanje je moguće preko bankarskog transfera, IPS-a ili gotovinom prilikom Vaše posete Srbiji." },
         { q: "Šaljete li izveštaje i slike?", a: "Da, posle svake posete dobijate fotografije i kratak izveštaj putem Vibera, WhatsAppa ili e-maila." },
         { q: "Koje gradove pokrivate?", a: "Trenutno radimo u Trsteniku, Kruševcu, Vrnjačkoj Banji i Aleksandrovcu. Za okolna sela nas kontaktirajte." },
@@ -490,7 +490,7 @@ export const translations: Record<Locale, Dict> = {
       totalLabel: "Месечна процена",
       monthlySuffix: "месечно",
       closing: "Хвала!",
-      successTitle: "Хвала! Ваша наруџбина је примљена ✓",
+      successTitle: "Хвала! Ваш захтев је примљен ✓",
       successIntro: "Порука је успешно послата. Јављамо Вам се ускоро.",
       whatNextTitle: "Шта следи?",
       whatNextSteps: [
@@ -502,7 +502,7 @@ export const translations: Record<Locale, Dict> = {
       contactNowDesc: "Пишите нам директно на WhatsApp или позовите — одговарамо брже.",
       waBtn: "WhatsApp",
       callBtn: "Позови",
-      newOrder: "Нова наруџбина",
+      newOrder: "Нови захтев",
       phoneInvalid: "Унесите исправан број (нпр. +381 60 123 4567).",
     },
     meta: {
@@ -529,7 +529,7 @@ export const translations: Record<Locale, Dict> = {
     faq: {
       title: "Често постављана питања",
       items: [
-        { q: "Да ли је наруџбина обавезујућа?", a: "Не. Ваша наруџбина је потпуно необавезујућа — контактирамо Вас ради потврде и коначног договора." },
+        { q: "Да ли је захтев обавезујући?", a: "Не. Ваш захтев је потпуно необавезујући — контактирамо Вас ради потврде и коначног договора." },
         { q: "Како плаћам ако сам у иностранству?", a: "Плаћање је могуће преко банкарског трансфера, ИПС-а или готовином приликом Ваше посете Србији." },
         { q: "Шаљете ли извештаје и слике?", a: "Да, после сваке посете добијате фотографије и кратак извештај путем Вибера, WhatsAppa или е-маила." },
         { q: "Које градове покривате?", a: "Тренутно радимо у Трстенику, Крушевцу, Врњачкој Бањи и Александровцу. За околна села нас контактирајте." },
@@ -688,7 +688,7 @@ export const translations: Record<Locale, Dict> = {
       totalLabel: "Monatliche Schätzung",
       monthlySuffix: "pro Monat",
       closing: "Danke!",
-      successTitle: "Danke! Ihre Bestellung ist eingegangen ✓",
+      successTitle: "Danke! Ihre Anfrage ist eingegangen ✓",
       successIntro: "Die Nachricht wurde erfolgreich gesendet. Wir melden uns in Kürze.",
       whatNextTitle: "Wie geht es weiter?",
       whatNextSteps: [
@@ -700,7 +700,7 @@ export const translations: Record<Locale, Dict> = {
       contactNowDesc: "Schreiben Sie uns direkt auf WhatsApp oder rufen Sie an — wir antworten schneller.",
       waBtn: "WhatsApp",
       callBtn: "Anrufen",
-      newOrder: "Neue Bestellung",
+      newOrder: "Neue Anfrage",
       phoneInvalid: "Bitte gültige Nummer eingeben (z. B. +381 60 123 4567).",
     },
     meta: {
@@ -727,7 +727,7 @@ export const translations: Record<Locale, Dict> = {
     faq: {
       title: "Häufige Fragen",
       items: [
-        { q: "Ist die Bestellung verbindlich?", a: "Nein. Ihre Bestellung ist völlig unverbindlich — wir melden uns zur Bestätigung und endgültigen Absprache." },
+        { q: "Ist die Anfrage verbindlich?", a: "Nein. Ihre Anfrage ist völlig unverbindlich — wir melden uns zur Bestätigung und endgültigen Absprache." },
         { q: "Wie zahle ich aus dem Ausland?", a: "Zahlung ist per Banküberweisung, IPS oder bar bei Ihrem nächsten Aufenthalt in Serbien möglich." },
         { q: "Bekomme ich Berichte und Fotos?", a: "Ja, nach jedem Einsatz erhalten Sie Fotos und einen kurzen Bericht via Viber, WhatsApp oder E-Mail." },
         { q: "Welche Städte deckt ihr ab?", a: "Aktuell arbeiten wir in Trstenik, Kruševac, Vrnjačka Banja und Aleksandrovac. Für umliegende Dörfer bitte kurz anfragen." },
@@ -884,7 +884,7 @@ export const translations: Record<Locale, Dict> = {
       totalLabel: "Monthly estimate",
       monthlySuffix: "per month",
       closing: "Thank you!",
-      successTitle: "Thank you! Your order has been received ✓",
+      successTitle: "Thank you! Your request has been received ✓",
       successIntro: "Your message was sent successfully. We'll be in touch soon.",
       whatNextTitle: "What happens next?",
       whatNextSteps: [
@@ -896,7 +896,7 @@ export const translations: Record<Locale, Dict> = {
       contactNowDesc: "Message us on WhatsApp or call directly — we reply faster.",
       waBtn: "WhatsApp",
       callBtn: "Call",
-      newOrder: "New order",
+      newOrder: "New request",
       phoneInvalid: "Please enter a valid number (e.g. +381 60 123 4567).",
     },
     meta: {
@@ -923,7 +923,7 @@ export const translations: Record<Locale, Dict> = {
     faq: {
       title: "Frequently asked questions",
       items: [
-        { q: "Is the order binding?", a: "No. Your order is completely non-binding — we contact you for confirmation and final agreement." },
+        { q: "Is the request binding?", a: "No. Your request is completely non-binding — we contact you for confirmation and final agreement." },
         { q: "How do I pay from abroad?", a: "Payment is possible via bank transfer, IPS, or cash on your next visit to Serbia." },
         { q: "Do I get reports and photos?", a: "Yes, after every visit you receive photos and a short report via Viber, WhatsApp or email." },
         { q: "Which cities do you cover?", a: "Currently Trstenik, Kruševac, Vrnjačka Banja and Aleksandrovac. For nearby villages, just ask." },

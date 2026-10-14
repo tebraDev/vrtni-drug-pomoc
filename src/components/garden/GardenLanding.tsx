@@ -134,6 +134,7 @@ const GardenLanding = () => {
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<"name" | "phone" | "consent", string>>>({});
   const [success, setSuccess] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [formInView, setFormInView] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -142,6 +143,16 @@ const GardenLanding = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Hide the header's quote button while the form itself is on screen — it would point to where the user already is.
+  useEffect(() => {
+    const el = document.getElementById("anfrage");
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => setFormInView(entry.isIntersecting), { threshold: 0.15 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  const showHeaderCta = scrolled && !formInView;
+
   const contactSchema = useMemo(
     () =>
       z.object({
@@ -149,7 +160,7 @@ const GardenLanding = () => {
         phone: z
           .string()
           .trim()
-          .min(6, t.toasts.missingDesc)
+          .min(6, t.send.phoneInvalid)
           .max(30)
           .regex(/^[+\d][\d\s\-()]{5,}$/, t.send.phoneInvalid),
         consent: z.literal(true, { errorMap: () => ({ message: t.privacy.consentRequired }) }),
@@ -177,7 +188,14 @@ const GardenLanding = () => {
         if (!errs[k]) errs[k] = issue.message;
       }
       setFieldErrors(errs);
-      toast({ title: t.toasts.missingTitle, description: Object.values(errs)[0], variant: "destructive" });
+      // Take the user straight to the first field that needs fixing.
+      const firstId = (["name", "phone", "consent"] as const).find((k) => errs[k]);
+      const firstEl = firstId && document.getElementById(firstId);
+      if (firstEl) {
+        firstEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        firstEl.focus({ preventScroll: true });
+      }
+      toast({ title: t.toasts.missingTitle, description: errs[firstId ?? "name"], variant: "destructive" });
       return false;
     }
     setFieldErrors({});
@@ -280,15 +298,16 @@ const GardenLanding = () => {
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 ring-1 ring-white/25 backdrop-blur">
               <Leaf className="h-5 w-5" />
             </span>
-            <span className="text-lg sm:text-xl font-semibold tracking-tight">Zelena Oaza</span>
+            <span className={`text-lg sm:text-xl font-semibold tracking-tight ${showHeaderCta ? "hidden min-[400px]:inline" : ""}`}>Zelena Oaza</span>
           </a>
           <div className="flex items-center gap-1 sm:gap-2">
             <a
               href="#anfrage"
-              className={`hidden sm:inline-flex h-9 items-center rounded-full bg-accent px-4 text-sm font-semibold text-accent-foreground shadow-soft transition-all duration-300 hover:brightness-105 ${
-                scrolled ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 -translate-y-1"
+              className={`inline-flex h-9 items-center whitespace-nowrap rounded-full bg-accent px-4 text-sm font-semibold text-accent-foreground shadow-soft transition-all duration-300 hover:brightness-105 ${
+                showHeaderCta ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 -translate-y-1 absolute"
               }`}
-              tabIndex={scrolled ? 0 : -1}
+              tabIndex={showHeaderCta ? 0 : -1}
+              aria-hidden={!showHeaderCta}
             >
               {t.simple.heroCta}
             </a>
@@ -588,7 +607,7 @@ const GardenLanding = () => {
                   >
                     {sending
                       ? (<><Loader2 className="h-5 w-5 animate-spin" /> {t.send.submitting}</>)
-                      : (<><Send className="h-5 w-5" /> {t.send.submit}</>)}
+                      : (<><Send className="h-5 w-5" /> {t.simple.heroCta}</>)}
                   </Button>
 
                   <p className="text-center text-muted-foreground">
@@ -645,7 +664,11 @@ const GardenLanding = () => {
         target="_blank"
         rel="noreferrer"
         aria-label={t.footer.whatsapp}
-        className="fixed right-4 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[hsl(142_70%_38%)] text-white shadow-elevated hover:scale-105 transition-transform"
+        className={`fixed right-4 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[hsl(142_70%_38%)] text-white shadow-elevated hover:scale-105 transition-all duration-300 ${
+          // On phones the button would cover the right edge of the form (incl. the tile check marks);
+          // the form offers its own call option, so step aside while it is on screen.
+          formInView ? "max-lg:pointer-events-none max-lg:opacity-0 max-lg:translate-y-4" : ""
+        }`}
       >
         <MessageCircle className="h-7 w-7" />
       </a>
