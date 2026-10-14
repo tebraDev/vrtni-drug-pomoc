@@ -24,7 +24,6 @@ import heroImg from "@/assets/garden-hero.jpg";
 import { useI18n } from "@/i18n/I18nContext";
 import { translations } from "@/i18n/translations";
 import LanguageSwitcher from "./LanguageSwitcher";
-import BeforeAfterSlider from "./BeforeAfterSlider";
 import ThemeToggle from "@/components/ThemeToggle";
 import lawnBefore from "@/assets/gallery/lawn-before.jpg";
 import lawnAfter from "@/assets/gallery/lawn-after.jpg";
@@ -291,27 +290,35 @@ const GardenLanding = () => {
       {/* BEFORE/AFTER GALLERY */}
       <section className="bg-secondary/30 border-b border-border/60">
         <div className="container py-14 md:py-20">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">{t.gallery.title}</h2>
-            <p className="mt-3 text-muted-foreground">{t.gallery.dragHint}</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <h2 className="text-center max-w-2xl mx-auto mb-10 text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">
+            {t.gallery.title}
+          </h2>
+          <div className="max-w-4xl mx-auto space-y-10">
             {t.gallery.items.map((it, i) => {
               const pair = GALLERY_PAIRS[i];
               if (!pair) return null;
               return (
-                <div key={i} className="space-y-2">
-                  <div className="overflow-hidden rounded-xl ring-1 ring-border/60">
-                    <BeforeAfterSlider
-                      beforeSrc={pair.before}
-                      afterSrc={pair.after}
-                      beforeLabel={t.gallery.before}
-                      afterLabel={t.gallery.after}
-                      alt={it.title}
-                    />
+                <figure key={i}>
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                    {[
+                      { src: pair.before, label: t.gallery.before, badge: "bg-background/90 text-foreground" },
+                      { src: pair.after, label: t.gallery.after, badge: "bg-primary text-primary-foreground" },
+                    ].map((img) => (
+                      <div key={img.label} className="relative overflow-hidden rounded-xl ring-1 ring-border/60 aspect-[4/3] bg-muted">
+                        <img
+                          src={img.src}
+                          alt={`${it.title} — ${img.label}`}
+                          loading="lazy"
+                          className="h-full w-full object-cover"
+                        />
+                        <span className={`absolute top-2 left-2 rounded-full px-3 py-1 text-sm font-semibold shadow-soft ${img.badge}`}>
+                          {img.label}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                  <h3 className="font-medium text-foreground text-sm px-1">{it.title}</h3>
-                </div>
+                  <figcaption className="mt-2 font-medium text-foreground px-1">{it.title}</figcaption>
+                </figure>
               );
             })}
           </div>
