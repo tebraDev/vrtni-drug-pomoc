@@ -131,6 +131,17 @@ export interface Dict {
     title: string;
     items: { q: string; a: string }[];
   };
+  simple: {
+    heroCta: string;
+    formTitle: string;
+    formDesc: string;
+    servicesQ: string;
+    sizeQ: string;
+    contactQ: string;
+    estimate: string;
+    perMonth: string;
+    orCall: string;
+  };
   gallery: {
     title: string;
     subtitle: string;
@@ -327,6 +338,17 @@ export const translations: Record<Locale, Dict> = {
         { q: "Koje gradove pokrivate?", a: "Trenutno radimo u Trsteniku, Kruševcu, Vrnjačkoj Banji i Aleksandrovcu. Za okolna sela nas kontaktirajte." },
       ],
     },
+    simple: {
+      heroCta: "Zatraži ponudu",
+      formTitle: "Zatražite ponudu",
+      formDesc: "Besplatno i neobavezujuće. Javljamo Vam se u roku od 24h.",
+      servicesQ: "1. Šta Vam treba?",
+      sizeQ: "2. Kolika je bašta?",
+      contactQ: "3. Kako da Vas kontaktiramo?",
+      estimate: "Okvirna cena:",
+      perMonth: "mesečno",
+      orCall: "Ili nas jednostavno pozovite:",
+    },
     gallery: {
       title: "Pre i posle — naš rad govori umesto nas",
       subtitle: "Povucite slajder i vidite transformaciju iz prve ruke",
@@ -512,6 +534,17 @@ export const translations: Record<Locale, Dict> = {
         { q: "Шаљете ли извештаје и слике?", a: "Да, после сваке посете добијате фотографије и кратак извештај путем Вибера, WhatsAppa или е-маила." },
         { q: "Које градове покривате?", a: "Тренутно радимо у Трстенику, Крушевцу, Врњачкој Бањи и Александровцу. За околна села нас контактирајте." },
       ],
+    },
+    simple: {
+      heroCta: "Затражи понуду",
+      formTitle: "Затражите понуду",
+      formDesc: "Бесплатно и необавезујуће. Јављамо Вам се у року од 24х.",
+      servicesQ: "1. Шта Вам треба?",
+      sizeQ: "2. Колика је башта?",
+      contactQ: "3. Како да Вас контактирамо?",
+      estimate: "Оквирна цена:",
+      perMonth: "месечно",
+      orCall: "Или нас једноставно позовите:",
     },
     gallery: {
       title: "Пре и после — наш рад говори уместо нас",
@@ -700,6 +733,17 @@ export const translations: Record<Locale, Dict> = {
         { q: "Welche Städte deckt ihr ab?", a: "Aktuell arbeiten wir in Trstenik, Kruševac, Vrnjačka Banja und Aleksandrovac. Für umliegende Dörfer bitte kurz anfragen." },
       ],
     },
+    simple: {
+      heroCta: "Angebot anfragen",
+      formTitle: "Angebot anfragen",
+      formDesc: "Kostenlos und unverbindlich. Wir melden uns innerhalb von 24 Stunden.",
+      servicesQ: "1. Was brauchen Sie?",
+      sizeQ: "2. Wie groß ist der Garten?",
+      contactQ: "3. Wie erreichen wir Sie?",
+      estimate: "Richtpreis:",
+      perMonth: "pro Monat",
+      orCall: "Oder rufen Sie uns einfach an:",
+    },
     gallery: {
       title: "Vorher & Nachher — unsere Arbeit spricht für sich",
       subtitle: "Ziehen Sie den Regler und sehen Sie die Verwandlung direkt",
@@ -884,6 +928,17 @@ export const translations: Record<Locale, Dict> = {
         { q: "Do I get reports and photos?", a: "Yes, after every visit you receive photos and a short report via Viber, WhatsApp or email." },
         { q: "Which cities do you cover?", a: "Currently Trstenik, Kruševac, Vrnjačka Banja and Aleksandrovac. For nearby villages, just ask." },
       ],
+    },
+    simple: {
+      heroCta: "Request a quote",
+      formTitle: "Request a quote",
+      formDesc: "Free and no obligation. We get back to you within 24 hours.",
+      servicesQ: "1. What do you need?",
+      sizeQ: "2. How big is the garden?",
+      contactQ: "3. How can we reach you?",
+      estimate: "Rough price:",
+      perMonth: "per month",
+      orCall: "Or simply give us a call:",
     },
     gallery: {
       title: "Before & after — our work speaks for itself",
