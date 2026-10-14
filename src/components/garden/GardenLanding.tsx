@@ -607,7 +607,7 @@ const GardenLanding = () => {
                   >
                     {sending
                       ? (<><Loader2 className="h-5 w-5 animate-spin" /> {t.send.submitting}</>)
-                      : (<><Send className="h-5 w-5" /> {t.send.submit}</>)}
+                      : (<><Send className="h-5 w-5" /> {t.simple.heroCta}</>)}
                   </Button>
 
                   <p className="text-center text-muted-foreground">

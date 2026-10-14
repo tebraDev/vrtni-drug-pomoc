@@ -293,7 +293,7 @@ export const translations: Record<Locale, Dict> = {
       totalLabel: "Mesečna procena",
       monthlySuffix: "mesečno",
       closing: "Hvala!",
-      successTitle: "Hvala! Vaša narudžbina je primljena ✓",
+      successTitle: "Hvala! Vaš zahtev je primljen ✓",
       successIntro: "Poruka je uspešno poslata. Javljamo Vam se uskoro.",
       whatNextTitle: "Šta sledi?",
       whatNextSteps: [
@@ -305,7 +305,7 @@ export const translations: Record<Locale, Dict> = {
       contactNowDesc: "Pišite nam direktno na WhatsApp ili pozovite — odgovaramo brže.",
       waBtn: "WhatsApp",
       callBtn: "Pozovi",
-      newOrder: "Nova narudžbina",
+      newOrder: "Novi zahtev",
       phoneInvalid: "Unesite ispravan broj (npr. +381 60 123 4567).",
     },
     meta: {
@@ -490,7 +490,7 @@ export const translations: Record<Locale, Dict> = {
       totalLabel: "Месечна процена",
       monthlySuffix: "месечно",
       closing: "Хвала!",
-      successTitle: "Хвала! Ваша наруџбина је примљена ✓",
+      successTitle: "Хвала! Ваш захтев је примљен ✓",
       successIntro: "Порука је успешно послата. Јављамо Вам се ускоро.",
       whatNextTitle: "Шта следи?",
       whatNextSteps: [
@@ -502,7 +502,7 @@ export const translations: Record<Locale, Dict> = {
       contactNowDesc: "Пишите нам директно на WhatsApp или позовите — одговарамо брже.",
       waBtn: "WhatsApp",
       callBtn: "Позови",
-      newOrder: "Нова наруџбина",
+      newOrder: "Нови захтев",
       phoneInvalid: "Унесите исправан број (нпр. +381 60 123 4567).",
     },
     meta: {
@@ -688,7 +688,7 @@ export const translations: Record<Locale, Dict> = {
       totalLabel: "Monatliche Schätzung",
       monthlySuffix: "pro Monat",
       closing: "Danke!",
-      successTitle: "Danke! Ihre Bestellung ist eingegangen ✓",
+      successTitle: "Danke! Ihre Anfrage ist eingegangen ✓",
       successIntro: "Die Nachricht wurde erfolgreich gesendet. Wir melden uns in Kürze.",
       whatNextTitle: "Wie geht es weiter?",
       whatNextSteps: [
@@ -700,7 +700,7 @@ export const translations: Record<Locale, Dict> = {
       contactNowDesc: "Schreiben Sie uns direkt auf WhatsApp oder rufen Sie an — wir antworten schneller.",
       waBtn: "WhatsApp",
       callBtn: "Anrufen",
-      newOrder: "Neue Bestellung",
+      newOrder: "Neue Anfrage",
       phoneInvalid: "Bitte gültige Nummer eingeben (z. B. +381 60 123 4567).",
     },
     meta: {
@@ -884,7 +884,7 @@ export const translations: Record<Locale, Dict> = {
       totalLabel: "Monthly estimate",
       monthlySuffix: "per month",
       closing: "Thank you!",
-      successTitle: "Thank you! Your order has been received ✓",
+      successTitle: "Thank you! Your request has been received ✓",
       successIntro: "Your message was sent successfully. We'll be in touch soon.",
       whatNextTitle: "What happens next?",
       whatNextSteps: [
@@ -896,7 +896,7 @@ export const translations: Record<Locale, Dict> = {
       contactNowDesc: "Message us on WhatsApp or call directly — we reply faster.",
       waBtn: "WhatsApp",
       callBtn: "Call",
-      newOrder: "New order",
+      newOrder: "New request",
       phoneInvalid: "Please enter a valid number (e.g. +381 60 123 4567).",
     },
     meta: {
