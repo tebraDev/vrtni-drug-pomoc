@@ -664,7 +664,11 @@ const GardenLanding = () => {
         target="_blank"
         rel="noreferrer"
         aria-label={t.footer.whatsapp}
-        className="fixed right-4 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[hsl(142_70%_38%)] text-white shadow-elevated hover:scale-105 transition-transform"
+        className={`fixed right-4 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[hsl(142_70%_38%)] text-white shadow-elevated hover:scale-105 transition-all duration-300 ${
+          // On phones the button would cover the right edge of the form (incl. the tile check marks);
+          // the form offers its own call option, so step aside while it is on screen.
+          formInView ? "max-lg:pointer-events-none max-lg:opacity-0 max-lg:translate-y-4" : ""
+        }`}
       >
         <MessageCircle className="h-7 w-7" />
       </a>
