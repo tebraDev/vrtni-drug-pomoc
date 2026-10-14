@@ -134,6 +134,7 @@ const GardenLanding = () => {
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<"name" | "phone" | "consent", string>>>({});
   const [success, setSuccess] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [formInView, setFormInView] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -141,6 +142,16 @@ const GardenLanding = () => {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Hide the header's quote button while the form itself is on screen — it would point to where the user already is.
+  useEffect(() => {
+    const el = document.getElementById("anfrage");
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => setFormInView(entry.isIntersecting), { threshold: 0.15 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  const showHeaderCta = scrolled && !formInView;
 
   const contactSchema = useMemo(
     () =>
@@ -280,15 +291,16 @@ const GardenLanding = () => {
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 ring-1 ring-white/25 backdrop-blur">
               <Leaf className="h-5 w-5" />
             </span>
-            <span className="text-lg sm:text-xl font-semibold tracking-tight">Zelena Oaza</span>
+            <span className={`text-lg sm:text-xl font-semibold tracking-tight ${showHeaderCta ? "hidden min-[400px]:inline" : ""}`}>Zelena Oaza</span>
           </a>
           <div className="flex items-center gap-1 sm:gap-2">
             <a
               href="#anfrage"
-              className={`hidden sm:inline-flex h-9 items-center rounded-full bg-accent px-4 text-sm font-semibold text-accent-foreground shadow-soft transition-all duration-300 hover:brightness-105 ${
-                scrolled ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 -translate-y-1"
+              className={`inline-flex h-9 items-center whitespace-nowrap rounded-full bg-accent px-4 text-sm font-semibold text-accent-foreground shadow-soft transition-all duration-300 hover:brightness-105 ${
+                showHeaderCta ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 -translate-y-1 absolute"
               }`}
-              tabIndex={scrolled ? 0 : -1}
+              tabIndex={showHeaderCta ? 0 : -1}
+              aria-hidden={!showHeaderCta}
             >
               {t.simple.heroCta}
             </a>
