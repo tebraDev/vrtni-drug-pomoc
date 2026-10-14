@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
   Leaf, Droplets, Scissors, Sprout, TreePine, Trash2, Flower2,
-  ShieldCheck, MapPin, Phone, CheckCircle2, MessageCircle, Send, Loader2,
+  ShieldCheck, MapPin, ArrowRight, Phone, CheckCircle2, MessageCircle, Send, Loader2,
 } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -97,6 +97,32 @@ const monthlyFor = (def: ServiceDef, quantity: number) => {
   return perVisit * VISITS_PER_MONTH[def.frequency];
 };
 
+// Fades content in once it scrolls into view (skipped for reduced-motion users via CSS).
+const Reveal = ({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShown(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  return (
+    <div ref={ref} className={`reveal ${shown ? "is-shown" : ""} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
+      {children}
+    </div>
+  );
+};
+
 const GardenLanding = () => {
   const { t, formatPrice: formatRSD, formatEurApprox } = useI18n();
   const [selected, setSelected] = useState<string[]>([]);
@@ -107,6 +133,14 @@ const GardenLanding = () => {
   const [sending, setSending] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<"name" | "phone" | "consent", string>>>({});
   const [success, setSuccess] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const contactSchema = useMemo(
     () =>
@@ -235,6 +269,36 @@ const GardenLanding = () => {
   return (
     <div className="min-h-screen bg-background antialiased">
       {/* HERO */}
+      {/* STICKY TOP BAR — transparent over the hero, solid once scrolled */}
+      <nav
+        className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
+          scrolled ? "bg-[hsl(142_40%_12%/0.88)] backdrop-blur-md shadow-elevated" : "bg-transparent"
+        }`}
+      >
+        <div className={`container flex items-center justify-between gap-3 transition-all duration-300 ${scrolled ? "py-2.5" : "py-5"}`}>
+          <a href="#" className="flex items-center gap-2.5 text-white" aria-label="Zelena Oaza">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 ring-1 ring-white/25 backdrop-blur">
+              <Leaf className="h-5 w-5" />
+            </span>
+            <span className="text-lg sm:text-xl font-semibold tracking-tight">Zelena Oaza</span>
+          </a>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <a
+              href="#anfrage"
+              className={`hidden sm:inline-flex h-9 items-center rounded-full bg-accent px-4 text-sm font-semibold text-accent-foreground shadow-soft transition-all duration-300 hover:brightness-105 ${
+                scrolled ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 -translate-y-1"
+              }`}
+              tabIndex={scrolled ? 0 : -1}
+            >
+              {t.simple.heroCta}
+            </a>
+            <ThemeToggle />
+            <LanguageSwitcher />
+          </div>
+        </div>
+      </nav>
+
+      {/* HERO */}
       <header className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -242,31 +306,29 @@ const GardenLanding = () => {
             alt="Uređena bašta u Srbiji"
             width={1600}
             height={900}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover animate-hero-zoom"
           />
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[hsl(142_45%_8%/0.85)] via-[hsl(142_45%_8%/0.55)] to-[hsl(142_45%_8%/0.15)]" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
         </div>
-        <nav className="relative z-10 container flex items-center justify-between py-5">
-          <div className="flex items-center gap-2.5 text-white">
-            <Leaf className="h-6 w-6" />
-            <span className="text-xl font-semibold tracking-tight">Zelena Oaza</span>
-          </div>
-          <div className="flex items-center gap-1 sm:gap-2">
-            <ThemeToggle />
-            <LanguageSwitcher />
-          </div>
-        </nav>
-        <div className="relative z-10 container py-16 md:py-28">
+        <div className="relative z-10 container pt-32 pb-24 md:pt-44 md:pb-36">
           <div className="max-w-2xl">
-            <h1 className="text-balance text-4xl md:text-6xl font-bold leading-tight tracking-tight text-white">
+            <h1 className="animate-fade-in-up text-balance text-4xl md:text-6xl font-bold leading-[1.08] tracking-tight text-white drop-shadow-sm">
               {t.hero.title}
             </h1>
-            <p className="mt-5 text-lg md:text-xl text-white/90 leading-relaxed text-balance">
+            <p className="animate-fade-in-up [animation-delay:120ms] mt-5 text-lg md:text-xl text-white/90 leading-relaxed text-balance">
               {t.hero.subtitle}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg" className="h-12 px-8 rounded-full text-base font-semibold">
-                <a href="#anfrage">{t.simple.heroCta}</a>
+            <div className="animate-fade-in-up [animation-delay:240ms] mt-8 flex flex-wrap gap-3">
+              <Button
+                asChild
+                size="lg"
+                className="group h-12 px-8 rounded-full text-base font-semibold bg-accent text-accent-foreground shadow-glow hover:bg-accent hover:brightness-105 hover:-translate-y-0.5 transition-all"
+              >
+                <a href="#anfrage">
+                  {t.simple.heroCta}
+                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </a>
               </Button>
               <Button
                 asChild
@@ -279,7 +341,7 @@ const GardenLanding = () => {
                 </a>
               </Button>
             </div>
-            <p className="mt-6 flex items-start gap-2 text-sm text-white/85">
+            <p className="animate-fade-in-up [animation-delay:360ms] mt-7 inline-flex items-start gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white/90 ring-1 ring-white/20 backdrop-blur">
               <MapPin className="h-4 w-4 shrink-0 mt-0.5" />
               {t.hero.serviceArea}
             </p>
@@ -288,28 +350,31 @@ const GardenLanding = () => {
       </header>
 
       {/* BEFORE/AFTER GALLERY */}
-      <section className="bg-secondary/30 border-b border-border/60">
+      <section className="bg-gradient-soft border-b border-border/60">
         <div className="container py-14 md:py-20">
-          <h2 className="text-center max-w-2xl mx-auto mb-10 text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">
-            {t.gallery.title}
-          </h2>
+          <Reveal>
+            <h2 className="text-center max-w-2xl mx-auto mb-10 text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">
+              {t.gallery.title}
+            </h2>
+          </Reveal>
           <div className="max-w-4xl mx-auto space-y-10">
             {t.gallery.items.map((it, i) => {
               const pair = GALLERY_PAIRS[i];
               if (!pair) return null;
               return (
-                <figure key={i}>
+                <Reveal key={i}>
+                <figure className="group">
                   <div className="grid grid-cols-2 gap-2 sm:gap-3">
                     {[
                       { src: pair.before, label: t.gallery.before, badge: "bg-background/90 text-foreground" },
                       { src: pair.after, label: t.gallery.after, badge: "bg-primary text-primary-foreground" },
                     ].map((img) => (
-                      <div key={img.label} className="relative overflow-hidden rounded-xl ring-1 ring-border/60 aspect-[4/3] bg-muted">
+                      <div key={img.label} className="relative overflow-hidden rounded-2xl ring-1 ring-border/60 aspect-[4/3] bg-muted shadow-soft">
                         <img
                           src={img.src}
                           alt={`${it.title} — ${img.label}`}
                           loading="lazy"
-                          className="h-full w-full object-cover"
+                          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                         />
                         <span className={`absolute top-2 left-2 rounded-full px-3 py-1 text-sm font-semibold shadow-soft ${img.badge}`}>
                           {img.label}
@@ -317,8 +382,11 @@ const GardenLanding = () => {
                       </div>
                     ))}
                   </div>
-                  <figcaption className="mt-2 font-medium text-foreground px-1">{it.title}</figcaption>
+                  <figcaption className="mt-3 px-1 flex items-center gap-2 font-medium text-foreground">
+                    <CheckCircle2 className="h-4 w-4 text-primary shrink-0" /> {it.title}
+                  </figcaption>
                 </figure>
+                </Reveal>
               );
             })}
           </div>
@@ -326,11 +394,13 @@ const GardenLanding = () => {
       </section>
 
       {/* REQUEST FORM */}
-      <section id="anfrage" className="container py-14 md:py-20 scroll-mt-4">
-        <div className="max-w-2xl mx-auto">
+      <section id="anfrage" className="relative bg-mesh py-14 md:py-24 scroll-mt-16">
+        <div className="container max-w-2xl">
           {success ? (
-            <Card className="p-6 md:p-10 text-center">
-              <CheckCircle2 className="mx-auto h-14 w-14 text-primary" />
+            <Card className="p-6 md:p-10 text-center shadow-elevated animate-scale-in">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-primary text-primary-foreground shadow-glow">
+                <CheckCircle2 className="h-8 w-8" />
+              </div>
               <h2 className="mt-4 text-2xl md:text-3xl font-bold text-foreground tracking-tight text-balance">
                 {t.send.successTitle}
               </h2>
@@ -357,12 +427,13 @@ const GardenLanding = () => {
             </Card>
           ) : (
             <>
-              <div className="text-center mb-8">
+              <Reveal className="text-center mb-8">
                 <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">{t.simple.formTitle}</h2>
                 <p className="mt-3 text-muted-foreground text-lg text-balance">{t.simple.formDesc}</p>
-              </div>
+              </Reveal>
 
-              <Card className="p-5 md:p-8 space-y-8">
+              <Reveal delay={100}>
+              <Card className="p-5 md:p-8 space-y-8 shadow-elevated border-border/60">
                 {/* 1. Services */}
                 <div>
                   <h3 className={questionClass}>{t.simple.servicesQ}</h3>
@@ -376,15 +447,19 @@ const GardenLanding = () => {
                           type="button"
                           onClick={() => toggleService(svc.id)}
                           aria-pressed={isSelected}
-                          className={`flex items-center gap-3 rounded-xl border-2 px-4 py-3.5 text-left transition-colors ${
+                          className={`flex items-center gap-3 rounded-xl border-2 px-3.5 py-3 text-left transition-all duration-200 active:scale-[0.98] ${
                             isSelected
-                              ? "border-primary bg-primary/10"
-                              : "border-border hover:border-primary/50"
+                              ? "border-primary bg-primary/10 shadow-soft"
+                              : "border-border hover:border-primary/50 hover:-translate-y-0.5 hover:shadow-soft"
                           }`}
                         >
-                          <Icon className={`h-5 w-5 shrink-0 ${isSelected ? "text-primary" : "text-muted-foreground"}`} />
+                          <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors duration-200 ${
+                            isSelected ? "bg-gradient-primary text-primary-foreground" : "bg-secondary text-primary"
+                          }`}>
+                            <Icon className="h-5 w-5" />
+                          </span>
                           <span className="flex-1 font-medium text-foreground">{t.services.items[svc.id].name}</span>
-                          {isSelected && <CheckCircle2 className="h-5 w-5 shrink-0 text-primary" />}
+                          {isSelected && <CheckCircle2 className="h-5 w-5 shrink-0 text-primary animate-scale-in" />}
                         </button>
                       );
                     })}
@@ -401,7 +476,7 @@ const GardenLanding = () => {
                         type="button"
                         onClick={() => setArea(size.value)}
                         aria-pressed={area === size.value}
-                        className={`rounded-xl border-2 px-3 py-3 text-sm font-medium transition-colors ${
+                        className={`rounded-xl border-2 px-3 py-3 text-sm font-medium transition-all duration-200 active:scale-[0.98] ${
                           area === size.value
                             ? "border-primary bg-primary/10 text-foreground"
                             : "border-border text-foreground/80 hover:border-primary/50"
@@ -412,7 +487,7 @@ const GardenLanding = () => {
                     ))}
                   </div>
                   {calc.total > 0 && (
-                    <div className="mt-4 rounded-xl bg-secondary/50 p-4">
+                    <div className="mt-4 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 ring-1 ring-primary/20 p-4 animate-fade-in">
                       <p className="text-foreground">
                         {t.simple.estimate}{" "}
                         <strong className="text-primary text-lg tabular-nums">~{formatRSD(calc.total)}</strong>{" "}
@@ -509,7 +584,7 @@ const GardenLanding = () => {
                     onClick={sendOrder}
                     disabled={sending}
                     size="lg"
-                    className="w-full gap-2 h-14 rounded-full text-lg font-semibold"
+                    className="w-full gap-2 h-14 rounded-full text-lg font-semibold bg-gradient-primary shadow-glow transition-all hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0"
                   >
                     {sending
                       ? (<><Loader2 className="h-5 w-5 animate-spin" /> {t.send.submitting}</>)
@@ -524,23 +599,26 @@ const GardenLanding = () => {
                   </p>
                 </div>
               </Card>
+              </Reveal>
             </>
           )}
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="bg-secondary/30 border-y border-border/60">
+      <section className="bg-gradient-soft border-y border-border/60">
         <div className="container py-14 md:py-20 max-w-2xl">
+          <Reveal>
           <h2 className="text-3xl font-bold text-foreground text-center mb-8 tracking-tight">{t.faq.title}</h2>
           <Accordion type="single" collapsible className="w-full space-y-2">
             {t.faq.items.map((it, i) => (
-              <AccordionItem key={i} value={`item-${i}`} className="border border-border/60 rounded-xl px-5 bg-card">
+              <AccordionItem key={i} value={`item-${i}`} className="border border-border/60 rounded-xl px-5 bg-card transition-shadow data-[state=open]:shadow-soft data-[state=open]:border-primary/30">
                 <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">{it.q}</AccordionTrigger>
                 <AccordionContent className="text-muted-foreground leading-relaxed pb-4">{it.a}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
+          </Reveal>
         </div>
       </section>
 
