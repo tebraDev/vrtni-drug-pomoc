@@ -160,7 +160,7 @@ const GardenLanding = () => {
         phone: z
           .string()
           .trim()
-          .min(6, t.toasts.missingDesc)
+          .min(6, t.send.phoneInvalid)
           .max(30)
           .regex(/^[+\d][\d\s\-()]{5,}$/, t.send.phoneInvalid),
         consent: z.literal(true, { errorMap: () => ({ message: t.privacy.consentRequired }) }),
@@ -188,7 +188,14 @@ const GardenLanding = () => {
         if (!errs[k]) errs[k] = issue.message;
       }
       setFieldErrors(errs);
-      toast({ title: t.toasts.missingTitle, description: Object.values(errs)[0], variant: "destructive" });
+      // Take the user straight to the first field that needs fixing.
+      const firstId = (["name", "phone", "consent"] as const).find((k) => errs[k]);
+      const firstEl = firstId && document.getElementById(firstId);
+      if (firstEl) {
+        firstEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        firstEl.focus({ preventScroll: true });
+      }
+      toast({ title: t.toasts.missingTitle, description: errs[firstId ?? "name"], variant: "destructive" });
       return false;
     }
     setFieldErrors({});
