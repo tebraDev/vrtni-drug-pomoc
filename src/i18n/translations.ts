@@ -332,7 +332,7 @@ export const translations: Record<Locale, Dict> = {
     faq: {
       title: "Često postavljana pitanja",
       items: [
-        { q: "Da li je narudžbina obavezujuća?", a: "Ne. Vaša narudžbina je potpuno neobavezujuća — kontaktiramo Vas radi potvrde i konačnog dogovora." },
+        { q: "Da li je zahtev obavezujući?", a: "Ne. Vaš zahtev je potpuno neobavezujući — kontaktiramo Vas radi potvrde i konačnog dogovora." },
         { q: "Kako plaćam ako sam u inostranstvu?", a: "Plaćanje je moguće preko bankarskog transfera, IPS-a ili gotovinom prilikom Vaše posete Srbiji." },
         { q: "Šaljete li izveštaje i slike?", a: "Da, posle svake posete dobijate fotografije i kratak izveštaj putem Vibera, WhatsAppa ili e-maila." },
         { q: "Koje gradove pokrivate?", a: "Trenutno radimo u Trsteniku, Kruševcu, Vrnjačkoj Banji i Aleksandrovcu. Za okolna sela nas kontaktirajte." },
@@ -529,7 +529,7 @@ export const translations: Record<Locale, Dict> = {
     faq: {
       title: "Често постављана питања",
       items: [
-        { q: "Да ли је наруџбина обавезујућа?", a: "Не. Ваша наруџбина је потпуно необавезујућа — контактирамо Вас ради потврде и коначног договора." },
+        { q: "Да ли је захтев обавезујући?", a: "Не. Ваш захтев је потпуно необавезујући — контактирамо Вас ради потврде и коначног договора." },
         { q: "Како плаћам ако сам у иностранству?", a: "Плаћање је могуће преко банкарског трансфера, ИПС-а или готовином приликом Ваше посете Србији." },
         { q: "Шаљете ли извештаје и слике?", a: "Да, после сваке посете добијате фотографије и кратак извештај путем Вибера, WhatsAppa или е-маила." },
         { q: "Које градове покривате?", a: "Тренутно радимо у Трстенику, Крушевцу, Врњачкој Бањи и Александровцу. За околна села нас контактирајте." },
@@ -727,7 +727,7 @@ export const translations: Record<Locale, Dict> = {
     faq: {
       title: "Häufige Fragen",
       items: [
-        { q: "Ist die Bestellung verbindlich?", a: "Nein. Ihre Bestellung ist völlig unverbindlich — wir melden uns zur Bestätigung und endgültigen Absprache." },
+        { q: "Ist die Anfrage verbindlich?", a: "Nein. Ihre Anfrage ist völlig unverbindlich — wir melden uns zur Bestätigung und endgültigen Absprache." },
         { q: "Wie zahle ich aus dem Ausland?", a: "Zahlung ist per Banküberweisung, IPS oder bar bei Ihrem nächsten Aufenthalt in Serbien möglich." },
         { q: "Bekomme ich Berichte und Fotos?", a: "Ja, nach jedem Einsatz erhalten Sie Fotos und einen kurzen Bericht via Viber, WhatsApp oder E-Mail." },
         { q: "Welche Städte deckt ihr ab?", a: "Aktuell arbeiten wir in Trstenik, Kruševac, Vrnjačka Banja und Aleksandrovac. Für umliegende Dörfer bitte kurz anfragen." },
@@ -923,7 +923,7 @@ export const translations: Record<Locale, Dict> = {
     faq: {
       title: "Frequently asked questions",
       items: [
-        { q: "Is the order binding?", a: "No. Your order is completely non-binding — we contact you for confirmation and final agreement." },
+        { q: "Is the request binding?", a: "No. Your request is completely non-binding — we contact you for confirmation and final agreement." },
         { q: "How do I pay from abroad?", a: "Payment is possible via bank transfer, IPS, or cash on your next visit to Serbia." },
         { q: "Do I get reports and photos?", a: "Yes, after every visit you receive photos and a short report via Viber, WhatsApp or email." },
         { q: "Which cities do you cover?", a: "Currently Trstenik, Kruševac, Vrnjačka Banja and Aleksandrovac. For nearby villages, just ask." },
