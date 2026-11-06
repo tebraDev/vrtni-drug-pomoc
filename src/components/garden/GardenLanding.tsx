@@ -703,10 +703,14 @@ const GardenLanding = () => {
         rel="noreferrer"
         aria-label={t.footer.whatsapp}
         className={`fixed bottom-5 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#1f7a43] text-white shadow-[0_6px_20px_rgba(0,0,0,0.25)] transition-[opacity,transform] duration-300 hover:bg-[#1a6a3a] ${
-          // On phones the button would cover the right edge of the form (incl. the tile check marks);
-          // the form offers its own call option, so step aside while it is on screen.
-          formInView ? "max-lg:pointer-events-none max-lg:translate-y-4 max-lg:opacity-0" : ""
+          // Wait until the hero (which has its own call button) is scrolled past, so it doesn't sit on the
+          // slider. On phones also step aside while the form is on screen: it would cover the tile check
+          // marks, and the form offers its own call option.
+          !scrolled
+            ? "pointer-events-none translate-y-4 opacity-0"
+            : formInView ? "max-lg:pointer-events-none max-lg:translate-y-4 max-lg:opacity-0" : ""
         }`}
+        tabIndex={scrolled ? undefined : -1}
       >
         <MessageCircle className="h-7 w-7" aria-hidden="true" />
       </a>

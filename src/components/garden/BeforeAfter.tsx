@@ -64,17 +64,39 @@ const BeforeAfter = ({
     setPos(clamp(((clientX - rect.left) / rect.width) * 100));
   };
 
+  // Touch drags only take over once the finger is clearly moving sideways; a mostly vertical
+  // swipe is left to the browser so the page scrolls and the divider stays put.
+  const gesture = useRef<{ x: number; y: number; decided: boolean } | null>(null);
+
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
     dragging.current = true;
-    e.currentTarget.setPointerCapture(e.pointerId);
-    // On touch, wait for horizontal movement so a vertical scroll doesn't jump the divider.
-    if (e.pointerType === "mouse") moveTo(e.clientX);
+    if (e.pointerType === "mouse") {
+      gesture.current = { x: e.clientX, y: e.clientY, decided: true };
+      e.currentTarget.setPointerCapture(e.pointerId);
+      moveTo(e.clientX);
+    } else {
+      gesture.current = { x: e.clientX, y: e.clientY, decided: false };
+    }
   };
   const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (dragging.current) moveTo(e.clientX);
+    const g = gesture.current;
+    if (!dragging.current || !g) return;
+    if (!g.decided) {
+      const dx = Math.abs(e.clientX - g.x);
+      const dy = Math.abs(e.clientY - g.y);
+      if (dx < 6 && dy < 6) return;
+      if (dy >= dx) {
+        dragging.current = false;
+        return;
+      }
+      g.decided = true;
+      e.currentTarget.setPointerCapture(e.pointerId);
+    }
+    moveTo(e.clientX);
   };
   const endDrag = () => {
     dragging.current = false;
+    gesture.current = null;
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
