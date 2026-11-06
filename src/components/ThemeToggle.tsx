@@ -11,7 +11,7 @@ export default function ThemeToggle() {
       size="icon"
       onClick={toggleTheme}
       aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
-      className="h-9 w-9 rounded-full text-primary-foreground hover:bg-white/20 hover:text-primary-foreground"
+      className="h-10 w-10 rounded-md text-foreground hover:bg-secondary hover:text-foreground"
     >
       {theme === "light" ? (
         <Moon className="h-4 w-4" />

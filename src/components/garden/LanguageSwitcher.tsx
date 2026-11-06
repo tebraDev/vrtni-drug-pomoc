@@ -12,8 +12,8 @@ import {
 import { Button } from "@/components/ui/button";
 
 const LABELS: Record<Locale, string> = {
-  "sr-Latn": "SR · Lat",
-  "sr-Cyrl": "СР · Ћир",
+  "sr-Latn": "SR lat",
+  "sr-Cyrl": "СР ћир",
   de: "DE",
   en: "EN",
 };
@@ -28,10 +28,10 @@ const LanguageSwitcher = () => {
         <Button
           variant="outline"
           size="sm"
-          className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/20 backdrop-blur gap-1.5"
+          className="h-10 gap-1.5 rounded-md border-input bg-transparent text-foreground hover:bg-secondary"
         >
           <Globe className="h-4 w-4" />
-          <span className="text-xs font-semibold">{LABELS[locale]}</span>
+          <span className="text-sm font-semibold">{LABELS[locale]}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56 bg-popover">
