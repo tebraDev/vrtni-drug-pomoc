@@ -1,11 +1,10 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Leaf, Droplets, Scissors, Sprout, Fence, Trees, Trash2, Flower2,
-  ShieldCheck, MapPin, ArrowRight, Phone, CheckCircle2, MessageCircle, Send, Loader2,
+  ShieldCheck, MapPin, Phone, Check, MessageCircle, Loader2,
 } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,11 +19,11 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import heroImg from "@/assets/garden-hero.jpg";
 import { useI18n } from "@/i18n/I18nContext";
 import { translations } from "@/i18n/translations";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
+import BeforeAfter from "./BeforeAfter";
 import lawnBefore from "@/assets/gallery/lawn-before.jpg";
 import lawnAfter from "@/assets/gallery/lawn-after.jpg";
 import hedgeBefore from "@/assets/gallery/hedge-before.jpg";
@@ -97,32 +96,6 @@ const monthlyFor = (def: ServiceDef, quantity: number) => {
   return perVisit * VISITS_PER_MONTH[def.frequency];
 };
 
-// Fades content in once it scrolls into view (skipped for reduced-motion users via CSS).
-const Reveal = ({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShown(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "0px 0px -10% 0px" },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-  return (
-    <div ref={ref} className={`reveal ${shown ? "is-shown" : ""} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
-      {children}
-    </div>
-  );
-};
-
 const GardenLanding = () => {
   const { t, formatPrice: formatRSD, formatEurApprox } = useI18n();
   const [selected, setSelected] = useState<string[]>([]);
@@ -137,7 +110,7 @@ const GardenLanding = () => {
   const [formInView, setFormInView] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    const onScroll = () => setScrolled(window.scrollY > 420);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -282,380 +255,445 @@ const GardenLanding = () => {
     }
   };
 
-  const questionClass = "text-lg font-semibold text-foreground tracking-tight";
+  const steps = [t.steps.s1, t.steps.s2, t.steps.s3].map((s) => ({
+    title: s.title.replace(/^\d+\.\s*/, ""),
+    desc: s.desc,
+  }));
+  const [lawn, ...otherPairs] = GALLERY_PAIRS;
+
+  const tileBase =
+    "flex items-center gap-3 rounded-md border px-3.5 py-3 text-left transition-colors duration-150";
+  const tileOn = "border-primary bg-primary/10 text-foreground";
+  const tileOff = "border-input bg-card hover:border-primary/60";
+
+  const estimateBlock = (
+    <>
+      <p className="font-display text-4xl font-semibold tabular-nums tracking-tight text-foreground">
+        ~{formatRSD(calc.total)}
+      </p>
+      <p className="mt-1 text-muted-foreground">
+        {t.simple.perMonth} <span className="tabular-nums">({formatEurApprox(calc.total)})</span>
+      </p>
+    </>
+  );
 
   return (
-    <div className="min-h-screen bg-background antialiased">
-      {/* HERO */}
-      {/* STICKY TOP BAR — transparent over the hero, solid once scrolled */}
-      <nav
-        className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
-          scrolled ? "bg-[hsl(142_40%_12%/0.88)] backdrop-blur-md shadow-elevated" : "bg-transparent"
-        }`}
+    <div className="min-h-screen bg-background">
+      <a
+        href="#anfrage"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-card focus:px-4 focus:py-2"
       >
-        <div className={`container flex items-center justify-between gap-3 transition-all duration-300 ${scrolled ? "py-2.5" : "py-5"}`}>
-          <a href="#" className="flex items-center gap-2.5 text-white" aria-label="Zelena Oaza">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 ring-1 ring-white/25 backdrop-blur">
-              <Leaf className="h-5 w-5" />
+        {t.simple.heroCta}
+      </a>
+
+      {/* HEADER — quiet, always readable; the phone number is visible text, not hidden behind an icon */}
+      <nav className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85">
+        <div className="container flex h-16 items-center justify-between gap-3 px-4 sm:px-8">
+          <a href="#" className="flex items-center gap-2 text-foreground" aria-label="Zelena Oaza">
+            <Leaf className="h-5 w-5 text-primary" aria-hidden="true" />
+            <span className={`font-display text-xl font-semibold tracking-tight ${showHeaderCta ? "hidden min-[420px]:inline" : ""}`}>
+              Zelena Oaza
             </span>
-            <span className={`text-lg sm:text-xl font-semibold tracking-tight ${showHeaderCta ? "hidden min-[400px]:inline" : ""}`}>Zelena Oaza</span>
           </a>
           <div className="flex items-center gap-1 sm:gap-2">
             <a
-              href="#anfrage"
-              className={`inline-flex h-9 items-center whitespace-nowrap rounded-full bg-accent px-4 text-sm font-semibold text-accent-foreground shadow-soft transition-all duration-300 hover:brightness-105 ${
-                showHeaderCta ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 -translate-y-1 absolute"
-              }`}
-              tabIndex={showHeaderCta ? 0 : -1}
-              aria-hidden={!showHeaderCta}
+              href={`tel:+${BUSINESS_PHONE_INTL}`}
+              className="hidden items-center gap-2 rounded px-2 py-1 font-medium text-foreground tabular-nums hover:text-primary md:inline-flex"
             >
-              {t.simple.heroCta}
+              <Phone className="h-4 w-4 text-primary" aria-hidden="true" />
+              {BUSINESS_PHONE_DISPLAY}
             </a>
+            {showHeaderCta && (
+              <a
+                href="#anfrage"
+                className="inline-flex h-9 items-center whitespace-nowrap rounded-md bg-accent px-3.5 text-sm font-semibold text-accent-foreground hover:bg-accent/90"
+              >
+                {t.simple.heroCta}
+              </a>
+            )}
             <ThemeToggle />
             <LanguageSwitcher />
           </div>
         </div>
       </nav>
 
-      {/* HERO */}
-      <header className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src={heroImg}
-            alt="Uređena bašta u Srbiji"
-            width={1600}
-            height={900}
-            className="h-full w-full object-cover animate-hero-zoom"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[hsl(142_45%_8%/0.85)] via-[hsl(142_45%_8%/0.55)] to-[hsl(142_45%_8%/0.15)]" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
-        </div>
-        <div className="relative z-10 container pt-32 pb-24 md:pt-44 md:pb-36">
-          <div className="max-w-2xl">
-            <h1 className="animate-fade-in-up text-balance text-4xl md:text-6xl font-bold leading-[1.08] tracking-tight text-white drop-shadow-sm">
+      {/* HERO — the proof is the headline's partner: drag the lawn from overgrown to mown */}
+      <header className="container px-4 pb-16 pt-10 sm:px-8 md:pb-24 md:pt-16">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-14">
+          <div className="max-w-xl">
+            <h1 className="text-[2.5rem] font-semibold leading-[1.05] tracking-[-0.02em] text-foreground sm:text-5xl lg:text-[3.6rem]">
               {t.hero.title}
             </h1>
-            <p className="animate-fade-in-up [animation-delay:120ms] mt-5 text-lg md:text-xl text-white/90 leading-relaxed text-balance">
+            <p className="mt-6 max-w-[34rem] text-lg leading-relaxed text-muted-foreground text-pretty md:text-xl">
               {t.hero.subtitle}
             </p>
-            <div className="animate-fade-in-up [animation-delay:240ms] mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <Button
                 asChild
                 size="lg"
-                className="group h-12 px-8 rounded-full text-base font-semibold bg-accent text-accent-foreground shadow-glow hover:bg-accent hover:brightness-105 hover:-translate-y-0.5 transition-all"
+                className="h-14 rounded-md bg-accent px-7 text-lg font-semibold text-accent-foreground hover:bg-accent/90"
               >
-                <a href="#anfrage">
-                  {t.simple.heroCta}
-                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </a>
+                <a href="#anfrage">{t.simple.heroCta}</a>
               </Button>
               <Button
                 asChild
                 size="lg"
                 variant="outline"
-                className="h-12 px-7 rounded-full text-base bg-white/10 text-white border-white/50 hover:bg-white/20 hover:text-white"
+                className="h-14 gap-2 rounded-md border-input bg-transparent px-6 text-lg font-medium tabular-nums hover:bg-secondary"
               >
                 <a href={`tel:+${BUSINESS_PHONE_INTL}`}>
-                  <Phone className="h-5 w-5" /> {BUSINESS_PHONE_DISPLAY}
+                  <Phone className="h-5 w-5 text-primary" aria-hidden="true" />
+                  {BUSINESS_PHONE_DISPLAY}
                 </a>
               </Button>
             </div>
-            <p className="animate-fade-in-up [animation-delay:360ms] mt-7 inline-flex items-start gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white/90 ring-1 ring-white/20 backdrop-blur">
-              <MapPin className="h-4 w-4 shrink-0 mt-0.5" />
-              {t.hero.serviceArea}
+            <p className="mt-8 flex items-start gap-2 text-muted-foreground">
+              <MapPin className="mt-1 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+              <span>{t.hero.serviceArea}</span>
             </p>
           </div>
+
+          {lawn && (
+            <figure>
+              <BeforeAfter
+                before={lawn.before}
+                after={lawn.after}
+                subject={t.gallery.items[0].title}
+                beforeLabel={t.gallery.before}
+                afterLabel={t.gallery.after}
+                intro
+                eager
+                className="aspect-[4/3] w-full"
+              />
+              <figcaption className="mt-3 flex flex-wrap justify-between gap-x-4 gap-y-1 text-muted-foreground">
+                <span className="font-medium text-foreground">{t.gallery.items[0].title}</span>
+                <span>{t.gallery.subtitle}</span>
+              </figcaption>
+            </figure>
+          )}
         </div>
       </header>
 
-      {/* BEFORE/AFTER GALLERY */}
-      <section className="bg-gradient-soft border-b border-border/60">
-        <div className="container py-14 md:py-20">
-          <Reveal>
-            <h2 className="text-center max-w-2xl mx-auto mb-10 text-3xl md:text-4xl font-bold text-foreground tracking-tight text-balance">
-              {t.gallery.title}
-            </h2>
-          </Reveal>
-          <div className="max-w-4xl mx-auto space-y-10">
-            {t.gallery.items.map((it, i) => {
-              const pair = GALLERY_PAIRS[i];
-              if (!pair) return null;
-              return (
-                <Reveal key={i}>
-                <figure className="group">
-                  <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                    {[
-                      { src: pair.before, label: t.gallery.before, badge: "bg-background/90 text-foreground" },
-                      { src: pair.after, label: t.gallery.after, badge: "bg-primary text-primary-foreground" },
-                    ].map((img) => (
-                      <div key={img.label} className="relative overflow-hidden rounded-2xl ring-1 ring-border/60 aspect-[4/3] bg-muted shadow-soft">
-                        <img
-                          src={img.src}
-                          alt={`${it.title} — ${img.label}`}
-                          loading="lazy"
-                          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                        />
-                        <span className={`absolute top-2 left-2 rounded-full px-3 py-1 text-sm font-semibold shadow-soft ${img.badge}`}>
-                          {img.label}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  <figcaption className="mt-3 px-1 flex items-center gap-2 font-medium text-foreground">
-                    <CheckCircle2 className="h-4 w-4 text-primary shrink-0" /> {it.title}
-                  </figcaption>
-                </figure>
-                </Reveal>
-              );
-            })}
-          </div>
+      {/* HOW IT WORKS — a real three-step sequence, so it gets numbers */}
+      <section className="border-y border-border bg-secondary/60">
+        <div className="container px-4 py-14 sm:px-8 md:py-20">
+          <h2 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">{t.steps.title}</h2>
+          <ol className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
+            {steps.map((s, i) => (
+              <li key={i} className="border-t-2 border-primary pt-5">
+                <span className="font-display text-5xl font-semibold leading-none text-primary tabular-nums" aria-hidden="true">
+                  {i + 1}
+                </span>
+                <h3 className="mt-4 text-xl font-semibold text-foreground">{s.title}</h3>
+                <p className="mt-2 max-w-sm text-muted-foreground">{s.desc}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* MORE BEFORE / AFTER */}
+      <section className="container px-4 py-16 sm:px-8 md:py-24">
+        <div className="max-w-2xl">
+          <h2 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">{t.gallery.title}</h2>
+        </div>
+        <div className="mt-10 grid gap-10 md:grid-cols-2 md:gap-8">
+          {otherPairs.map((pair, idx) => {
+            const it = t.gallery.items[idx + 1];
+            if (!it) return null;
+            return (
+              <figure key={idx}>
+                <BeforeAfter
+                  before={pair.before}
+                  after={pair.after}
+                  subject={it.title}
+                  beforeLabel={t.gallery.before}
+                  afterLabel={t.gallery.after}
+                  className="aspect-[4/3] w-full"
+                />
+                <figcaption className="mt-3">
+                  <span className="block font-medium text-foreground">{it.title}</span>
+                  <span className="block text-muted-foreground">{it.desc}</span>
+                </figcaption>
+              </figure>
+            );
+          })}
         </div>
       </section>
 
       {/* REQUEST FORM */}
-      <section id="anfrage" className="relative bg-mesh py-14 md:py-24 scroll-mt-16">
-        <div className="container max-w-2xl">
+      <section id="anfrage" className="scroll-mt-20 border-t border-border bg-card">
+        <div className="container px-4 py-16 sm:px-8 md:py-24">
           {success ? (
-            <Card className="p-6 md:p-10 text-center shadow-elevated animate-scale-in">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-primary text-primary-foreground shadow-glow">
-                <CheckCircle2 className="h-8 w-8" />
+            <div className="mx-auto max-w-xl py-6 text-center" role="status">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <Check className="h-7 w-7" aria-hidden="true" />
               </div>
-              <h2 className="mt-4 text-2xl md:text-3xl font-bold text-foreground tracking-tight text-balance">
-                {t.send.successTitle}
-              </h2>
-              <p className="mt-3 text-muted-foreground text-balance">{t.send.successIntro}</p>
-              <div className="mt-6 flex flex-wrap gap-2 justify-center">
-                <Button asChild size="lg" className="gap-2 rounded-full bg-[hsl(142_70%_38%)] hover:bg-[hsl(142_70%_34%)] text-white">
+              <h2 className="mt-5 text-3xl font-semibold tracking-tight text-foreground">{t.send.successTitle}</h2>
+              <p className="mt-3 text-lg text-muted-foreground">{t.send.successIntro}</p>
+              <ol className="mx-auto mt-8 max-w-md space-y-3 text-left">
+                {t.send.whatNextSteps.map((step, i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="font-display font-semibold text-primary tabular-nums">{i + 1}.</span>
+                    <span className="text-foreground">{step}</span>
+                  </li>
+                ))}
+              </ol>
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
+                <Button asChild size="lg" className="h-12 gap-2 rounded-md bg-[#1f7a43] text-white hover:bg-[#1a6a3a]">
                   <a href={`https://wa.me/${BUSINESS_PHONE_INTL}`} target="_blank" rel="noreferrer">
-                    <MessageCircle className="h-5 w-5" /> {t.send.waBtn}
+                    <MessageCircle className="h-5 w-5" aria-hidden="true" /> {t.send.waBtn}
                   </a>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="gap-2 rounded-full">
+                <Button asChild size="lg" variant="outline" className="h-12 gap-2 rounded-md">
                   <a href={`tel:+${BUSINESS_PHONE_INTL}`}>
-                    <Phone className="h-5 w-5" /> {t.send.callBtn}
+                    <Phone className="h-5 w-5" aria-hidden="true" /> {t.send.callBtn}
                   </a>
                 </Button>
               </div>
               <button
                 type="button"
                 onClick={() => { setSuccess(false); setSelected([]); }}
-                className="mt-6 text-sm text-primary hover:underline font-medium"
+                className="mt-8 font-medium text-primary underline underline-offset-4 hover:no-underline"
               >
                 {t.send.newOrder}
               </button>
-            </Card>
+            </div>
           ) : (
             <>
-              <Reveal className="text-center mb-8">
-                <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">{t.simple.formTitle}</h2>
-                <p className="mt-3 text-muted-foreground text-lg text-balance">{t.simple.formDesc}</p>
-              </Reveal>
+              <div className="max-w-2xl">
+                <h2 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">{t.simple.formTitle}</h2>
+                <p className="mt-3 text-lg text-muted-foreground">{t.simple.formDesc}</p>
+              </div>
 
-              <Reveal delay={100}>
-              <Card className="p-5 md:p-8 space-y-8 shadow-elevated border-border/60">
-                {/* 1. Services */}
-                <div>
-                  <h3 className={questionClass}>{t.simple.servicesQ}</h3>
-                  <div className="mt-4 grid sm:grid-cols-2 gap-2.5">
-                    {SERVICES.map((svc) => {
-                      const isSelected = selected.includes(svc.id);
-                      const Icon = svc.icon;
-                      return (
+              <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:gap-14">
+                <div className="space-y-12">
+                  {/* 1. Services */}
+                  <fieldset>
+                    <legend className="font-display text-xl font-semibold text-foreground">{t.simple.servicesQ}</legend>
+                    <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
+                      {SERVICES.map((svc) => {
+                        const isSelected = selected.includes(svc.id);
+                        const Icon = svc.icon;
+                        return (
+                          <button
+                            key={svc.id}
+                            type="button"
+                            onClick={() => toggleService(svc.id)}
+                            aria-pressed={isSelected}
+                            className={`${tileBase} ${isSelected ? tileOn : tileOff}`}
+                          >
+                            <span
+                              className={`flex h-6 w-6 shrink-0 items-center justify-center rounded border-2 ${
+                                isSelected ? "border-primary bg-primary text-primary-foreground" : "border-input"
+                              }`}
+                              aria-hidden="true"
+                            >
+                              {isSelected && <Check className="h-4 w-4" strokeWidth={3} />}
+                            </span>
+                            <span className="flex-1 font-medium">{t.services.items[svc.id].name}</span>
+                            <Icon className="h-5 w-5 shrink-0 text-primary/70" aria-hidden="true" />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </fieldset>
+
+                  {/* 2. Garden size */}
+                  <fieldset>
+                    <legend className="font-display text-xl font-semibold text-foreground">{t.simple.sizeQ}</legend>
+                    <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+                      {SIZES.map((size) => (
                         <button
-                          key={svc.id}
+                          key={size.key}
                           type="button"
-                          onClick={() => toggleService(svc.id)}
-                          aria-pressed={isSelected}
-                          className={`flex items-center gap-3 rounded-xl border-2 px-3.5 py-3 text-left transition-all duration-200 active:scale-[0.98] ${
-                            isSelected
-                              ? "border-primary bg-primary/10 shadow-soft"
-                              : "border-border hover:border-primary/50 hover:-translate-y-0.5 hover:shadow-soft"
-                          }`}
+                          onClick={() => setArea(size.value)}
+                          aria-pressed={area === size.value}
+                          className={`${tileBase} justify-center text-center font-medium ${area === size.value ? tileOn : tileOff}`}
                         >
-                          <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors duration-200 ${
-                            isSelected ? "bg-gradient-primary text-primary-foreground" : "bg-secondary text-primary"
-                          }`}>
-                            <Icon className="h-5 w-5" />
-                          </span>
-                          <span className="flex-1 font-medium text-foreground">{t.services.items[svc.id].name}</span>
-                          {isSelected && <CheckCircle2 className="h-5 w-5 shrink-0 text-primary animate-scale-in" />}
+                          {t.config.presets[size.key]}
                         </button>
-                      );
-                    })}
+                      ))}
+                    </div>
+                    {calc.total > 0 && (
+                      <div className="mt-5 rounded-md border-l-4 border-primary bg-secondary/70 p-4 lg:hidden" aria-live="polite">
+                        <p className="text-muted-foreground">{t.simple.estimate}</p>
+                        {estimateBlock}
+                        <p className="mt-2 text-sm text-muted-foreground">{t.summary.estimateNote}</p>
+                      </div>
+                    )}
+                  </fieldset>
+
+                  {/* 3. Contact */}
+                  <fieldset>
+                    <legend className="font-display text-xl font-semibold text-foreground">{t.simple.contactQ}</legend>
+                    <div className="mt-4 grid gap-5 sm:grid-cols-2">
+                      <div>
+                        <Label htmlFor="name" className="text-base">{t.contact.name}</Label>
+                        <Input
+                          id="name"
+                          value={contact.name}
+                          onChange={(e) => { setContact({ ...contact, name: e.target.value }); if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: undefined }); }}
+                          maxLength={100}
+                          autoComplete="name"
+                          aria-invalid={!!fieldErrors.name}
+                          aria-describedby={fieldErrors.name ? "name-error" : undefined}
+                          className={`mt-1.5 h-12 border-input bg-background text-base ${fieldErrors.name ? "border-destructive" : ""}`}
+                        />
+                        {fieldErrors.name && <p id="name-error" className="mt-1.5 text-sm text-destructive">{fieldErrors.name}</p>}
+                      </div>
+                      <div>
+                        <Label htmlFor="phone" className="text-base">{t.contact.phone}</Label>
+                        <Input
+                          id="phone"
+                          value={contact.phone}
+                          onChange={(e) => { setContact({ ...contact, phone: e.target.value }); if (fieldErrors.phone) setFieldErrors({ ...fieldErrors, phone: undefined }); }}
+                          maxLength={30}
+                          placeholder="+381 ..."
+                          inputMode="tel"
+                          autoComplete="tel"
+                          aria-invalid={!!fieldErrors.phone}
+                          aria-describedby={fieldErrors.phone ? "phone-error" : undefined}
+                          className={`mt-1.5 h-12 border-input bg-background text-base ${fieldErrors.phone ? "border-destructive" : ""}`}
+                        />
+                        {fieldErrors.phone && <p id="phone-error" className="mt-1.5 text-sm text-destructive">{fieldErrors.phone}</p>}
+                      </div>
+                      <div className="sm:col-span-2">
+                        <Label htmlFor="city" className="text-base">{t.contact.city}</Label>
+                        <Select value={contact.city} onValueChange={(v) => setContact({ ...contact, city: v })}>
+                          <SelectTrigger id="city" className="mt-1.5 h-12 border-input bg-background text-base">
+                            <SelectValue placeholder={t.contact.cityPlaceholder} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {SERVICE_CITIES.map((c) => (
+                              <SelectItem key={c} value={c}>{c}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="sm:col-span-2">
+                        <Label htmlFor="notes" className="text-base">{t.contact.notes}</Label>
+                        <Textarea
+                          id="notes"
+                          value={contact.notes}
+                          onChange={(e) => setContact({ ...contact, notes: e.target.value })}
+                          maxLength={1000}
+                          placeholder={t.contact.notesPlaceholder}
+                          rows={3}
+                          className="mt-1.5 border-input bg-background text-base"
+                        />
+                      </div>
+                    </div>
+                  </fieldset>
+
+                  <div className="space-y-6">
+                    <div className="flex items-start gap-3">
+                      <Checkbox
+                        id="consent"
+                        checked={consent}
+                        onCheckedChange={(v) => { setConsent(v === true); if (v) setFieldErrors({ ...fieldErrors, consent: undefined }); }}
+                        className="mt-1 h-5 w-5"
+                      />
+                      <Label htmlFor="consent" className="cursor-pointer text-base font-normal leading-relaxed">
+                        {t.privacy.consentLabel}{" "}
+                        <button type="button" onClick={() => setPrivacyOpen(true)} className="text-primary underline underline-offset-4 hover:no-underline">
+                          {t.privacy.consentLink}
+                        </button>
+                        .
+                        {fieldErrors.consent && <span className="mt-1.5 block text-sm text-destructive">{fieldErrors.consent}</span>}
+                      </Label>
+                    </div>
+
+                    <Button
+                      type="button"
+                      onClick={sendOrder}
+                      disabled={sending}
+                      size="lg"
+                      className="h-14 w-full gap-2 rounded-md bg-accent text-lg font-semibold text-accent-foreground hover:bg-accent/90 sm:w-auto sm:px-10"
+                    >
+                      {sending
+                        ? (<><Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> {t.send.submitting}</>)
+                        : t.simple.heroCta}
+                    </Button>
+
+                    <p className="text-muted-foreground">
+                      {t.simple.orCall}{" "}
+                      <a href={`tel:+${BUSINESS_PHONE_INTL}`} className="whitespace-nowrap font-semibold text-primary tabular-nums underline-offset-4 hover:underline">
+                        {BUSINESS_PHONE_DISPLAY}
+                      </a>
+                    </p>
                   </div>
                 </div>
 
-                {/* 2. Garden size */}
-                <div>
-                  <h3 className={questionClass}>{t.simple.sizeQ}</h3>
-                  <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                    {SIZES.map((size) => (
-                      <button
-                        key={size.key}
-                        type="button"
-                        onClick={() => setArea(size.value)}
-                        aria-pressed={area === size.value}
-                        className={`rounded-xl border-2 px-3 py-3 text-sm font-medium transition-all duration-200 active:scale-[0.98] ${
-                          area === size.value
-                            ? "border-primary bg-primary/10 text-foreground"
-                            : "border-border text-foreground/80 hover:border-primary/50"
-                        }`}
-                      >
-                        {t.config.presets[size.key]}
-                      </button>
-                    ))}
-                  </div>
-                  {calc.total > 0 && (
-                    <div className="mt-4 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 ring-1 ring-primary/20 p-4 animate-fade-in">
-                      <p className="text-foreground">
-                        {t.simple.estimate}{" "}
-                        <strong className="text-primary text-lg tabular-nums">~{formatRSD(calc.total)}</strong>{" "}
-                        {t.simple.perMonth}{" "}
-                        <span className="text-sm text-muted-foreground tabular-nums">({formatEurApprox(calc.total)})</span>
-                      </p>
-                      <p className="mt-1 text-xs text-muted-foreground">{t.summary.estimateNote}</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* 3. Contact */}
-                <div>
-                  <h3 className={questionClass}>{t.simple.contactQ}</h3>
-                  <div className="mt-4 grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="name">{t.contact.name}</Label>
-                      <Input
-                        id="name"
-                        value={contact.name}
-                        onChange={(e) => { setContact({ ...contact, name: e.target.value }); if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: undefined }); }}
-                        maxLength={100}
-                        autoComplete="name"
-                        aria-invalid={!!fieldErrors.name}
-                        aria-describedby={fieldErrors.name ? "name-error" : undefined}
-                        className={`mt-1.5 h-12 text-base ${fieldErrors.name ? "border-destructive" : ""}`}
-                      />
-                      {fieldErrors.name && <p id="name-error" className="text-sm text-destructive mt-1">{fieldErrors.name}</p>}
-                    </div>
-                    <div>
-                      <Label htmlFor="phone">{t.contact.phone}</Label>
-                      <Input
-                        id="phone"
-                        value={contact.phone}
-                        onChange={(e) => { setContact({ ...contact, phone: e.target.value }); if (fieldErrors.phone) setFieldErrors({ ...fieldErrors, phone: undefined }); }}
-                        maxLength={30}
-                        placeholder="+381 ..."
-                        inputMode="tel"
-                        autoComplete="tel"
-                        aria-invalid={!!fieldErrors.phone}
-                        aria-describedby={fieldErrors.phone ? "phone-error" : undefined}
-                        className={`mt-1.5 h-12 text-base ${fieldErrors.phone ? "border-destructive" : ""}`}
-                      />
-                      {fieldErrors.phone && <p id="phone-error" className="text-sm text-destructive mt-1">{fieldErrors.phone}</p>}
-                    </div>
-                    <div className="sm:col-span-2">
-                      <Label htmlFor="city">{t.contact.city}</Label>
-                      <Select value={contact.city} onValueChange={(v) => setContact({ ...contact, city: v })}>
-                        <SelectTrigger id="city" className="mt-1.5 h-12 text-base">
-                          <SelectValue placeholder={t.contact.cityPlaceholder} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {SERVICE_CITIES.map((c) => (
-                            <SelectItem key={c} value={c}>{c}</SelectItem>
+                {/* Running estimate — sticky alongside the form on wide screens */}
+                <aside className="hidden lg:block">
+                  <div className="sticky top-24 rounded-lg border border-border bg-background p-6" aria-live="polite">
+                    <h3 className="text-lg font-semibold text-foreground">{t.summary.title}</h3>
+                    {calc.items.length === 0 ? (
+                      <p className="mt-3 text-muted-foreground">{t.summary.empty}</p>
+                    ) : (
+                      <>
+                        <ul className="mt-4 space-y-2 border-b border-border pb-4">
+                          {calc.items.map(({ def }) => (
+                            <li key={def.id} className="flex gap-2 text-foreground">
+                              <Check className="mt-1 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                              {t.services.items[def.id].name}
+                            </li>
                           ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="sm:col-span-2">
-                      <Label htmlFor="notes">{t.contact.notes}</Label>
-                      <Textarea
-                        id="notes"
-                        value={contact.notes}
-                        onChange={(e) => setContact({ ...contact, notes: e.target.value })}
-                        maxLength={1000}
-                        placeholder={t.contact.notesPlaceholder}
-                        rows={3}
-                        className="mt-1.5 text-base"
-                      />
-                    </div>
+                        </ul>
+                        <p className="mt-4 text-muted-foreground">{t.simple.estimate}</p>
+                        {estimateBlock}
+                        <p className="mt-3 text-sm text-muted-foreground">{t.summary.estimateNote}</p>
+                      </>
+                    )}
                   </div>
-                </div>
-
-                <div className="space-y-5">
-                  <div className="flex items-start gap-3">
-                    <Checkbox
-                      id="consent"
-                      checked={consent}
-                      onCheckedChange={(v) => { setConsent(v === true); if (v) setFieldErrors({ ...fieldErrors, consent: undefined }); }}
-                      className="mt-0.5 h-5 w-5"
-                    />
-                    <Label htmlFor="consent" className="text-sm leading-relaxed font-normal cursor-pointer">
-                      {t.privacy.consentLabel}{" "}
-                      <button type="button" onClick={() => setPrivacyOpen(true)} className="text-primary underline hover:no-underline">
-                        {t.privacy.consentLink}
-                      </button>
-                      .
-                      {fieldErrors.consent && <span className="block text-destructive mt-1">{fieldErrors.consent}</span>}
-                    </Label>
-                  </div>
-
-                  <Button
-                    type="button"
-                    onClick={sendOrder}
-                    disabled={sending}
-                    size="lg"
-                    className="w-full gap-2 h-14 rounded-full text-lg font-semibold bg-gradient-primary shadow-glow transition-all hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0"
-                  >
-                    {sending
-                      ? (<><Loader2 className="h-5 w-5 animate-spin" /> {t.send.submitting}</>)
-                      : (<><Send className="h-5 w-5" /> {t.simple.heroCta}</>)}
-                  </Button>
-
-                  <p className="text-center text-muted-foreground">
-                    {t.simple.orCall}{" "}
-                    <a href={`tel:+${BUSINESS_PHONE_INTL}`} className="font-semibold text-primary whitespace-nowrap hover:underline">
-                      {BUSINESS_PHONE_DISPLAY}
-                    </a>
-                  </p>
-                </div>
-              </Card>
-              </Reveal>
+                </aside>
+              </div>
             </>
           )}
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="bg-gradient-soft border-y border-border/60">
-        <div className="container py-14 md:py-20 max-w-2xl">
-          <Reveal>
-          <h2 className="text-3xl font-bold text-foreground text-center mb-8 tracking-tight">{t.faq.title}</h2>
-          <Accordion type="single" collapsible className="w-full space-y-2">
+      <section className="border-t border-border">
+        <div className="container grid gap-8 px-4 py-16 sm:px-8 md:py-24 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] lg:gap-14">
+          <h2 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">{t.faq.title}</h2>
+          <Accordion type="single" collapsible className="w-full border-t border-border">
             {t.faq.items.map((it, i) => (
-              <AccordionItem key={i} value={`item-${i}`} className="border border-border/60 rounded-xl px-5 bg-card transition-shadow data-[state=open]:shadow-soft data-[state=open]:border-primary/30">
-                <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">{it.q}</AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed pb-4">{it.a}</AccordionContent>
+              <AccordionItem key={i} value={`item-${i}`} className="border-border">
+                <AccordionTrigger className="py-5 text-left text-lg font-semibold hover:no-underline">{it.q}</AccordionTrigger>
+                <AccordionContent className="pb-5 text-base leading-relaxed text-muted-foreground">{it.a}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
-          </Reveal>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="container py-10 flex flex-col items-center gap-3 text-center">
-        <div className="flex items-center gap-2 text-foreground font-semibold">
-          <Leaf className="h-5 w-5 text-primary" /> Zelena Oaza
+      <footer className="bg-band text-band-foreground">
+        <div className="container grid gap-8 px-4 py-14 sm:px-8 md:grid-cols-2 md:items-end">
+          <div>
+            <p className="flex items-center gap-2 font-display text-2xl font-semibold">
+              <Leaf className="h-5 w-5" aria-hidden="true" /> Zelena Oaza
+            </p>
+            <p className="mt-3 max-w-md text-band-foreground/75">{t.footer.tagline}</p>
+          </div>
+          <div className="md:text-right">
+            <a
+              href={`tel:+${BUSINESS_PHONE_INTL}`}
+              className="font-display text-3xl font-semibold tabular-nums underline-offset-4 hover:underline"
+            >
+              {BUSINESS_PHONE_DISPLAY}
+            </a>
+            <p className="mt-4 text-sm text-band-foreground/70">
+              © {new Date().getFullYear()} Zelena Oaza
+              <span className="mx-3" aria-hidden="true">/</span>
+              <button type="button" onClick={() => setPrivacyOpen(true)} className="underline underline-offset-4 hover:no-underline">
+                {t.privacy.footerLink}
+              </button>
+            </p>
+          </div>
         </div>
-        <p className="text-sm text-muted-foreground">{t.footer.tagline}</p>
-        <a href={`tel:+${BUSINESS_PHONE_INTL}`} className="text-sm font-medium text-primary hover:underline">
-          {BUSINESS_PHONE_DISPLAY}
-        </a>
-        <p className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Zelena Oaza ·{" "}
-          <button type="button" onClick={() => setPrivacyOpen(true)} className="hover:underline">
-            {t.privacy.footerLink}
-          </button>
-        </p>
       </footer>
 
       {/* FLOATING WHATSAPP BUTTON */}
@@ -664,29 +702,29 @@ const GardenLanding = () => {
         target="_blank"
         rel="noreferrer"
         aria-label={t.footer.whatsapp}
-        className={`fixed right-4 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[hsl(142_70%_38%)] text-white shadow-elevated hover:scale-105 transition-all duration-300 ${
+        className={`fixed bottom-5 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#1f7a43] text-white shadow-[0_6px_20px_rgba(0,0,0,0.25)] transition-[opacity,transform] duration-300 hover:bg-[#1a6a3a] ${
           // On phones the button would cover the right edge of the form (incl. the tile check marks);
           // the form offers its own call option, so step aside while it is on screen.
-          formInView ? "max-lg:pointer-events-none max-lg:opacity-0 max-lg:translate-y-4" : ""
+          formInView ? "max-lg:pointer-events-none max-lg:translate-y-4 max-lg:opacity-0" : ""
         }`}
       >
-        <MessageCircle className="h-7 w-7" />
+        <MessageCircle className="h-7 w-7" aria-hidden="true" />
       </a>
 
       {/* PRIVACY POLICY DIALOG */}
       <Dialog open={privacyOpen} onOpenChange={setPrivacyOpen}>
-        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+        <DialogContent className="max-h-[85vh] max-w-2xl overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <ShieldCheck className="h-5 w-5 text-primary" /> {t.privacy.dialogTitle}
+            <DialogTitle className="flex items-center gap-2 font-display text-xl">
+              <ShieldCheck className="h-5 w-5 text-primary" aria-hidden="true" /> {t.privacy.dialogTitle}
             </DialogTitle>
             <DialogDescription>{t.privacy.lastUpdated}</DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 mt-2">
+          <div className="mt-2 space-y-4">
             {t.privacy.sections.map((s, i) => (
               <div key={i}>
-                <h3 className="font-semibold text-foreground text-sm">{s.title}</h3>
-                <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{s.body}</p>
+                <h3 className="font-sans text-sm font-semibold text-foreground">{s.title}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
               </div>
             ))}
           </div>
